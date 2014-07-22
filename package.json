@@ -1,0 +1,28 @@
+{
+  "name": "mailosaur",
+  "version": "1.0.0",
+  "description": "Mailosaur API bindings.",
+  "homepage": "https://github.com/mailosaurapp/mailosaur-node",
+  "author": "Clickity Ltd <support@mailosaur.com>",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mailosaurapp/mailosaur-node.git"
+  },
+  "bugs": "https://github.com/mailosaurapp/mailosaur-node/issues",
+  "engines": {
+    "node": ">= v0.8.0"
+  },
+  "main": "lib/mailosaur.js",
+  "devDependencies": {
+    "mocha": "~1.13.0",
+    "chai": "~1.8.0",
+    "nodemailer": "~0.7.1",
+    "async": "0.9.0"
+  },
+  "dependencies": {
+    "request": "~2.36.0"
+  },
+  "scripts": {
+    "test": "mocha -t 10000"
+  }
+}
