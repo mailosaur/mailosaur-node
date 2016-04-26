@@ -1,7 +1,7 @@
 {
   "name": "mailosaur",
-  "version": "1.0.1",
-  "description": "Mailosaur API bindings.",
+  "version": "3.0.0",
+  "description": "Mailosaur API client library.",
   "homepage": "https://github.com/mailosaurapp/mailosaur-node",
   "author": "Clickity Ltd <support@mailosaur.com>",
   "repository": {
