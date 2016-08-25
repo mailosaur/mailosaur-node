@@ -43,11 +43,16 @@ describe('Mailosaur Bindings', function () {
 
 
     before(function (done) {
-        var settings = fs.readFileSync(path.resolve(__dirname, 'mailbox.settings'), 'utf8').split(/\r?\n/);
+        var mailboxid = process.env.MS_MAILBOX,
+            apikey = process.env.MS_APIKEY;
 
+        if (!mailboxid) {
+            throw 'To run tests, please set environemnt variable MS_MAILBOX to your mailbox ID';
+        }
 
-        var mailboxid = settings[0];
-        var apikey = settings[1];
+        if (!apikey) {
+            throw 'To run tests, please set environemnt variable MS_APIKEY to your API key';
+        }
 
         mailbox = new mailosaurApi(apikey).Mailbox(mailboxid);
 

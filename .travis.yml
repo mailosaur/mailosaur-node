@@ -1,0 +1,11 @@
+language: node_js
+node_js:
+  - "node"
+  - "iosjs"
+  - "6"
+  - "5"
+  - "4"
+env:
+  matrix:
+  - secure: YAQUpyYgDixoJNC+P4fIaAJKkAv++76xGZRRGRQo+YoUm7hT3bGzk6xOPyDVVV5/7WZaUrASgFeyF3xXU4i89x5dFlHyjCOMteDhvuEueV9hvr3pXqynWLoo/iGbO2jQybMetHy2pECE3qUcCvfWXppis8Ak6BS5N7cny4WR/Fk=
+  - secure: XMiwh1Pcl9KgPPdxjDV/TJAGhiDi2/1gUegi9O7cn33KGcrCzH0jFVDB92roP/GzGoNqSXgWeAkd6MYY4wrDkZjUdeq6KrcVaut601utQzG1YnRXNSyM6VXuka7XU3AsD04vH54FRNNMQRhWtAmKkFd0O7qfL4qXXBRPBZvePDo=
