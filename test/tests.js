@@ -43,15 +43,15 @@ describe('Mailosaur Bindings', function () {
 
 
     before(function (done) {
-        var mailboxid = process.env.MS_MAILBOX,
-            apikey = process.env.MS_APIKEY;
+        var mailboxid = process.env.MAILOSAUR_MAILBOX_ID,
+            apikey = process.env.MAILOSAUR_API_KEY;
 
         if (!mailboxid) {
-            throw 'To run tests, please set environemnt variable MS_MAILBOX to your mailbox ID';
+            throw 'To run tests, please set environemnt variable MAILOSAUR_MAILBOX_ID to your mailbox ID';
         }
 
         if (!apikey) {
-            throw 'To run tests, please set environemnt variable MS_APIKEY to your API key';
+            throw 'To run tests, please set environemnt variable MAILOSAUR_API_KEY to your API key';
         }
 
         mailbox = new mailosaurApi(apikey).Mailbox(mailboxid);
