@@ -88,7 +88,7 @@ describe('Mailosaur Bindings', function () {
         };
 
         var smtpTransport = nodemailer.createTransport('SMTP', {
-            host: 'mailosaur.in',
+            host: 'mailosaur.io',
             port: '25',
             secureConnection: false,
             ignoreTLS: false
