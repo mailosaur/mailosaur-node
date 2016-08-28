@@ -3,7 +3,7 @@
   "version": "3.0.0",
   "description": "Mailosaur API client library.",
   "homepage": "https://github.com/mailosaurapp/mailosaur-node",
-  "author": "Clickity Ltd <support@mailosaur.com>",
+  "author": "Mailosaur Ltd <support@mailosaur.com>",
   "repository": {
     "type": "git",
     "url": "git://github.com/mailosaurapp/mailosaur-node.git"
