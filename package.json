@@ -2,13 +2,13 @@
   "name": "mailosaur",
   "version": "3.0.0",
   "description": "Mailosaur API client library.",
-  "homepage": "https://github.com/mailosaurapp/mailosaur-node",
+  "homepage": "https://github.com/mailosaur/mailosaur-node",
   "author": "Mailosaur Ltd <support@mailosaur.com>",
   "repository": {
     "type": "git",
-    "url": "git://github.com/mailosaurapp/mailosaur-node.git"
+    "url": "git://github.com/mailosaur/mailosaur-node.git"
   },
-  "bugs": "https://github.com/mailosaurapp/mailosaur-node/issues",
+  "bugs": "https://github.com/mailosaur/mailosaur-node/issues",
   "engines": {
     "node": ">= v0.8.0"
   },
