@@ -19,6 +19,17 @@ describe('Mailosaur Bindings', function () {
                 assertEmail(emails[0], done);
             });
         });
+
+        it('should return a list of emails for the mailbox using promises', function (done) {
+            mailbox.getEmails()
+                .then(function (emails) {
+                    assert.ok(emails);
+                    assertEmail(emails[0], done);
+                })
+                .catch(function (err) {
+                    assert.notOk(err, err);
+                });
+        });
     });
 
     describe('GetEmailsSearch', function () {
@@ -29,6 +40,17 @@ describe('Mailosaur Bindings', function () {
                 assertEmail(emails[0], done);
             });
         });
+
+        it('should return a list of emails for the mailbox using promises', function (done) {
+            mailbox.getEmails('test')
+                .then(function (emails) {
+                    assert.ok(emails);
+                    assertEmail(emails[0], done);
+                })
+                .catch(function (err) {
+                    assert.notOk(err, err);
+                });
+        });
     });
 
     describe('GetEmailsByRecipient', function () {
@@ -38,6 +60,17 @@ describe('Mailosaur Bindings', function () {
                 assert.ok(emails);
                 assertEmail(emails[0], done);
             });
+        });
+
+        it('should return a list of emails for the mailbox using promises', function (done) {
+            mailbox.getEmailsByRecipient(recipientAddressShort)
+                .then(function (emails) {
+                    assert.ok(emails);
+                    assertEmail(emails[0], done);
+                })
+                .catch(function (err) {
+                    assert.notOk(err, err);
+                });
         });
     });
 
