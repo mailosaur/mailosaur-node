@@ -14,6 +14,10 @@ npm install mailosaur --save-dev
 
 [Mailosaur's documentation](https://mailosaur.com/docs) includes all the information and usage examples you'll need.
 
+## Promises
+
+This library also supports Promises. To return a promise from any asynchronous method call (this excludes `generateEmailAddress`), just omit the second callback argument.
+
 ## Running tests
 
 Once you've cloned this repository locally, you can simply run:
