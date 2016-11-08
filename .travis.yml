@@ -3,7 +3,7 @@ node_js:
 - '6'
 env:
   global:
-  - secure: G7CkYm69S9JKbw5Ndsfn1IXhCCRVg4vdfeGehFbghAukzmO4PjV77FqD7DJtlun8RdtYe0fIiC2VjT7FvVbaDEM+WaqusZ7C9d9Y3MqrmSBTJl4+MGNWfZMaap36RnGGOANcKDjkeca5a4oKiR0pZ9AI9A30Tn0tAxqA49U4xTc=
+  - secure: "fns/oT6pPxjP7HFcpllWC6rKQ9eyeUfHT/KVzd3z4xjVQr7cFGtGtxIXc41qrpx90TecBn/n10IWqtVJx0BTm/VGL0HUFlc38u7NrxIYNJGMT2HCqr2dLpmhyoUS5K7c6ov8J1/hwxnkYHyd45r8TuxSaqQoPlRYQOvp38xbQ3k="
   matrix:
   - MAILOSAUR_BASE_URL=https://mailosaur.com/api/ MAILOSAUR_SMTP_HOST=mailosaur.io
   - MAILOSAUR_BASE_URL=https://next.mailosaur.com/api/ MAILOSAUR_SMTP_HOST=ms-smtp.uk
