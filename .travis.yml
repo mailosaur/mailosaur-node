@@ -8,5 +8,4 @@ env:
   - MAILOSAUR_BASE_URL=https://mailosaur.com/api/ MAILOSAUR_SMTP_HOST=mailosaur.io
   - MAILOSAUR_BASE_URL=https://next.mailosaur.com/api/ MAILOSAUR_SMTP_HOST=ms-smtp.uk
 notifications:
-  slack:
-    secure: ifUoyvG/symtD+HeJlbAJXCWCKUHY7pWsv97eQ3N3TuBJX9CivoCdYV/rBw0ORyIgD4Q3gO1z8wlZG9jSG/4vI+VF+GfBnz+AcTnBw3mGPdudFlUfEegfuLgZqAxl4Z52uBWgh+UEk076TD6kpIW1hCsn5hbFPFDSBxs5RlkxCw=
+  webhooks: https://outlook.office365.com/webhook/15b4ba90-3687-4f64-9426-614ddf100184@d49da0b1-9141-48b1-b00d-58ac067d4cf4/TravisCI/cf68bf17b0484bfe8df7b29e98b26abc/f414b2da-0704-4552-a65a-2116b8b3d218
