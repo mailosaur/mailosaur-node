@@ -4,6 +4,7 @@
   "description": "Mailosaur API client library.",
   "homepage": "https://github.com/mailosaur/mailosaur-node",
   "author": "Mailosaur Ltd <support@mailosaur.com>",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git://github.com/mailosaur/mailosaur-node.git"
