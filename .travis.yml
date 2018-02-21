@@ -1,12 +1,20 @@
 language: node_js
 node_js:
 - '6'
-- 'node'
+- node
 env:
   global:
-  - secure: "fns/oT6pPxjP7HFcpllWC6rKQ9eyeUfHT/KVzd3z4xjVQr7cFGtGtxIXc41qrpx90TecBn/n10IWqtVJx0BTm/VGL0HUFlc38u7NrxIYNJGMT2HCqr2dLpmhyoUS5K7c6ov8J1/hwxnkYHyd45r8TuxSaqQoPlRYQOvp38xbQ3k="
+  - secure: ZLO8+tomNwHKqXTpHKYmTl8SH8WNGSGaeuKxoFDOUmpSL1FiUBkmAws4pJ6aoScztQidFdnIJ9F/Z5Dn6DUuAzaZmNJEZubyCP+a2hmIuUYTR9vYv9ktIdin1Ekq3AdJIBzb705uYeUeKewItx4vDDTbkGLSuxjh/EjVAoGX/yw=
   matrix:
-  - MAILOSAUR_BASE_URL=https://mailosaur.com/api/ MAILOSAUR_SMTP_HOST=mailosaur.io
-  - MAILOSAUR_BASE_URL=https://next.mailosaur.com/api/ MAILOSAUR_SMTP_HOST=ms-smtp.uk
+  - MAILOSAUR_BASE_URL=https://mailosaur.com/ MAILOSAUR_SMTP_HOST=mailosaur.io
+  - MAILOSAUR_BASE_URL=https://next.mailosaur.com/ MAILOSAUR_SMTP_HOST=ms-smtp.uk
 notifications:
   slack: mailosaur:CsJ9RruwjqHPKr1Iugk8GDtX
+deploy:
+  provider: npm
+  email: code@mailosaur.com
+  on:
+    tags: true
+    all_branches: true
+  api_key:
+    secure: RDn8Lfcyo8wcAp7wDV3RkYaSaENHjnz88Tb5fZWWAgKcXAWwEgws2rAD/FnPnAdBTgul8Bto1CMD0cMj3mmN65OmuRP9Y95D4RQiG34prm4yZNX5I/fQLT5KTb6hk3LdnVTBWuRKP/RrVLW61x0hMie0DD7P8x1GEtKPur771v8=
