@@ -61,14 +61,14 @@ const validateAttachments = (email) => {
 
     var file1 = email.attachments[0];
     assert.isOk(file1.id, 'First attachment should have file id');
-    // assert.isOk(file1.url);
+    assert.isOk(file1.url);
     assert.equal(file1.length, 82138, 'First attachment should be correct size');
     assert.equal(file1.fileName, 'cat.png', 'First attachment should have filename');
     assert.equal(file1.contentType, 'image/png', 'First attachment should have correct MIME type');
 
     var file2 = email.attachments[1];
     assert.isOk(file2.id, 'Second attachment should have file id');
-    // assert.isOk(file2.url);
+    assert.isOk(file2.url);
     assert.equal(file2.length, 212080, 'Second attachment should be correct size');
     assert.equal(file2.fileName, 'dog.png', 'Second attachment should have filename');
     assert.equal(file2.contentType, 'image/png', 'Second attachment should have correct MIME type');
@@ -236,11 +236,11 @@ describe('emails', () => {
             var targetId = emails[0].id;
             client.analysis.spam(targetId)
                 .then((result) => {
-                    // result.spamAssassin.forEach((rule) => {
-                    //     assert.isNumber(rule.score);
-                    //     assert.isOk(rule.rule);
-                    //     assert.isOk(rule.description);
-                    // });
+                    result.spamFilterResults.spamAssassin.forEach((rule) => {
+                        assert.isNumber(rule.score);
+                        assert.isOk(rule.rule);
+                        assert.isOk(rule.description);
+                    });
 
                     done();
                 })

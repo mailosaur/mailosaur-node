@@ -23,17 +23,24 @@ export interface SpamAssassinRule {
 
 /**
  * @class
- * Initializes a new instance of the SpamCheckResult class.
+ * Initializes a new instance of the SpamFilterResults class.
  * @constructor
  * @member {array} [spamAssassin]
- * @member {uuid} [emailId]
- * @member {uuid} [accountId]
+ */
+export interface SpamFilterResults {
+  spamAssassin?: SpamAssassinRule[];
+}
+
+/**
+ * @class
+ * Initializes a new instance of the SpamAnalysisResult class.
+ * @constructor
+ * @member {object} [spamFilterResults]
+ * @member {array} [spamFilterResults.spamAssassin]
  * @member {number} [score]
  */
-export interface SpamCheckResult {
-  spamAssassin?: SpamAssassinRule[];
-  emailId?: string;
-  accountId?: string;
+export interface SpamAnalysisResult {
+  spamFilterResults?: SpamFilterResults;
   score?: number;
 }
 
@@ -41,8 +48,8 @@ export interface SpamCheckResult {
  * @class
  * Initializes a new instance of the MailosaurError class.
  * @constructor
- * @member {string} [type] Possible values include: 'AuthenticationError',
- * 'ValidationError', 'ResourceNotFoundError', 'UnknownError'
+ * @member {string} [type] Possible values include: 'None', 'ValidationError',
+ * 'AuthenticationError', 'PermissionDeniedError', 'ResourceNotFoundError'
  * @member {object} [messages]
  * @member {object} [model]
  */
@@ -56,9 +63,9 @@ export interface MailosaurError {
  * @class
  * Initializes a new instance of the MessageAddress class.
  * @constructor
- * @member {string} [name]
- * @member {string} [email]
- * @member {string} [phone]
+ * @member {string} [name] Display name, if one is specified.
+ * @member {string} [email] Email address (applicable to email messages).
+ * @member {string} [phone] Phone number (applicable to SMS messages).
  */
 export interface MessageAddress {
   name?: string;
@@ -113,6 +120,7 @@ export interface MessageContent {
  * @member {string} [fileName]
  * @member {string} [contentId]
  * @member {number} [length]
+ * @member {string} [url]
  */
 export interface Attachment {
   id: string;
@@ -120,14 +128,15 @@ export interface Attachment {
   fileName?: string;
   contentId?: string;
   length?: number;
+  url?: string;
 }
 
 /**
  * @class
  * Initializes a new instance of the MessageHeader class.
  * @constructor
- * @member {string} [field]
- * @member {string} [value]
+ * @member {string} [field] Header key.
+ * @member {string} [value] Header value.
  */
 export interface MessageHeader {
   field?: string;
@@ -138,7 +147,9 @@ export interface MessageHeader {
  * @class
  * Initializes a new instance of the Metadata class.
  * @constructor
- * @member {array} [headers]
+ * Advanced use case content related to the message.
+ *
+ * @member {array} [headers] Email headers.
  */
 export interface Metadata {
   headers?: MessageHeader[];
@@ -148,31 +159,31 @@ export interface Metadata {
  * @class
  * Initializes a new instance of the Message class.
  * @constructor
- * @member {uuid} [id]
- * @member {string} [server]
- * @member {array} [rcpt]
- * @member {array} [from]
- * @member {array} [to]
- * @member {array} [cc]
- * @member {array} [bcc]
- * @member {date} [received]
- * @member {string} [subject]
- * @member {object} [html]
+ * @member {uuid} [id] Unique identifier for the message.
+ * @member {array} [from] The sender of the message.
+ * @member {array} [to] The message’s recipient.
+ * @member {array} [cc] Carbon-copied recipients for email messages.
+ * @member {array} [bcc] Blind carbon-copied recipients for email messages.
+ * @member {date} [received] The datetime that this message was received by
+ * Mailosaur.
+ * @member {string} [subject] The message’s subject.
+ * @member {object} [html] Message content that was sent in HTML format.
  * @member {array} [html.links]
  * @member {array} [html.images]
  * @member {string} [html.body]
- * @member {object} [text]
+ * @member {object} [text] Message content that was sent in plain text format.
  * @member {array} [text.links]
  * @member {array} [text.images]
  * @member {string} [text.body]
- * @member {array} [attachments]
+ * @member {array} [attachments] An array of attachment metadata for any
+ * attached files.
  * @member {object} [metadata]
- * @member {array} [metadata.headers]
+ * @member {array} [metadata.headers] Email headers.
+ * @member {string} [server] Identifier for the server in which the message is
+ * located.
  */
 export interface Message {
   id?: string;
-  server?: string;
-  rcpt?: MessageAddress[];
   from?: MessageAddress[];
   to?: MessageAddress[];
   cc?: MessageAddress[];
@@ -183,6 +194,7 @@ export interface Message {
   text?: MessageContent;
   attachments?: Attachment[];
   metadata?: Metadata;
+  server?: string;
 }
 
 /**
@@ -219,9 +231,11 @@ export interface MessageSummary {
  * @class
  * Initializes a new instance of the MessageListResult class.
  * @constructor
- * Type serialized down the wire
+ * The result of a message listing request.
  *
- * @member {array} [items]
+ * @member {array} [items] The individual summaries of each message forming the
+ * result. Summaries are returned sorted by received date, with the most
+ * recently-received messages appearing first.
  */
 export interface MessageListResult {
   items?: MessageSummary[];
@@ -248,9 +262,9 @@ export interface SearchCriteria {
  * @class
  * Initializes a new instance of the ForwardingRule class.
  * @constructor
- * @member {string} [field] Possible values include: 'From', 'To', 'Subject'
- * @member {string} [operator] Possible values include: 'EndsWith',
- * 'StartsWith', 'Contains'
+ * @member {string} [field] Possible values include: 'from', 'to', 'subject'
+ * @member {string} [operator] Possible values include: 'endsWith',
+ * 'startsWith', 'contains'
  * @member {string} [value]
  * @member {string} [forwardTo]
  */
@@ -265,21 +279,37 @@ export interface ForwardingRule {
  * @class
  * Initializes a new instance of the Server class.
  * @constructor
- * @member {string} [id] Unique identifier for the server.
- * @member {string} [password] The password used for SMTP authentication.
+ * @member {string} [id] Unique identifier for the server. Used as username for
+ * SMTP/POP3 authentication.
+ * @member {string} [password] SMTP/POP3 password.
  * @member {string} [name] A name used to identify the server.
- * @member {array} [users]
- * @member {number} [emails] The current count of emails held within the
- * server.
- * @member {array} [forwardingRules]
+ * @member {array} [users] Users (excluding administrators) who have access to
+ * the server.
+ * @member {number} [messages] The number of messages currently in the server.
+ * @member {array} [forwardingRules] The rules used to manage email forwarding
+ * for this server.
  */
 export interface Server {
   id?: string;
   password?: string;
   name?: string;
   users?: string[];
-  emails?: number;
+  messages?: number;
   forwardingRules?: ForwardingRule[];
+}
+
+/**
+ * @class
+ * Initializes a new instance of the ServerListResult class.
+ * @constructor
+ * The result of a server listing request.
+ *
+ * @member {array} [items] The individual servers forming the result. Servers
+ * are returned sorted by creation date, with the most recently-created server
+ * appearing first.
+ */
+export interface ServerListResult {
+  items?: Server[];
 }
 
 /**

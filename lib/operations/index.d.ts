@@ -19,9 +19,9 @@ export interface Analysis {
 
 
     /**
-     * @summary Perform a spam check
+     * @summary Perform a spam test
      *
-     * Perform a spam analysis on the specified email
+     * Perform spam testing on the specified email
      *
      * @param {uuid} email The identifier of the email to be analyzed.
      *
@@ -32,16 +32,16 @@ export interface Analysis {
      *
      * @returns {Promise} A promise is returned
      *
-     * @resolve {HttpOperationResponse<SpamCheckResult>} - The deserialized result object.
+     * @resolve {HttpOperationResponse<SpamAnalysisResult>} - The deserialized result object.
      *
      * @reject {Error|ServiceError} - The error object.
      */
-    spamWithHttpOperationResponse(email: string, options?: { customHeaders? : { [headerName: string]: string; } }): Promise<HttpOperationResponse<models.SpamCheckResult>>;
+    spamWithHttpOperationResponse(email: string, options?: { customHeaders? : { [headerName: string]: string; } }): Promise<HttpOperationResponse<models.SpamAnalysisResult>>;
 
     /**
-     * @summary Perform a spam check
+     * @summary Perform a spam test
      *
-     * Perform a spam analysis on the specified email
+     * Perform spam testing on the specified email
      *
      * @param {uuid} email The identifier of the email to be analyzed.
      *
@@ -57,7 +57,7 @@ export interface Analysis {
      *
      * {Promise} A promise is returned.
      *
-     *                      @resolve {SpamCheckResult} - The deserialized result object.
+     *                      @resolve {SpamAnalysisResult} - The deserialized result object.
      *
      *                      @reject {Error|ServiceError} - The error object.
      *
@@ -65,16 +65,16 @@ export interface Analysis {
      *
      *                      {Error|ServiceError}  err        - The Error object if an error occurred, null otherwise.
      *
-     *                      {SpamCheckResult} [result]   - The deserialized result object if an error did not occur.
-     *                      See {@link SpamCheckResult} for more information.
+     *                      {SpamAnalysisResult} [result]   - The deserialized result object if an error did not occur.
+     *                      See {@link SpamAnalysisResult} for more information.
      *
      *                      {WebResource} [request]  - The HTTP Request object if an error did not occur.
      *
      *                      {http.IncomingMessage} [response] - The HTTP Response stream if an error did not occur.
      */
-    spam(email: string, options?: { customHeaders? : { [headerName: string]: string; } }): Promise<models.SpamCheckResult>;
-    spam(email: string, callback: ServiceCallback<models.SpamCheckResult>): void;
-    spam(email: string, options: { customHeaders? : { [headerName: string]: string; } }, callback: ServiceCallback<models.SpamCheckResult>): void;
+    spam(email: string, options?: { customHeaders? : { [headerName: string]: string; } }): Promise<models.SpamAnalysisResult>;
+    spam(email: string, callback: ServiceCallback<models.SpamAnalysisResult>): void;
+    spam(email: string, options: { customHeaders? : { [headerName: string]: string; } }, callback: ServiceCallback<models.SpamAnalysisResult>): void;
 }
 
 /**
@@ -89,10 +89,10 @@ export interface Files {
     /**
      * @summary Download an attachment
      *
-     * Returns a list of your emails. The emails are returned sorted by received
-     * date, with the most recently-received emails appearing first.
+     * Downloads a single attachment. Simply supply the unique identifier for the
+     * required attachment.
      *
-     * @param {uuid} id The identifier of the file to be retrieved.
+     * @param {uuid} id The identifier of the attachment to be downloaded.
      *
      * @param {object} [options] Optional Parameters.
      *
@@ -110,10 +110,10 @@ export interface Files {
     /**
      * @summary Download an attachment
      *
-     * Returns a list of your emails. The emails are returned sorted by received
-     * date, with the most recently-received emails appearing first.
+     * Downloads a single attachment. Simply supply the unique identifier for the
+     * required attachment.
      *
-     * @param {uuid} id The identifier of the file to be retrieved.
+     * @param {uuid} id The identifier of the attachment to be downloaded.
      *
      * @param {object} [options] Optional Parameters.
      *
@@ -147,12 +147,12 @@ export interface Files {
 
 
     /**
-     * @summary Download raw
+     * @summary Download EML
      *
-     * Returns a list of your emails. The emails are returned sorted by received
-     * date, with the most recently-received emails appearing first.
+     * Downloads an EML file representing the specified email. Simply supply the
+     * unique identifier for the required email.
      *
-     * @param {uuid} id The identifier of the file to be retrieved.
+     * @param {uuid} id The identifier of the email to be downloaded.
      *
      * @param {object} [options] Optional Parameters.
      *
@@ -168,12 +168,12 @@ export interface Files {
     getEmailWithHttpOperationResponse(id: string, options?: { customHeaders? : { [headerName: string]: string; } }): Promise<HttpOperationResponse<stream.Readable>>;
 
     /**
-     * @summary Download raw
+     * @summary Download EML
      *
-     * Returns a list of your emails. The emails are returned sorted by received
-     * date, with the most recently-received emails appearing first.
+     * Downloads an EML file representing the specified email. Simply supply the
+     * unique identifier for the required email.
      *
-     * @param {uuid} id The identifier of the file to be retrieved.
+     * @param {uuid} id The identifier of the email to be downloaded.
      *
      * @param {object} [options] Optional Parameters.
      *
@@ -216,12 +216,12 @@ export interface Messages {
 
 
     /**
-     * @summary Retrieve an message
+     * @summary Retrieve a message
      *
-     * Retrieves the detail for a single message. Simply supply the unique
+     * Retrieves the detail for a single email message. Simply supply the unique
      * identifier for the required message.
      *
-     * @param {uuid} id The identifier of the message to be retrieved.
+     * @param {uuid} id The identifier of the email message to be retrieved.
      *
      * @param {object} [options] Optional Parameters.
      *
@@ -237,12 +237,12 @@ export interface Messages {
     getWithHttpOperationResponse(id: string, options?: { customHeaders? : { [headerName: string]: string; } }): Promise<HttpOperationResponse<models.Message>>;
 
     /**
-     * @summary Retrieve an message
+     * @summary Retrieve a message
      *
-     * Retrieves the detail for a single message. Simply supply the unique
+     * Retrieves the detail for a single email message. Simply supply the unique
      * identifier for the required message.
      *
-     * @param {uuid} id The identifier of the message to be retrieved.
+     * @param {uuid} id The identifier of the email message to be retrieved.
      *
      * @param {object} [options] Optional Parameters.
      *
@@ -277,10 +277,10 @@ export interface Messages {
 
 
     /**
-     * @summary Delete an message
+     * @summary Delete a message
      *
-     * Permanently deletes an message. This operation cannot be undone. Also
-     * deletes any attachments related to the message.
+     * Permanently deletes a message. This operation cannot be undone. Also deletes
+     * any attachments related to the message.
      *
      * @param {uuid} id The identifier of the message to be deleted.
      *
@@ -298,10 +298,10 @@ export interface Messages {
     deleteMethodWithHttpOperationResponse(id: string, options?: { customHeaders? : { [headerName: string]: string; } }): Promise<HttpOperationResponse<void>>;
 
     /**
-     * @summary Delete an message
+     * @summary Delete a message
      *
-     * Permanently deletes an message. This operation cannot be undone. Also
-     * deletes any attachments related to the message.
+     * Permanently deletes a message. This operation cannot be undone. Also deletes
+     * any attachments related to the message.
      *
      * @param {uuid} id The identifier of the message to be deleted.
      *
@@ -339,18 +339,20 @@ export interface Messages {
     /**
      * @summary List all messages
      *
-     * Returns a list of your messages. The messages are returned sorted by
-     * received date, with the most recently-received messages appearing first.
+     * Returns a list of your messages in summary form. The summaries are returned
+     * sorted by received date, with the most recently-received messages appearing
+     * first.
      *
      * @param {string} server The identifier of the server hosting the messages.
      *
      * @param {object} [options] Optional Parameters.
      *
-     * @param {number} [options.page] Used in conjunction with `itemsperpage` to
+     * @param {number} [options.page] Used in conjunction with `itemsPerPage` to
      * support pagination.
      *
      * @param {number} [options.itemsPerPage] A limit on the number of results to
-     * be returned. Can be set between 1 and 1000 items, the default is 50.
+     * be returned per page. Can be set between 1 and 1000 items, the default is
+     * 50.
      *
      * @param {object} [options.customHeaders] Headers that will be added to the
      * request
@@ -366,18 +368,20 @@ export interface Messages {
     /**
      * @summary List all messages
      *
-     * Returns a list of your messages. The messages are returned sorted by
-     * received date, with the most recently-received messages appearing first.
+     * Returns a list of your messages in summary form. The summaries are returned
+     * sorted by received date, with the most recently-received messages appearing
+     * first.
      *
      * @param {string} server The identifier of the server hosting the messages.
      *
      * @param {object} [options] Optional Parameters.
      *
-     * @param {number} [options.page] Used in conjunction with `itemsperpage` to
+     * @param {number} [options.page] Used in conjunction with `itemsPerPage` to
      * support pagination.
      *
      * @param {number} [options.itemsPerPage] A limit on the number of results to
-     * be returned. Can be set between 1 and 1000 items, the default is 50.
+     * be returned per page. Can be set between 1 and 1000 items, the default is
+     * 50.
      *
      * @param {object} [options.customHeaders] Headers that will be added to the
      * request
@@ -474,9 +478,9 @@ export interface Messages {
     /**
      * @summary Search for messages
      *
-     * Returns a list of messages matching the specified search criteria. The
-     * messages are returned sorted by received date, with the most
-     * recently-received messages appearing first.
+     * Returns a list of messages matching the specified search criteria, in
+     * summary form. The messages are returned sorted by received date, with the
+     * most recently-received messages appearing first.
      *
      * @param {string} server The identifier of the server hosting the messages.
      *
@@ -493,11 +497,12 @@ export interface Messages {
      *
      * @param {object} [options] Optional Parameters.
      *
-     * @param {number} [options.page] Used in conjunction with `itemsperpage` to
+     * @param {number} [options.page] Used in conjunction with `itemsPerPage` to
      * support pagination.
      *
      * @param {number} [options.itemsPerPage] A limit on the number of results to
-     * be returned. Can be set between 1 and 1000 items, the default is 50.
+     * be returned per page. Can be set between 1 and 1000 items, the default is
+     * 50.
      *
      * @param {object} [options.customHeaders] Headers that will be added to the
      * request
@@ -513,9 +518,9 @@ export interface Messages {
     /**
      * @summary Search for messages
      *
-     * Returns a list of messages matching the specified search criteria. The
-     * messages are returned sorted by received date, with the most
-     * recently-received messages appearing first.
+     * Returns a list of messages matching the specified search criteria, in
+     * summary form. The messages are returned sorted by received date, with the
+     * most recently-received messages appearing first.
      *
      * @param {string} server The identifier of the server hosting the messages.
      *
@@ -532,11 +537,12 @@ export interface Messages {
      *
      * @param {object} [options] Optional Parameters.
      *
-     * @param {number} [options.page] Used in conjunction with `itemsperpage` to
+     * @param {number} [options.page] Used in conjunction with `itemsPerPage` to
      * support pagination.
      *
      * @param {number} [options.itemsPerPage] A limit on the number of results to
-     * be returned. Can be set between 1 and 1000 items, the default is 50.
+     * be returned per page. Can be set between 1 and 1000 items, the default is
+     * 50.
      *
      * @param {object} [options.customHeaders] Headers that will be added to the
      * request
@@ -571,8 +577,8 @@ export interface Messages {
     /**
      * @summary Wait for a specific message
      *
-     * Returns as soon as an message matching the specified search criteria is
-     * found.
+     * Returns as soon as a message matching the specified search criteria is
+     * found. This is the most efficient method of looking up a message.
      *
      * @param {string} server The identifier of the server hosting the message.
      *
@@ -604,8 +610,8 @@ export interface Messages {
     /**
      * @summary Wait for a specific message
      *
-     * Returns as soon as an message matching the specified search criteria is
-     * found.
+     * Returns as soon as a message matching the specified search criteria is
+     * found. This is the most efficient method of looking up a message.
      *
      * @param {string} server The identifier of the server hosting the message.
      *
@@ -675,11 +681,11 @@ export interface Servers {
      *
      * @returns {Promise} A promise is returned
      *
-     * @resolve {HttpOperationResponse<Array>} - The deserialized result object.
+     * @resolve {HttpOperationResponse<ServerListResult>} - The deserialized result object.
      *
      * @reject {Error|ServiceError} - The error object.
      */
-    listWithHttpOperationResponse(options?: { customHeaders? : { [headerName: string]: string; } }): Promise<HttpOperationResponse<models.Server[]>>;
+    listWithHttpOperationResponse(options?: { customHeaders? : { [headerName: string]: string; } }): Promise<HttpOperationResponse<models.ServerListResult>>;
 
     /**
      * @summary List all servers
@@ -699,7 +705,7 @@ export interface Servers {
      *
      * {Promise} A promise is returned.
      *
-     *                      @resolve {Array} - The deserialized result object.
+     *                      @resolve {ServerListResult} - The deserialized result object.
      *
      *                      @reject {Error|ServiceError} - The error object.
      *
@@ -707,15 +713,16 @@ export interface Servers {
      *
      *                      {Error|ServiceError}  err        - The Error object if an error occurred, null otherwise.
      *
-     *                      {Array} [result]   - The deserialized result object if an error did not occur.
+     *                      {ServerListResult} [result]   - The deserialized result object if an error did not occur.
+     *                      See {@link ServerListResult} for more information.
      *
      *                      {WebResource} [request]  - The HTTP Request object if an error did not occur.
      *
      *                      {http.IncomingMessage} [response] - The HTTP Response stream if an error did not occur.
      */
-    list(options?: { customHeaders? : { [headerName: string]: string; } }): Promise<models.Server[]>;
-    list(callback: ServiceCallback<models.Server[]>): void;
-    list(options: { customHeaders? : { [headerName: string]: string; } }, callback: ServiceCallback<models.Server[]>): void;
+    list(options?: { customHeaders? : { [headerName: string]: string; } }): Promise<models.ServerListResult>;
+    list(callback: ServiceCallback<models.ServerListResult>): void;
+    list(options: { customHeaders? : { [headerName: string]: string; } }, callback: ServiceCallback<models.ServerListResult>): void;
 
 
     /**
@@ -853,18 +860,21 @@ export interface Servers {
      *
      * @param {object} server
      *
-     * @param {string} [server.id] Unique identifier for the server.
+     * @param {string} [server.id] Unique identifier for the server. Used as
+     * username for SMTP/POP3 authentication.
      *
-     * @param {string} [server.password] The password used for SMTP authentication.
+     * @param {string} [server.password] SMTP/POP3 password.
      *
      * @param {string} [server.name] A name used to identify the server.
      *
-     * @param {array} [server.users]
+     * @param {array} [server.users] Users (excluding administrators) who have
+     * access to the server.
      *
-     * @param {number} [server.emails] The current count of emails held within the
+     * @param {number} [server.messages] The number of messages currently in the
      * server.
      *
-     * @param {array} [server.forwardingRules]
+     * @param {array} [server.forwardingRules] The rules used to manage email
+     * forwarding for this server.
      *
      * @param {object} [options] Optional Parameters.
      *
@@ -888,18 +898,21 @@ export interface Servers {
      *
      * @param {object} server
      *
-     * @param {string} [server.id] Unique identifier for the server.
+     * @param {string} [server.id] Unique identifier for the server. Used as
+     * username for SMTP/POP3 authentication.
      *
-     * @param {string} [server.password] The password used for SMTP authentication.
+     * @param {string} [server.password] SMTP/POP3 password.
      *
      * @param {string} [server.name] A name used to identify the server.
      *
-     * @param {array} [server.users]
+     * @param {array} [server.users] Users (excluding administrators) who have
+     * access to the server.
      *
-     * @param {number} [server.emails] The current count of emails held within the
+     * @param {number} [server.messages] The number of messages currently in the
      * server.
      *
-     * @param {array} [server.forwardingRules]
+     * @param {array} [server.forwardingRules] The rules used to manage email
+     * forwarding for this server.
      *
      * @param {object} [options] Optional Parameters.
      *
@@ -937,7 +950,7 @@ export interface Servers {
      * @summary Delete a server
      *
      * Permanently deletes a server. This operation cannot be undone. Also deletes
-     * all emails and associated attachments within the server.
+     * all messages and associated attachments within the server.
      *
      * @param {string} id The identifier of the server to be deleted.
      *
@@ -958,7 +971,7 @@ export interface Servers {
      * @summary Delete a server
      *
      * Permanently deletes a server. This operation cannot be undone. Also deletes
-     * all emails and associated attachments within the server.
+     * all messages and associated attachments within the server.
      *
      * @param {string} id The identifier of the server to be deleted.
      *

@@ -14,16 +14,16 @@ describe('servers', () => {
         client = new MailosaurClient(apiKey, baseUrl);
     });
 
-    // describe('list', () => {
-    //     it('should return a list of servers', (done) => {
-    //         client.servers.list()
-    //             .then((result) => {
-    //                 assert.isAtLeast(result.items.length, 2);
-    //                 done();
-    //             })
-    //             .catch(done);
-    //     });
-    // });
+    describe('list', () => {
+        it('should return a list of servers', (done) => {
+            client.servers.list()
+                .then((result) => {
+                    assert.isAtLeast(result.items.length, 2);
+                    done();
+                })
+                .catch(done);
+        });
+    });
 
     describe('get', () => {
         it('should throw an error if server not found', (done) => {
@@ -49,7 +49,7 @@ describe('servers', () => {
                 assert.equal(createdServer.name, serverName);
                 assert.isNotEmpty(createdServer.password);
                 assert.isArray(createdServer.users);
-                // assert.isNumber(createdServer.messages);
+                assert.isNumber(createdServer.messages);
                 assert.isArray(createdServer.forwardingRules);
                 done();
             }).catch(done);
@@ -63,7 +63,7 @@ describe('servers', () => {
                     assert.equal(retrievedServer.name, createdServer.name);
                     assert.isNotEmpty(retrievedServer.password);
                     assert.isArray(retrievedServer.users);
-                    // assert.isNumber(retrievedServer.messages);
+                    assert.isNumber(retrievedServer.messages);
                     assert.isArray(retrievedServer.forwardingRules);
                     done();
                 })
@@ -78,7 +78,7 @@ describe('servers', () => {
                     assert.equal(server.name, retrievedServer.name);
                     assert.equal(server.password, retrievedServer.password);
                     assert.deepEqual(server.users, retrievedServer.users);
-                    assert.equal(server.emails, retrievedServer.messages);
+                    assert.equal(server.messages, retrievedServer.messages);
                     assert.deepEqual(server.forwarding_rules, retrievedServer.forwarding_rules);
                     done();
                 })
