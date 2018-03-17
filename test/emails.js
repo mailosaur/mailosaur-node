@@ -1,4 +1,5 @@
 const MailosaurClient = require('../lib/mailosaur');
+const MailosaurError = require('../lib/models/mailosaurError');
 const assert = require('chai').assert;
 const mailer = require('./mailer');
 const isoDateString = new Date().toISOString().slice(0, 10);
@@ -129,7 +130,7 @@ describe('emails', () => {
         it('should throw an error if email not found', (done) => {
             client.messages.get('efe907e9-74ed-4113-a3e0-a3d41d914765')
                 .catch((err) => {
-                    assert.isNotEmpty(err);
+                    assert.instanceOf(err, MailosaurError);
                     done();
                 });
         });
@@ -158,7 +159,7 @@ describe('emails', () => {
             client.messages
                 .search(server, {})
                 .catch((err) => {
-                    assert.isNotEmpty(err);
+                    assert.instanceOf(err, MailosaurError);
                     done();
                 });
         });
@@ -186,7 +187,7 @@ describe('emails', () => {
                         sentTo: '.not_an_email_address'
                     })
                     .catch((err) => {
-                        assert.isNotEmpty(err);
+                        assert.instanceOf(err, MailosaurError);
                         done();
                     });
             });
@@ -262,7 +263,7 @@ describe('emails', () => {
             
             client.messages.del(targetEmailId)
                 .catch((err) => {
-                    assert.isNotEmpty(err);
+                    assert.instanceOf(err, MailosaurError);
                     done();
                 });
         })

@@ -1,4 +1,5 @@
 const MailosaurClient = require('../lib/mailosaur');
+const MailosaurError = require('../lib/models/mailosaurError');
 const assert = require('chai').assert;
 
 describe('servers', () => {
@@ -29,7 +30,7 @@ describe('servers', () => {
         it('should throw an error if server not found', (done) => {
             client.servers.get('efe907e9-74ed-4113-a3e0-a3d41d914765')
                 .catch((err) => {
-                    assert.isNotEmpty(err);
+                    assert.instanceOf(err, MailosaurError);
                     done();
                 });
         });
@@ -94,7 +95,7 @@ describe('servers', () => {
         it('should fail to delete an already deleted server', (done) => {
             client.servers.del(retrievedServer.id)
                 .catch((err) => {
-                    assert.isNotEmpty(err);
+                    assert.instanceOf(err, MailosaurError);
                     done();
                 });
         });
@@ -102,6 +103,7 @@ describe('servers', () => {
         it('should fail to create a server with no name', (done) => {
             client.servers.create({})
                 .catch((err) => {
+                    assert.instanceOf(err, MailosaurError);
                     assert.equal(err.message, 'Operation returned an invalid status code \'400\'');
                     assert.equal(err.mailosaurError.type, 'ValidationError');
                     assert.equal(Object.keys(err.mailosaurError.messages).length, 1);
