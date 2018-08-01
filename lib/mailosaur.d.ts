@@ -12,9 +12,6 @@ declare class MailosaurClient {
    *
    */
   constructor(apiKey: string, baseUrl?: string);
-
-  credentials: ServiceClientCredentials;
-
   // Operation groups
   analysis: operations.Analysis;
   files: operations.Files;
@@ -22,4 +19,4 @@ declare class MailosaurClient {
   servers: operations.Servers;
 }
 
-export = MailosaurClient;
+export default MailosaurClient;
