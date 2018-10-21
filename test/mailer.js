@@ -26,10 +26,7 @@ module.exports = {
             }
 
             Promise.all(promises)
-                .then(() => {
-                    // Wait to ensure email has arrived
-			        setTimeout(resolve, 2000);
-                })
+                .then(resolve)
                 .catch(reject);
         });
     },
