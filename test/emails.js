@@ -154,6 +154,35 @@ describe('emails', () => {
         });
     });
 
+    describe('waitFor', () => {
+        it('should return a match once found', (done) => {
+            var host = process.env.MAILOSAUR_SMTP_HOST || 'mailosaur.io';
+            var testEmailAddress = `wait_for_test.${server}@${host}`;
+            mailer.sendEmail(client, server, testEmailAddress)
+                .then(() => {
+                    return client.messages.waitFor(server, {
+                        sentTo: testEmailAddress
+                    });
+                })
+                .then((email) => {
+                    validateEmail(email);
+                    done();
+                })
+                .catch(done);
+        });
+    });
+
+    describe('waitFor', () => {
+        it('should timeout after given time if match is not found', (done) => {
+            var testEmailAddress = `non_existing@email_address.com`;
+            client.messages.waitFor(server, {sentTo: testEmailAddress}, null, 2)
+            .catch((err) => {
+                assert.instanceOf(err, MailosaurError);
+                done();
+            });
+        });
+    });    
+
     describe('search', () => {
         it('should throw an error if no criteria', (done) => {
             client.messages
