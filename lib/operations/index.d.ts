@@ -1,4 +1,5 @@
 import * as models from '../models';
+import * as stream from "stream";
 
 /**
  * @class
@@ -105,6 +106,8 @@ export interface Files {
     getEmail(id: string, callback: ServiceCallback<stream.Readable>): void;
 }
 
+interface ServiceCallback<T> { (error: Error, data: T): void }
+
 /**
  * @class
  * Messages
@@ -143,7 +146,7 @@ export interface Messages {
     get(id: string): Promise<models.Message>;
     get(id: string, callback: ServiceCallback<models.Message>): void;
 
-
+    
     /**
      * @summary Delete a message
      *

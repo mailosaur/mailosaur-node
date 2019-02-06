@@ -1,6 +1,6 @@
 {
   "name": "mailosaur",
-  "version": "5.0.3",
+  "version": "5.0.4",
   "description": "Mailosaur API client library.",
   "homepage": "https://github.com/mailosaur/mailosaur-node",
   "author": "Mailosaur Ltd <code@mailosaur.com>",
@@ -14,13 +14,15 @@
     "node": ">= v0.8.0"
   },
   "main": "lib/mailosaur.js",
+  "typings": "lib/mailosaur.d.ts",
   "dependencies": {
     "moment": "^2.21.0",
     "request": "^2.85.0"
   },
   "devDependencies": {
-    "mocha": "~1.13.0",
+    "@types/node": "^10.5.5",
     "chai": "~4.1.2",
+    "mocha": "~1.13.0",
     "nodemailer": "~4.4.1"
   },
   "scripts": {
