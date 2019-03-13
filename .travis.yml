@@ -10,6 +10,8 @@ env:
   - MAILOSAUR_BASE_URL=https://next.mailosaur.com/ MAILOSAUR_SMTP_HOST=ms-smtp.uk MAILOSAUR_SMTP_PORT=2525
 notifications:
   slack: mailosaur:CsJ9RruwjqHPKr1Iugk8GDtX
+before_deploy:
+  - npm version from-git
 deploy:
   skip_cleanup: true
   provider: npm
