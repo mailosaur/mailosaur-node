@@ -11,10 +11,12 @@ env:
 notifications:
   slack: mailosaur:CsJ9RruwjqHPKr1Iugk8GDtX
 deploy:
+  skip_cleanup: true
   provider: npm
   email: code@mailosaur.com
   on:
+    branch: master
+    node: node
     tags: true
-    all_branches: true
   api_key:
-    secure: RDn8Lfcyo8wcAp7wDV3RkYaSaENHjnz88Tb5fZWWAgKcXAWwEgws2rAD/FnPnAdBTgul8Bto1CMD0cMj3mmN65OmuRP9Y95D4RQiG34prm4yZNX5I/fQLT5KTb6hk3LdnVTBWuRKP/RrVLW61x0hMie0DD7P8x1GEtKPur771v8=
+    secure: ioN5JgGnSzP+NhzzKs7EXDpjU3EyQZvKvlMfH/Vhjvy5P31XPx53VnEStVfHr+3EoawkeIKzKTF+eLFoRrySciA4ak4PDyGtEno60fe6+TtB7GQKAnOYMYn8Yu3TdMtb/sgXvPwbExtMYQ3uBmxiE9ehxSmatEEuirGm9lBV6xk=
