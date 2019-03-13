@@ -511,4 +511,19 @@ export interface Servers {
      */
     del(id: string): Promise<void>;
     del(id: string, callback: ServiceCallback<void>): void;
+
+    /**
+   * @summary Generate random email address for a server
+   *
+   * Generates a random email address for a given server.
+   *
+   * @param {string} server The identifier of the server to use.
+   *
+   * @returns {string} Returns a string.
+   *
+   * {string} A string is returned
+   *
+   *                      {string} - The randomly generated email address.
+   */
+    generateEmailAddress(server: string): string;
 }
