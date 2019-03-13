@@ -17,6 +17,7 @@ deploy:
   on:
     branch: master
     node: node
+    condition: $MAILOSAUR_BASE_URL=https://mailosaur.com/
     tags: true
   api_key:
     secure: ioN5JgGnSzP+NhzzKs7EXDpjU3EyQZvKvlMfH/Vhjvy5P31XPx53VnEStVfHr+3EoawkeIKzKTF+eLFoRrySciA4ak4PDyGtEno60fe6+TtB7GQKAnOYMYn8Yu3TdMtb/sgXvPwbExtMYQ3uBmxiE9ehxSmatEEuirGm9lBV6xk=
