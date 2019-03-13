@@ -11,7 +11,9 @@ env:
 notifications:
   slack: mailosaur:CsJ9RruwjqHPKr1Iugk8GDtX
 before_deploy:
-  - npm version from-git
+  - npm version `git describe --abbrev=0 --tags`
+after_deploy:
+  - git push
 deploy:
   skip_cleanup: true
   provider: npm
