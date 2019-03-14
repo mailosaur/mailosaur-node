@@ -1,6 +1,6 @@
 {
   "name": "mailosaur",
-  "version": "5.0.3",
+  "version": "5.0.8",
   "description": "Mailosaur API client library.",
   "homepage": "https://github.com/mailosaur/mailosaur-node",
   "author": "Mailosaur Ltd <code@mailosaur.com>",

@@ -1,4 +1,7 @@
+import * as stream from 'stream';
 import * as models from '../models';
+
+type ServiceCallback<T> = (error: Error, data: T) => void;
 
 /**
  * @class
