@@ -170,7 +170,7 @@ describe('emails', () => {
                 client.messages
                     .search(server, {
                         sentTo: targetEmail.to[0].email
-                    }, { pollFor: 5 })
+                    })
                     .then((result) => {
                         var results = result.items;
                         assert.equal(results.length, 1);
