@@ -117,8 +117,26 @@ describe('emails', () => {
     });
 
     describe('get', () => {
+        it('should return a match once found', (done) => {
+            var host = process.env.MAILOSAUR_SMTP_HOST || 'mailosaur.io';
+            var testEmailAddress = `wait_for_test.${server}@${host}`;
+            mailer.sendEmail(client, server, testEmailAddress)
+                .then(() => {
+                    return client.messages.get(server, {
+                        sentTo: testEmailAddress
+                    });
+                })
+                .then((email) => {
+                    validateEmail(email);
+                    done();
+                })
+                .catch(done);
+        });
+    });
+
+    describe('getById', () => {
         it('should return a single email', (done) => {
-            client.messages.get(emails[0].id)
+            client.messages.getById(emails[0].id)
                 .then((email) => {
                     validateEmail(email);
                     validateHeaders(email);
@@ -128,29 +146,11 @@ describe('emails', () => {
         });
 
         it('should throw an error if email not found', (done) => {
-            client.messages.get('efe907e9-74ed-4113-a3e0-a3d41d914765')
+            client.messages.getById('efe907e9-74ed-4113-a3e0-a3d41d914765')
                 .catch((err) => {
                     assert.instanceOf(err, MailosaurError);
                     done();
                 });
-        });
-    });
-
-    describe('waitFor', () => {
-        it('should return a match once found', (done) => {
-            var host = process.env.MAILOSAUR_SMTP_HOST || 'mailosaur.io';
-            var testEmailAddress = `wait_for_test.${server}@${host}`;
-            mailer.sendEmail(client, server, testEmailAddress)
-                .then(() => {
-                    return client.messages.waitFor(server, {
-                        sentTo: testEmailAddress
-                    });
-                })
-                .then((email) => {
-                    validateEmail(email);
-                    done();
-                })
-                .catch(done);
         });
     });
 
@@ -170,7 +170,7 @@ describe('emails', () => {
                 client.messages
                     .search(server, {
                         sentTo: targetEmail.to[0].email
-                    })
+                    }, { pollFor: 5 })
                     .then((result) => {
                         var results = result.items;
                         assert.equal(results.length, 1);
