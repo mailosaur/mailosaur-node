@@ -25,7 +25,7 @@ describe('files', () => {
                 return mailer.sendEmail(client, server, testEmailAddress);
             })
             .then(() => {
-                return client.messages.waitFor(server, {
+                return client.messages.get(server, {
                     sentTo: testEmailAddress
                 });
             })
