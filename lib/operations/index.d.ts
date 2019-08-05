@@ -118,7 +118,57 @@ export interface Messages {
 
 
     /**
-     * @summary Retrieve a message
+     * @summary Retrieve a message using search criteria
+     *
+     * Returns as soon as a message matching the specified search criteria is
+     * found. This is the most efficient method of looking up a message.
+     *
+     * @param {string} server The identifier of the server hosting the message.
+     *
+     * @param {object} criteria The search criteria to use in order to find a
+     * match.
+     *
+     * @param {string} [criteria.sentTo] The full email address to which the target
+     * email was sent.
+     *
+     * @param {string} [criteria.subject] The value to seek within the target
+     * email's subject line.
+     *
+     * @param {string} [criteria.body] The value to seek within the target email's
+     * HTML or text body.
+     * 
+     * @param {object} [options] Optional Parameters.
+     *
+     * @param {number} [options.timeout] Specify how long to wait for a matching 
+     * result (in milliseconds).
+     * 
+     * @param {date} [options.receivedAfter] Limits results to only messages 
+     * received after this date/time (default 20 seconds ago).
+     *
+     * @param {ServiceCallback} [optionalCallback] - The optional callback.
+     *
+     * @returns {ServiceCallback|Promise} If a callback was passed as the last
+     * parameter then it returns the callback else returns a Promise.
+     *
+     * {Promise} A promise is returned.
+     *
+     *                      @resolve {Message} - The deserialized result object.
+     *
+     *                      @reject {Error|ServiceError} - The error object.
+     *
+     * {ServiceCallback} optionalCallback(err, result, request, response)
+     *
+     *                      {Error|ServiceError}  err        - The Error object if an error occurred, null otherwise.
+     *
+     *                      {Message} [result]   - The deserialized result object if an error did not occur.
+     *                      See {@link Message} for more information.
+     */
+    get(server: string, criteria: models.SearchCriteria, options?: { timeout? : number, receivedAfter? : date }): Promise<models.Message>;
+    get(server: string, criteria: models.SearchCriteria, options?: { timeout? : number, receivedAfter? : date }, callback: ServiceCallback<models.Message>): void;
+
+
+    /**
+     * @summary Retrieve a message using message id
      *
      * Retrieves the detail for a single email message. Simply supply the unique
      * identifier for the required message.
@@ -143,8 +193,8 @@ export interface Messages {
      *                      {Message} [result]   - The deserialized result object if an error did not occur.
      *                      See {@link Message} for more information.
      */
-    get(id: string): Promise<models.Message>;
-    get(id: string, callback: ServiceCallback<models.Message>): void;
+    getById(id: string): Promise<models.Message>;
+    getById(id: string, callback: ServiceCallback<models.Message>): void;
 
 
     /**
@@ -275,6 +325,12 @@ export interface Messages {
      * @param {number} [options.itemsPerPage] A limit on the number of results to
      * be returned per page. Can be set between 1 and 1000 items, the default is
      * 50.
+     * 
+     * @param {number} [options.timeout] Specify how long to wait for a matching 
+     * result (in milliseconds).
+     * 
+     * @param {date} [options.receivedAfter] Limits results to only messages 
+     * received after this date/time.
      *
      * @param {ServiceCallback} [optionalCallback] - The optional callback.
      *
@@ -294,51 +350,9 @@ export interface Messages {
      *                      {MessageListResult} [result]   - The deserialized result object if an error did not occur.
      *                      See {@link MessageListResult} for more information.
      */
-    search(server: string, criteria: models.SearchCriteria, options?: { page? : number, itemsPerPage? : number }): Promise<models.MessageListResult>;
+    search(server: string, criteria: models.SearchCriteria, options?: { page? : number, itemsPerPage? : number, timeout? : number, receivedAfter? : date }): Promise<models.MessageListResult>;
     search(server: string, criteria: models.SearchCriteria, callback: ServiceCallback<models.MessageListResult>): void;
-    search(server: string, criteria: models.SearchCriteria, options: { page? : number, itemsPerPage? : number }, callback: ServiceCallback<models.MessageListResult>): void;
-
-
-    /**
-     * @summary Wait for a specific message
-     *
-     * Returns as soon as a message matching the specified search criteria is
-     * found. This is the most efficient method of looking up a message.
-     *
-     * @param {string} server The identifier of the server hosting the message.
-     *
-     * @param {object} criteria The search criteria to use in order to find a
-     * match.
-     *
-     * @param {string} [criteria.sentTo] The full email address to which the target
-     * email was sent.
-     *
-     * @param {string} [criteria.subject] The value to seek within the target
-     * email's subject line.
-     *
-     * @param {string} [criteria.body] The value to seek within the target email's
-     * HTML or text body.
-     *
-     * @param {ServiceCallback} [optionalCallback] - The optional callback.
-     *
-     * @returns {ServiceCallback|Promise} If a callback was passed as the last
-     * parameter then it returns the callback else returns a Promise.
-     *
-     * {Promise} A promise is returned.
-     *
-     *                      @resolve {Message} - The deserialized result object.
-     *
-     *                      @reject {Error|ServiceError} - The error object.
-     *
-     * {ServiceCallback} optionalCallback(err, result, request, response)
-     *
-     *                      {Error|ServiceError}  err        - The Error object if an error occurred, null otherwise.
-     *
-     *                      {Message} [result]   - The deserialized result object if an error did not occur.
-     *                      See {@link Message} for more information.
-     */
-    waitFor(server: string, criteria: models.SearchCriteria): Promise<models.Message>;
-    waitFor(server: string, criteria: models.SearchCriteria, callback: ServiceCallback<models.Message>): void;
+    search(server: string, criteria: models.SearchCriteria, options: { page? : number, itemsPerPage? : number, timeout? : number, receivedAfter? : date }, callback: ServiceCallback<models.MessageListResult>): void;
 }
 
 /**
