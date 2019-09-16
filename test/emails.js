@@ -230,6 +230,40 @@ describe('emails', () => {
                     .catch(done);
             });
         });
+
+        describe('by itemsPerPage', () => {
+            it('should return 2 messages in result', (done) => {
+                var targetEmail = emails[1];
+                var uniqueString = targetEmail.subject.substr(0, targetEmail.subject.indexOf(' subject'));
+                client.messages
+                    .search(server, {
+                        itemsPerPage: 50
+                    })
+                    .then((result) => {
+                        var results = result.items;
+                        assert.equal(results.length, 2);
+                        done();
+                    })
+                    .catch(done);
+            });
+        });
+
+        describe('by receivedAfter', () => {
+            it('should retuArn 2 messages in result', (done) => {
+                var targetEmail = emails[1];
+                var uniqueString = targetEmail.subject.substr(0, targetEmail.subject.indexOf(' subject'));
+                client.messages
+                    .search(server, {
+                        receivedAfter: new Date()
+                    })
+                    .then((result) => {
+                        var results = result.items;
+                        assert.equal(results.length, 0);
+                        done();
+                    })
+                    .catch(done);
+            });
+        });
     });
 
     describe('spamAnalysis', () => {
