@@ -244,6 +244,9 @@ export interface Messages {
      * be returned per page. Can be set between 1 and 1000 items, the default is
      * 50.
      *
+     * @param {date} [options.receivedAfter] Limits results to only messages
+     * received after this date/time.
+     *
      * @param {ServiceCallback} [optionalCallback] - The optional callback.
      *
      * @returns {ServiceCallback|Promise} If a callback was passed as the last
@@ -262,9 +265,9 @@ export interface Messages {
      *                      {MessageListResult} [result]   - The deserialized result object if an error did not occur.
      *                      See {@link MessageListResult} for more information.
      */
-    list(server: string, options?: { page? : number, itemsPerPage? : number }): Promise<models.MessageListResult>;
+    list(server: string, options?: { page? : number, itemsPerPage? : number, receivedAfter? : Date }): Promise<models.MessageListResult>;
     list(server: string, callback: ServiceCallback<models.MessageListResult>): void;
-    list(server: string, options: { page? : number, itemsPerPage? : number }, callback: ServiceCallback<models.MessageListResult>): void;
+    list(server: string, options: { page? : number, itemsPerPage? : number, receivedAfter? : Date }, callback: ServiceCallback<models.MessageListResult>): void;
 
 
     /**
