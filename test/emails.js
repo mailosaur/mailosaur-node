@@ -25,7 +25,7 @@ const validateHtml = (email) => {
 const validateText = (email) => {
     // Body
     assert.match(email.text.body, /^this is a test/);
-        
+
     // Links
     assert.equal(email.text.links.length, 2, 'Should have Text links');
     assert.equal(email.text.links[0].href, 'https://mailosaur.com/', 'First link should have href');
@@ -38,7 +38,7 @@ const validateHeaders = (email) => {
     var expectedFromHeader = email.from[0].name + ' <' + email.from[0].email + '>';
     var expectedToHeader = email.to[0].name + ' <' + email.to[0].email + '>';
     var headers = email.metadata.headers;
-    
+
     assert.equal(headers.find(h => h.field.toLowerCase() === 'from').value, expectedFromHeader, 'From header should be accurate');
     assert.equal(headers.find(h => h.field.toLowerCase() === 'to').value, expectedToHeader, 'To header should be accurate');
     assert.equal(headers.find(h => h.field.toLowerCase() === 'subject').value, email.subject, 'Subject header should be accurate');
@@ -93,7 +93,7 @@ describe('emails', () => {
     let baseUrl = process.env.MAILOSAUR_BASE_URL || 'https://mailosaur.com/';
     let client;
     let emails;
-    
+
     before((done) => {
         if (!apiKey || !server) {
             throw new Error('Missing necessary environment variables - refer to README.md');
@@ -114,6 +114,18 @@ describe('emails', () => {
                 done();
             })
             .catch(done);
+    });
+
+    describe('list', () => {
+        it('should filter on received after date', (done) => {
+            client.messages.list(server, { receivedAfter: new Date() })
+                .then((result) => {
+                    var results = result.items;
+                    assert.equal(results.length, 0);
+                    done();
+                })
+                .catch(done);
+        });
     });
 
     describe('get', () => {
@@ -260,7 +272,7 @@ describe('emails', () => {
 
         it('should fail if attempting to delete again', (done) => {
             var targetEmailId = emails[4].id;
-            
+
             client.messages.del(targetEmailId)
                 .catch((err) => {
                     assert.instanceOf(err, MailosaurError);
