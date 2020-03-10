@@ -116,7 +116,7 @@ describe('emails', () => {
             .catch(done);
     });
 
-    describe.only('list', () => {
+    describe('list', () => {
         it('should filter on older received after date', (done) => {
             client.messages.list(server, { receivedAfter: new Date(2000, 1, 1) })
                 .then((result) => {
