@@ -117,6 +117,16 @@ describe('emails', () => {
     });
 
     describe('list', () => {
+        it('should filter on older received after date', (done) => {
+            client.messages.list(server, { receivedAfter: new Date(2000, 1, 1) })
+                .then((result) => {
+                    var results = result.items;
+                    assert.isTrue(results.length > 0);
+                    done();
+                })
+                .catch(done);
+        });
+
         it('should filter on received after date', (done) => {
             client.messages.list(server, { receivedAfter: new Date() })
                 .then((result) => {
