@@ -80,7 +80,7 @@ describe('servers', () => {
           assert.equal(server.password, retrievedServer.password);
           assert.deepEqual(server.users, retrievedServer.users);
           assert.equal(server.messages, retrievedServer.messages);
-          assert.deepEqual(server.forwarding_rules, retrievedServer.forwarding_rules);
+          assert.deepEqual(server.forwardingRules, retrievedServer.forwardingRules);
           done();
         })
         .catch(done);
