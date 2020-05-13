@@ -11,19 +11,50 @@
   },
   "bugs": "https://github.com/mailosaur/mailosaur-node/issues",
   "engines": {
-    "node": ">= v0.8.0"
+    "node": ">= v6.0.0"
   },
   "main": "lib/mailosaur.js",
-  "dependencies": {
-    "moment": "^2.21.0",
-    "request": "^2.85.0"
-  },
   "devDependencies": {
     "mocha": "~1.13.0",
     "chai": "~4.1.2",
-    "nodemailer": "~4.4.1"
+    "nodemailer": "~4.4.1",
+    "eslint": "^6.6.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-plugin-import": "^2.20.1"
   },
   "scripts": {
-    "test": "mocha -t 60000"
+    "test": "mocha -t 60000",
+    "lint": "node_modules/.bin/eslint --ext .js ."
+  },
+  "eslintConfig": {
+    "extends": [
+      "airbnb-base"
+    ],
+    "env": {
+      "node": true,
+      "mocha": true
+    },
+    "rules": {
+      "quotes": [
+        2,
+        "single",
+        {
+          "allowTemplateLiterals": true
+        }
+      ],
+      "consistent-return": 0,
+      "comma-dangle": 0,
+      "max-len": 0,
+      "no-shadow": 0,
+      "class-methods-use-this": 0,
+      "linebreak-style": 0,
+      "arrow-parens": 0,
+      "operator-linebreak": 0,
+      "object-curly-newline": 0,
+      "implicit-arrow-linebreak": 0,
+      "no-else-return": 0,
+      "indent": 0,
+      "lines-between-class-members": 0
+    }
   }
 }
