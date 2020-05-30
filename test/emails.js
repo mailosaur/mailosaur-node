@@ -107,6 +107,10 @@ describe('emails', () => {
         mailer.sendEmails(mailer, client, server, 5)
       ))
       .then(() => (
+        // Allow 2 seconds for any SMTP processing
+        new Promise(r => setTimeout(r, 2000))
+      ))
+      .then(() => (
         client.messages.list(server)
       ))
       .then((result) => {
