@@ -132,7 +132,9 @@ describe('emails', () => {
     });
 
     it('should filter on received after date', (done) => {
-      client.messages.list(server, { receivedAfter: new Date() })
+      const d = new Date();
+      d.setSeconds(d.getSeconds() + 60);
+      client.messages.list(server, { receivedAfter: d })
         .then((result) => {
           assert.equal(result.items.length, 0);
           done();

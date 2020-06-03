@@ -23,7 +23,7 @@
     "eslint-plugin-import": "^2.20.1"
   },
   "scripts": {
-    "test": "node_modules/mocha/bin/mocha -t 60000",
+    "test": "node_modules/mocha/bin/_mocha -t 60000",
     "lint": "node_modules/mocha/bin/eslint --ext .js ."
   },
   "eslintConfig": {
