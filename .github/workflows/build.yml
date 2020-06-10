@@ -38,10 +38,10 @@ jobs:
 
   build-next:
     needs: build
-
     runs-on: ubuntu-latest
 
     strategy:
+      max-parallel: 1
       matrix:
         node-version: [6.x, 10.x, 12.x]
 
