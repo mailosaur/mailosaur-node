@@ -123,7 +123,9 @@ describe('emails', () => {
 
   describe('list', () => {
     it('should filter on older received after date', (done) => {
-      client.messages.list(server, { receivedAfter: new Date(2000, 1, 1) })
+      const pastDate = new Date();
+      pastDate.setMinutes(pastDate.getMinutes() - 5);
+      client.messages.list(server, { receivedAfter: pastDate })
         .then((result) => {
           assert.isTrue(result.items.length > 0);
           done();
