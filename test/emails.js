@@ -85,6 +85,7 @@ const validateEmail = (email) => {
 
 const validateEmailSummary = (email) => {
   validateMetadata(email);
+  assert.isNotEmpty(email.summary);
   assert.equal(email.attachments, 2);
 };
 
