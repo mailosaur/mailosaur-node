@@ -14,7 +14,7 @@ const validateHtml = (email) => {
   assert.equal(email.html.links[0].href, 'https://mailosaur.com/', 'First link should have href');
   assert.equal(email.html.links[0].text, 'mailosaur', 'First link should have text');
   assert.equal(email.html.links[1].href, 'https://mailosaur.com/', 'Second link should have href');
-  assert.isUndefined(email.html.links[1].text, 'Second link should have no text');
+  assert.isNull(email.html.links[1].text, 'Second link should have no text');
   assert.equal(email.html.links[2].href, 'http://invalid/', 'Third link should have href');
   assert.equal(email.html.links[2].text, 'invalid', 'Third link should have text');
 
