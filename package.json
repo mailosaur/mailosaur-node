@@ -56,5 +56,8 @@
       "indent": 0,
       "lines-between-class-members": 0
     }
+  },
+  "dependencies": {
+    "https-proxy-agent": "^5.0.0"
   }
 }
