@@ -1,9 +1,18 @@
 {
   "name": "mailosaur",
   "version": "7.0.0",
-  "description": "Mailosaur API client library.",
+  "description": "The Mailosaur Node library lets you integrate email and SMS testing into your continuous integration process.",
+  "keywords": [
+    "email",
+    "sms",
+    "testing",
+    "automation",
+    "selenium",
+    "webdriver",
+    "nightwatch"
+  ],
   "homepage": "https://github.com/mailosaur/mailosaur-node",
-  "author": "Mailosaur Ltd <code@mailosaur.com>",
+  "author": "Mailosaur Ltd <code@mailosaur.com> (https://mailosaur.com/)",
   "license": "MIT",
   "repository": {
     "type": "git",
