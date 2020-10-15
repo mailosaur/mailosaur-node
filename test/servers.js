@@ -104,10 +104,10 @@ describe('servers', () => {
       client.servers.create({})
         .catch((err) => {
           assert.instanceOf(err, MailosaurError);
-          assert.equal(err.message, 'Operation returned an invalid status code \'400\'');
-          assert.equal(err.mailosaurError.type, 'ValidationError');
-          assert.equal(Object.keys(err.mailosaurError.messages).length, 1);
-          assert.isNotEmpty(err.mailosaurError.messages.name);
+          assert.equal(err.message, 'Request had one or more invalid parameters.');
+          assert.equal(err.errorType, 'invalid_request');
+          assert.equal(err.httpStatusCode, 400);
+          assert.equal(err.httpResponseBody, '{"type":"ValidationError","messages":{"name":"Please provide a name for your server"}}');
           done();
         });
     });

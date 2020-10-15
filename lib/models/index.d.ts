@@ -39,15 +39,14 @@ export interface SpamAnalysisResult {
  * @class
  * Initializes a new instance of the MailosaurError class.
  * @constructor
- * @member {string} [type] Possible values include: 'None', 'ValidationError',
- * 'AuthenticationError', 'PermissionDeniedError', 'ResourceNotFoundError'
- * @member {object} [messages]
- * @member {object} [model]
+ * @member {string} [errorType]
+ * @member {number} [httpStatusCode]
+ * @member {string} [httpResponseBody]
  */
 export interface MailosaurError {
-  type?: string;
-  messages?: { [propertyName: string]: string };
-  model?: any;
+  errorType?: string;
+  httpStatusCode?: number;
+  httpResponseBody?: string;
 }
 
 /**
