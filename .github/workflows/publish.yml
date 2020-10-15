@@ -15,7 +15,7 @@ jobs:
           registry-url: https://registry.npmjs.org/
       - name: version
         run: |
-          npm --no-git-tag-version version `git describe --abbrev=0 --tags`
+          npm --no-git-tag-version --allow-same-version version `git describe --abbrev=0 --tags`
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
