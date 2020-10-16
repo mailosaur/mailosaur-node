@@ -30,7 +30,7 @@ export interface Analysis {
      *
      *                      @reject {Error|ServiceError} - The error object.
      *
-     * {ServiceCallback} optionalCallback(result, request, response)
+     * {ServiceCallback} optionalCallback(err, result, request, response)
      *
      *                      {Error|ServiceError}  err        - The Error object if an error occurred, null otherwise.
      *
@@ -69,7 +69,7 @@ export interface Files {
      *
      *                      @reject {Error|ServiceError} - The error object.
      *
-     * {ServiceCallback} optionalCallback(result, request, response)
+     * {ServiceCallback} optionalCallback(err, result, request, response)
      *
      *                      {Error|ServiceError}  err        - The Error object if an error occurred, null otherwise.
      *
@@ -98,7 +98,7 @@ export interface Files {
      *
      *                      @reject {Error|ServiceError} - The error object.
      *
-     * {ServiceCallback} optionalCallback(result, request, response)
+     * {ServiceCallback} optionalCallback(err, result, request, response)
      *
      *                      {Error|ServiceError}  err        - The Error object if an error occurred, null otherwise.
      *
@@ -156,7 +156,7 @@ export interface Messages {
      *
      *                      @reject {Error|ServiceError} - The error object.
      *
-     * {ServiceCallback} optionalCallback(result, request, response)
+     * {ServiceCallback} optionalCallback(err, result, request, response)
      *
      *                      {Error|ServiceError}  err        - The Error object if an error occurred, null otherwise.
      *
@@ -186,7 +186,7 @@ export interface Messages {
      *
      *                      @reject {Error|ServiceError} - The error object.
      *
-     * {ServiceCallback} optionalCallback(result, request, response)
+     * {ServiceCallback} optionalCallback(err, result, request, response)
      *
      *                      {Error|ServiceError}  err        - The Error object if an error occurred, null otherwise.
      *
@@ -216,7 +216,7 @@ export interface Messages {
      *
      *                      @reject {Error|ServiceError} - The error object.
      *
-     * {ServiceCallback} optionalCallback(result, request, response)
+     * {ServiceCallback} optionalCallback(err, result, request, response)
      *
      *                      {Error|ServiceError}  err        - The Error object if an error occurred, null otherwise.
      *
@@ -258,7 +258,7 @@ export interface Messages {
      *
      *                      @reject {Error|ServiceError} - The error object.
      *
-     * {ServiceCallback} optionalCallback(result, request, response)
+     * {ServiceCallback} optionalCallback(err, result, request, response)
      *
      *                      {Error|ServiceError}  err        - The Error object if an error occurred, null otherwise.
      *
@@ -290,7 +290,7 @@ export interface Messages {
      *
      *                      @reject {Error|ServiceError} - The error object.
      *
-     * {ServiceCallback} optionalCallback(result, request, response)
+     * {ServiceCallback} optionalCallback(err, result, request, response)
      *
      *                      {Error|ServiceError}  err        - The Error object if an error occurred, null otherwise.
      *
@@ -346,7 +346,7 @@ export interface Messages {
      *
      *                      @reject {Error|ServiceError} - The error object.
      *
-     * {ServiceCallback} optionalCallback(result, request, response)
+     * {ServiceCallback} optionalCallback(err, result, request, response)
      *
      *                      {Error|ServiceError}  err        - The Error object if an error occurred, null otherwise.
      *
@@ -384,7 +384,7 @@ export interface Servers {
      *
      *                      @reject {Error|ServiceError} - The error object.
      *
-     * {ServiceCallback} optionalCallback(result, request, response)
+     * {ServiceCallback} optionalCallback(err, result, request, response)
      *
      *                      {Error|ServiceError}  err        - The Error object if an error occurred, null otherwise.
      *
@@ -416,7 +416,7 @@ export interface Servers {
      *
      *                      @reject {Error|ServiceError} - The error object.
      *
-     * {ServiceCallback} optionalCallback(result, request, response)
+     * {ServiceCallback} optionalCallback(err, result, request, response)
      *
      *                      {Error|ServiceError}  err        - The Error object if an error occurred, null otherwise.
      *
@@ -446,7 +446,7 @@ export interface Servers {
      *
      *                      @reject {Error|ServiceError} - The error object.
      *
-     * {ServiceCallback} optionalCallback(result, request, response)
+     * {ServiceCallback} optionalCallback(err, result, request, response)
      *
      *                      {Error|ServiceError}  err        - The Error object if an error occurred, null otherwise.
      *
@@ -493,7 +493,7 @@ export interface Servers {
      *
      *                      @reject {Error|ServiceError} - The error object.
      *
-     * {ServiceCallback} optionalCallback(result, request, response)
+     * {ServiceCallback} optionalCallback(err, result, request, response)
      *
      *                      {Error|ServiceError}  err        - The Error object if an error occurred, null otherwise.
      *
@@ -523,7 +523,7 @@ export interface Servers {
      *
      *                      @reject {Error|ServiceError} - The error object.
      *
-     * {ServiceCallback} optionalCallback(result, request, response)
+     * {ServiceCallback} optionalCallback(err, result, request, response)
      *
      *                      {Error|ServiceError}  err        - The Error object if an error occurred, null otherwise.
      *
