@@ -2,6 +2,11 @@ const { assert } = require('chai');
 const MailosaurClient = require('../lib/mailosaur');
 const mailer = require('./mailer');
 
+const outputError = (done) => (err) => {
+  console.log(err.errorType, err.httpStatusCode, err.httpResponseBody);
+  done(err);
+};
+
 describe('files', () => {
   const apiKey = process.env.MAILOSAUR_API_KEY;
   const server = process.env.MAILOSAUR_SERVER;
@@ -33,7 +38,7 @@ describe('files', () => {
         email = result;
         done();
       })
-      .catch(done);
+      .catch(outputError(done));
   });
 
   describe('getEmail', () => {
@@ -45,7 +50,7 @@ describe('files', () => {
           assert.isTrue(result.indexOf(email.subject) !== -1);
           done();
         })
-        .catch(done);
+        .catch(outputError(done));
     });
 
     it('should return a file via callback', (done) => {
@@ -69,7 +74,7 @@ describe('files', () => {
           assert.equal(result.length, attachment.length);
           done();
         })
-        .catch(done);
+        .catch(outputError(done));
     });
 
     it('should return a file via callback', (done) => {

@@ -2,6 +2,11 @@ const { assert } = require('chai');
 const MailosaurClient = require('../lib/mailosaur');
 const MailosaurError = require('../lib/models/mailosaurError');
 
+const outputError = (done) => (err) => {
+  console.log(err.errorType, err.httpStatusCode, err.httpResponseBody);
+  done(err);
+};
+
 describe('servers', () => {
   let client;
   const apiKey = process.env.MAILOSAUR_API_KEY;
@@ -22,7 +27,7 @@ describe('servers', () => {
           assert.isAtLeast(result.items.length, 2);
           done();
         })
-        .catch(done);
+        .catch(outputError(done));
     });
   });
 
@@ -53,7 +58,7 @@ describe('servers', () => {
         assert.isNumber(createdServer.messages);
         assert.isArray(createdServer.forwardingRules);
         done();
-      }).catch(done);
+      }).catch(outputError(done));
     });
 
     it('should retrieve an existing server', (done) => {
@@ -68,11 +73,11 @@ describe('servers', () => {
           assert.isArray(retrievedServer.forwardingRules);
           done();
         })
-        .catch(done);
+        .catch(outputError(done));
     });
 
     it('should update an existing server', (done) => {
-      retrievedServer.name += ' EDITED';
+      retrievedServer.name += ' updated with ellipsis … and emoji 👨🏿‍🚒';
       client.servers.update(retrievedServer.id, retrievedServer)
         .then((server) => {
           assert.equal(server.id, retrievedServer.id);
@@ -83,13 +88,13 @@ describe('servers', () => {
           assert.deepEqual(server.forwardingRules, retrievedServer.forwardingRules);
           done();
         })
-        .catch(done);
+        .catch(outputError(done));
     });
 
     it('should delete an existing server', (done) => {
       client.servers.del(retrievedServer.id)
         .then(done)
-        .catch(done);
+        .catch(outputError(done));
     });
 
     it('should fail to delete an already deleted server', (done) => {

@@ -5,6 +5,11 @@ const mailer = require('./mailer');
 
 const isoDateString = new Date().toISOString().slice(0, 10);
 
+const outputError = (done) => (err) => {
+  console.log(err.errorType, err.httpStatusCode, err.httpResponseBody);
+  done(err);
+};
+
 const validateHtml = (email) => {
   // Body
   assert.match(email.html.body, /^<div dir="ltr">/, 'HTML body should match');
@@ -119,7 +124,7 @@ describe('emails', () => {
         emails.forEach(validateEmailSummary);
         done();
       })
-      .catch(done);
+      .catch(outputError(done));
   });
 
   describe('list', () => {
@@ -131,7 +136,7 @@ describe('emails', () => {
           assert.isTrue(result.items.length > 0);
           done();
         })
-        .catch(done);
+        .catch(outputError(done));
     });
 
     it('should filter on received after date', (done) => {
@@ -142,7 +147,7 @@ describe('emails', () => {
           assert.equal(result.items.length, 0);
           done();
         })
-        .catch(done);
+        .catch(outputError(done));
     });
   });
 
@@ -160,7 +165,7 @@ describe('emails', () => {
           validateEmail(email);
           done();
         })
-        .catch(done);
+        .catch(outputError(done));
     });
   });
 
@@ -172,7 +177,7 @@ describe('emails', () => {
           validateHeaders(email);
           done();
         })
-        .catch(done);
+        .catch(outputError(done));
     });
 
     it('should throw an error if email not found', (done) => {
@@ -207,7 +212,7 @@ describe('emails', () => {
             assert.equal(result.items[0].subject, targetEmail.subject);
             done();
           })
-          .catch(done);
+          .catch(outputError(done));
       });
 
       it('should throw an error on invalid email address', (done) => {
@@ -236,7 +241,7 @@ describe('emails', () => {
             assert.equal(result.items[0].subject, targetEmail.subject);
             done();
           })
-          .catch(done);
+          .catch(outputError(done));
       });
     });
 
@@ -254,7 +259,21 @@ describe('emails', () => {
             assert.equal(result.items[0].subject, targetEmail.subject);
             done();
           })
-          .catch(done);
+          .catch(outputError(done));
+      });
+    });
+
+    describe('with special characters', () => {
+      it('should support special characters', (done) => {
+        client.messages
+          .search(server, {
+            subject: 'Search with ellipsis … and emoji 👨🏿‍🚒'
+          })
+          .then((result) => {
+            assert.equal(result.items.length, 0);
+            done();
+          })
+          .catch(outputError(done));
       });
     });
   });
@@ -272,7 +291,7 @@ describe('emails', () => {
 
           done();
         })
-        .catch(done);
+        .catch(outputError(done));
     });
   });
 
@@ -282,7 +301,7 @@ describe('emails', () => {
 
       client.messages.del(targetEmailId)
         .then(done)
-        .catch(done);
+        .catch(outputError(done));
     });
 
     it('should fail if attempting to delete again', (done) => {
