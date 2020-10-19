@@ -199,6 +199,34 @@ describe('emails', () => {
         });
     });
 
+    describe('by sentFrom', () => {
+      it('should return matching results', (done) => {
+        const targetEmail = emails[1];
+        client.messages
+          .search(server, {
+            sentFrom: targetEmail.from[0].email
+          })
+          .then((result) => {
+            assert.equal(result.items.length, 1);
+            assert.equal(result.items[0].from[0].email, targetEmail.from[0].email);
+            assert.equal(result.items[0].subject, targetEmail.subject);
+            done();
+          })
+          .catch(outputError(done));
+      });
+
+      it('should throw an error on invalid email address', (done) => {
+        client.messages
+          .search(server, {
+            sentFrom: '.not_an_email_address'
+          })
+          .catch((err) => {
+            assert.instanceOf(err, MailosaurError);
+            done();
+          });
+      });
+    });
+
     describe('by sentTo', () => {
       it('should return matching results', (done) => {
         const targetEmail = emails[1];

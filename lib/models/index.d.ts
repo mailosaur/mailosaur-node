@@ -235,6 +235,8 @@ export interface MessageListResult {
  * @class
  * Initializes a new instance of the SearchCriteria class.
  * @constructor
+ * @member {string} [sentFrom] The full email address from which the target email
+ * was sent.
  * @member {string} [sentTo] The full email address to which the target email
  * was sent.
  * @member {string} [subject] The value to seek within the target email's
@@ -244,9 +246,9 @@ export interface MessageListResult {
  * @member {string} [match] If set to ALL (default), then only results that match all
  * specified criteria will be returned. If set to ANY, results that match any of the
  * specified criteria will be returned.
-
  */
 export interface SearchCriteria {
+  sentFrom?: string;
   sentTo?: string;
   subject?: string;
   body?: string;
