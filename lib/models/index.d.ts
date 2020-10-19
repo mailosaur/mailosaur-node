@@ -241,11 +241,16 @@ export interface MessageListResult {
  * subject line.
  * @member {string} [body] The value to seek within the target email's HTML or
  * text body.
+ * @member {string} [match] If set to ALL (default), then only results that match all
+ * specified criteria will be returned. If set to ANY, results that match any of the
+ * specified criteria will be returned.
+
  */
 export interface SearchCriteria {
   sentTo?: string;
   subject?: string;
   body?: string;
+  match?: "ALL" | "ANY";
 }
 
 /**

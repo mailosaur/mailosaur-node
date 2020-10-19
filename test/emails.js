@@ -263,6 +263,42 @@ describe('emails', () => {
       });
     });
 
+    describe('with match all', () => {
+      it('should return matching results', (done) => {
+        const targetEmail = emails[1];
+        const uniqueString = targetEmail.subject.substr(0, targetEmail.subject.indexOf(' subject'));
+        client.messages
+          .search(server, {
+            subject: uniqueString,
+            body: 'this is a link',
+            match: 'ALL'
+          })
+          .then((result) => {
+            assert.equal(result.items.length, 1);
+            done();
+          })
+          .catch(outputError(done));
+      });
+    });
+
+    describe('with match any', () => {
+      it('should return matching results', (done) => {
+        const targetEmail = emails[1];
+        const uniqueString = targetEmail.subject.substr(0, targetEmail.subject.indexOf(' subject'));
+        client.messages
+          .search(server, {
+            subject: uniqueString,
+            body: 'this is a link',
+            match: 'ANY'
+          })
+          .then((result) => {
+            assert.equal(result.items.length, 6);
+            done();
+          })
+          .catch(outputError(done));
+      });
+    });
+
     describe('with special characters', () => {
       it('should support special characters', (done) => {
         client.messages
