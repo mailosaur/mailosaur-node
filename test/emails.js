@@ -199,6 +199,20 @@ describe('emails', () => {
         });
     });
 
+    it('should return empty array if errors suppressed', (done) => {
+      client.messages.search(server, {
+        sentTo: 'neverfound@example.com'
+      }, {
+        timeout: 1,
+        errorOnTimeout: false
+      })
+        .then((result) => {
+          assert.equal(result.items.length, 0);
+          done();
+        })
+        .catch(outputError(done));
+    });
+
     describe('by sentFrom', () => {
       it('should return matching results', (done) => {
         const targetEmail = emails[1];

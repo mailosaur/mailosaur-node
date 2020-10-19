@@ -128,6 +128,9 @@ export interface Messages {
      * @param {object} criteria The search criteria to use in order to find a
      * match.
      *
+     * @param {string} [criteria.sentFrom] The full email address from which the target
+     * email was sent.
+     *
      * @param {string} [criteria.sentTo] The full email address to which the target
      * email was sent.
      *
@@ -311,6 +314,9 @@ export interface Messages {
      *
      * @param {object} criteria The search criteria to match results against.
      *
+     * @param {string} [criteria.sentFrom] The full email address from which the target
+     * email was sent.
+     *
      * @param {string} [criteria.sentTo] The full email address to which the target
      * email was sent.
      *
@@ -335,6 +341,9 @@ export interface Messages {
      * @param {date} [options.receivedAfter] Limits results to only messages
      * received after this date/time.
      *
+     * @param {boolean} [options.errorOnTimeout] When set to false, an error will
+     * not be throw if timeout is reached (default: true).
+     *
      * @param {ServiceCallback} [optionalCallback] - The optional callback.
      *
      * @returns {ServiceCallback|Promise} If a callback was passed as the last
@@ -353,9 +362,9 @@ export interface Messages {
      *                      {MessageListResult} [result]   - The deserialized result object if an error did not occur.
      *                      See {@link MessageListResult} for more information.
      */
-    search(server: string, criteria: models.SearchCriteria, options?: { page? : number, itemsPerPage? : number, timeout? : number, receivedAfter? : Date }): Promise<models.MessageListResult>;
+    search(server: string, criteria: models.SearchCriteria, options?: { page? : number, itemsPerPage? : number, timeout? : number, receivedAfter? : Date, errorOnTimeout? : boolean }): Promise<models.MessageListResult>;
     search(server: string, criteria: models.SearchCriteria, callback: ServiceCallback<models.MessageListResult>): void;
-    search(server: string, criteria: models.SearchCriteria, options: { page? : number, itemsPerPage? : number, timeout? : number, receivedAfter? : Date }, callback: ServiceCallback<models.MessageListResult>): void;
+    search(server: string, criteria: models.SearchCriteria, options: { page? : number, itemsPerPage? : number, timeout? : number, receivedAfter? : Date, errorOnTimeout? : boolean }, callback: ServiceCallback<models.MessageListResult>): void;
 }
 
 /**
