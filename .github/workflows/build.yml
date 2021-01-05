@@ -47,7 +47,7 @@ jobs:
 
     env:
       MAILOSAUR_BASE_URL: https://next.mailosaur.com/
-      MAILOSAUR_SMTP_HOST: ms-smtp.uk
+      MAILOSAUR_SMTP_HOST: mailosaur.email
       MAILOSAUR_SMTP_PORT: 2525
       MAILOSAUR_API_KEY: ${{ secrets.MAILOSAUR_API_KEY }}
       MAILOSAUR_SERVER: ${{ secrets.MAILOSAUR_SERVER }}
