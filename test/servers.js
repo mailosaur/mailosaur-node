@@ -56,7 +56,6 @@ describe('servers', () => {
         assert.isNotEmpty(createdServer.password);
         assert.isArray(createdServer.users);
         assert.isNumber(createdServer.messages);
-        assert.isArray(createdServer.forwardingRules);
         done();
       }).catch(outputError(done));
     });
@@ -70,7 +69,6 @@ describe('servers', () => {
           assert.isNotEmpty(retrievedServer.password);
           assert.isArray(retrievedServer.users);
           assert.isNumber(retrievedServer.messages);
-          assert.isArray(retrievedServer.forwardingRules);
           done();
         })
         .catch(outputError(done));
@@ -85,7 +83,6 @@ describe('servers', () => {
           assert.equal(server.password, retrievedServer.password);
           assert.deepEqual(server.users, retrievedServer.users);
           assert.equal(server.messages, retrievedServer.messages);
-          assert.deepEqual(server.forwardingRules, retrievedServer.forwardingRules);
           done();
         })
         .catch(outputError(done));

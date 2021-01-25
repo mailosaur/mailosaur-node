@@ -488,9 +488,6 @@ export interface Servers {
      * @param {number} [server.messages] The number of messages currently in the
      * server.
      *
-     * @param {array} [server.forwardingRules] The rules used to manage email
-     * forwarding for this server.
-     *
      * @param {ServiceCallback} [optionalCallback] - The optional callback.
      *
      * @returns {ServiceCallback|Promise} If a callback was passed as the last
