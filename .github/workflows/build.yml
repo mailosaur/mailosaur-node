@@ -22,7 +22,7 @@ jobs:
 
     env:
       MAILOSAUR_BASE_URL: https://mailosaur.com/
-      MAILOSAUR_SMTP_HOST: mailosaur.io
+      MAILOSAUR_SMTP_HOST: mailosaur.net
       MAILOSAUR_SMTP_PORT: 2525
       MAILOSAUR_API_KEY: ${{ secrets.MAILOSAUR_API_KEY }}
       MAILOSAUR_SERVER: ${{ secrets.MAILOSAUR_SERVER }}

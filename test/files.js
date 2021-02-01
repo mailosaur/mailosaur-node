@@ -25,8 +25,8 @@ describe('files', () => {
 
     client.messages.deleteAll(server)
       .then(() => {
-        const host = process.env.MAILOSAUR_SMTP_HOST || 'mailosaur.io';
-        testEmailAddress = `files_test.${server}@${host}`;
+        const host = process.env.MAILOSAUR_SMTP_HOST || 'mailosaur.net';
+        testEmailAddress = `files_test@${server}.${host}`;
         return mailer.sendEmail(client, server, testEmailAddress);
       })
       .then(() => (

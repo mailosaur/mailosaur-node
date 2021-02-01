@@ -6,7 +6,7 @@ const html = fs.readFileSync(path.join(__dirname, '/resources/testEmail.html'), 
 const text = fs.readFileSync(path.join(__dirname, '/resources/testEmail.txt'), 'utf-8');
 
 const smtpTransport = nodemailer.createTransport({
-  host: process.env.MAILOSAUR_SMTP_HOST || 'mailosaur.io',
+  host: process.env.MAILOSAUR_SMTP_HOST || 'mailosaur.net',
   port: process.env.MAILOSAUR_SMTP_PORT || '25',
   secureConnection: false,
   ignoreTLS: false,

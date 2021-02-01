@@ -113,10 +113,6 @@ describe('emails', () => {
         mailer.sendEmails(mailer, client, server, 5)
       ))
       .then(() => (
-        // Allow 2 seconds for any SMTP processing
-        new Promise(r => setTimeout(r, 2000))
-      ))
-      .then(() => (
         client.messages.list(server)
       ))
       .then((result) => {
@@ -153,8 +149,8 @@ describe('emails', () => {
 
   describe('get', () => {
     it('should return a match once found', (done) => {
-      const host = process.env.MAILOSAUR_SMTP_HOST || 'mailosaur.io';
-      const testEmailAddress = `wait_for_test.${server}@${host}`;
+      const host = process.env.MAILOSAUR_SMTP_HOST || 'mailosaur.net';
+      const testEmailAddress = `wait_for_test@${server}.${host}`;
       mailer.sendEmail(client, server, testEmailAddress)
         .then(() => (
           client.messages.get(server, {
