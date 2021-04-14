@@ -261,7 +261,6 @@ export interface SearchCriteria {
  * @constructor
  * @member {string} [id] Unique identifier for the server. Used as username for
  * SMTP/POP3 authentication.
- * @member {string} [password] SMTP/POP3 password.
  * @member {string} [name] A name used to identify the server.
  * @member {array} [users] Users (excluding administrators) who have access to
  * the server.
@@ -269,7 +268,6 @@ export interface SearchCriteria {
  */
 export interface Server {
   id?: string;
-  password?: string;
   name?: string;
   users?: string[];
   messages?: number;

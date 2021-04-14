@@ -53,7 +53,6 @@ describe('servers', () => {
         createdServer = server;
         assert.isNotEmpty(createdServer.id);
         assert.equal(createdServer.name, serverName);
-        assert.isNotEmpty(createdServer.password);
         assert.isArray(createdServer.users);
         assert.isNumber(createdServer.messages);
         done();
@@ -66,7 +65,6 @@ describe('servers', () => {
           retrievedServer = server;
           assert.equal(retrievedServer.id, createdServer.id);
           assert.equal(retrievedServer.name, createdServer.name);
-          assert.isNotEmpty(retrievedServer.password);
           assert.isArray(retrievedServer.users);
           assert.isNumber(retrievedServer.messages);
           done();
@@ -80,7 +78,6 @@ describe('servers', () => {
         .then((server) => {
           assert.equal(server.id, retrievedServer.id);
           assert.equal(server.name, retrievedServer.name);
-          assert.equal(server.password, retrievedServer.password);
           assert.deepEqual(server.users, retrievedServer.users);
           assert.equal(server.messages, retrievedServer.messages);
           done();
