@@ -72,6 +72,15 @@ describe('servers', () => {
         .catch(outputError(done));
     });
 
+    it('should retrieve password of an existing server', (done) => {
+      client.servers.getPassword(createdServer.id)
+        .then((password) => {
+          assert.isTrue(password.length >= 8);
+          done();
+        })
+        .catch(outputError(done));
+    });
+
     it('should update an existing server', (done) => {
       retrievedServer.name += ' updated with ellipsis … and emoji 👨🏿‍🚒';
       client.servers.update(retrievedServer.id, retrievedServer)
