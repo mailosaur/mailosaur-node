@@ -10,16 +10,30 @@ Mailosaur lets you automate email and SMS tests as part of software development 
 
 This guide provides several key sections:
 
-- [Installation]()
-- [Creating an account]()
-- [Test email addresses]()
-- [Find an email]()
-- [Find an SMS message]()
-- [Testing plain text content]()
-- [Testing HTML content]()
-- [Working with hyperlinks]()
-- [Working with attachments]()
-- [Working with images and web beacons]()
+- [Mailosaur - Node.js library &middot; [![](https://github.com/mailosaur/mailosaur-node/workflows/CI/badge.svg)](https://github.com/mailosaur/mailosaur-node/actions)](#mailosaur---nodejs-library--)
+  - [Get Started](#get-started)
+    - [Installation](#installation)
+    - [API Reference](#api-reference)
+  - [Creating an account](#creating-an-account)
+  - [Test email addresses with Mailosaur](#test-email-addresses-with-mailosaur)
+  - [Find an email](#find-an-email)
+    - [What is this code doing?](#what-is-this-code-doing)
+    - [My email wasn't found](#my-email-wasnt-found)
+  - [Find an SMS message](#find-an-sms-message)
+  - [Testing plain text content](#testing-plain-text-content)
+    - [Extracting verification codes from plain text](#extracting-verification-codes-from-plain-text)
+  - [Testing HTML content](#testing-html-content)
+    - [Working with HTML using JSDOM](#working-with-html-using-jsdom)
+  - [Working with hyperlinks](#working-with-hyperlinks)
+    - [Links in plain text (including SMS messages)](#links-in-plain-text-including-sms-messages)
+  - [Working with attachments](#working-with-attachments)
+    - [Writing an attachment to disk](#writing-an-attachment-to-disk)
+  - [Working with images and web beacons](#working-with-images-and-web-beacons)
+    - [Remotely-hosted images](#remotely-hosted-images)
+    - [Triggering web beacons](#triggering-web-beacons)
+  - [Spam checking](#spam-checking)
+  - [Development](#development)
+  - [Contacting us](#contacting-us)
 
 You can find the full [Mailosaur documentation](https://mailosaur.com/docs/) on the website.
 
@@ -33,7 +47,7 @@ Install the Mailosaur Node.js library via npm:
 npm install mailosaur --save-dev
 ```
 
-Then import the library into your code. The value for `YOUR_API_KEY` is covered in the next step ([creating an account]()):
+Then import the library into your code. The value for `YOUR_API_KEY` is covered in the next step ([creating an account](#creating-an-account)):
 
 ```js
 const MailosaurClient = require('mailosaur')
