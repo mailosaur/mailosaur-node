@@ -78,12 +78,12 @@ Mailosaur gives you an **unlimited number of test email addresses** - with no se
 Here's how it works:
 
 * When you create an account, you are given a server.
-* Every server has it's own **Server Domain** name (e.g. `abc123.mailosaur.net`)
+* Every server has its own **Server Domain** name (e.g. `abc123.mailosaur.net`)
 * Any email address that ends with `@{YOUR_SERVER_DOMAIN}` will work with Mailosaur without any special setup. For example:
   * `build-423@abc123.mailosaur.net`
   * `john.smith@abc123.mailosaur.net`
   * `rAnDoM63423@abc123.mailosaur.net`
-* You can create more servers when you need them. Each one will have it's own domain name.
+* You can create more servers when you need them. Each one will have its own domain name.
 
 ***Can't use test email addresses?** If you don't have control over what email address you send to, you can also [use SMTP to test email](https://mailosaur.com/docs/email-testing/sending-to-mailosaur/#sending-via-smtp), regardless of what address you're sending to.*
 
