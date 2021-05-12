@@ -72,7 +72,7 @@ Here's how it works:
   * `rAnDoM63423@abc123.mailosaur.net`
 * You can create more servers when you need them. Each one will have its own domain name.
 
-***Can't use test email addresses?** If you don't have control over what email address you send to, you can also [use SMTP to test email](https://mailosaur.com/docs/email-testing/sending-to-mailosaur/#sending-via-smtp), regardless of what address you're sending to.*
+***Can't use test email addresses?** You can also [use SMTP to test email](https://mailosaur.com/docs/email-testing/sending-to-mailosaur/#sending-via-smtp). By connecting your product or website to Mailosaur via SMTP, Mailosaur will catch all email your application sends, regardless of the email address.*
 
 ## Find an email
 
@@ -143,7 +143,7 @@ If your account has [SMS testing](https://mailosaur.com/sms-testing/) enabled, y
 
 ## Testing plain text content
 
-Most emails and all SMS messages should have a plain text body. Mailosaur exposes this content via the `text.body` property on an email or SMS message:
+Most emails, and all SMS messages, should have a plain text body. Mailosaur exposes this content via the `text.body` property on an email or SMS message:
 
 ```js
 console.log(message.text.body) // "Hi Jason, ..."
