@@ -578,3 +578,63 @@ export interface Servers {
  */
   generateEmailAddress(server: string): string;
 }
+
+/**
+ * @class
+ * Usage
+ * __NOTE__: An instance of this class is automatically created for an
+ * instance of the MailosaurClient.
+ */
+ export interface Usage {
+  /**
+   * @summary Retrieve account usage limits.
+   *
+   * Details the current limits and usage for your account.
+   *
+   * @param {ServiceCallback} [optionalCallback] - The optional callback.
+   *
+   * @returns {ServiceCallback|Promise} If a callback was passed as the last
+   * parameter then it returns the callback else returns a Promise.
+   *
+   * {Promise} A promise is returned.
+   *
+   *                      @resolve {ServerListResult} - The deserialized result object.
+   *
+   *                      @reject {Error|ServiceError} - The error object.
+   *
+   * {ServiceCallback} optionalCallback(err, result, request, response)
+   *
+   *                      {Error|ServiceError}  err        - The Error object if an error occurred, null otherwise.
+   *
+   *                      {ServerListResult} [result]   - The deserialized result object if an error did not occur.
+   *                      See {@link ServerListResult} for more information.
+   */
+  limits(): Promise<models.UsageAccountLimits>;
+  limits(callback: ServiceCallback<models.UsageAccountLimits>): void;
+
+  /**
+   * @summary List account transactions
+   *
+   * Retrieves the last 31 days of transactional usage.
+   *
+   * @param {ServiceCallback} [optionalCallback] - The optional callback.
+   *
+   * @returns {ServiceCallback|Promise} If a callback was passed as the last
+   * parameter then it returns the callback else returns a Promise.
+   *
+   * {Promise} A promise is returned.
+   *
+   *                      @resolve {ServerListResult} - The deserialized result object.
+   *
+   *                      @reject {Error|ServiceError} - The error object.
+   *
+   * {ServiceCallback} optionalCallback(err, result, request, response)
+   *
+   *                      {Error|ServiceError}  err        - The Error object if an error occurred, null otherwise.
+   *
+   *                      {ServerListResult} [result]   - The deserialized result object if an error did not occur.
+   *                      See {@link ServerListResult} for more information.
+   */
+   transactions(): Promise<models.UsageTransactionListResult>;
+   transactions(callback: ServiceCallback<models.UsageTransactionListResult>): void;
+}

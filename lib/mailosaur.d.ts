@@ -12,12 +12,13 @@ declare class MailosaurClient {
    *
    */
   constructor(apiKey: string, baseUrl?: string);
-  
+
   // Operation groups
   analysis: operations.Analysis;
   files: operations.Files;
   messages: operations.Messages;
   servers: operations.Servers;
+  usage: operations.Usage;
 }
 
 export default MailosaurClient;
