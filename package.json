@@ -24,6 +24,7 @@
   },
   "main": "lib/mailosaur.js",
   "devDependencies": {
+    "@types/node": "^15.0.3",
     "chai": "~4.1.2",
     "eslint": "^6.6.0",
     "eslint-config-airbnb-base": "^14.1.0",
