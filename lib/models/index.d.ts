@@ -296,3 +296,57 @@ export interface ServerListResult {
 export interface ServerCreateOptions {
   name?: string;
 }
+
+/**
+ * @class
+ * Initializes a new instance of the UsageAccountLimit class.
+ * @constructor
+ * @member {number} [limit] The limit.
+ * @member {number} [current] The current usage.
+ */
+ export interface UsageAccountLimit {
+  limit?: number;
+  current?: number;
+}
+
+/**
+ * @class
+ * Initializes a new instance of the UsageAccountLimit class.
+ * @constructor
+ * @member {UsageAccountLimit} [servers] Server limits.
+ * @member {UsageAccountLimit} [users] User limits.
+ * @member {UsageAccountLimit} [email] Email limits.
+ * @member {UsageAccountLimit} [sms] SMS limits.
+ */
+ export interface UsageAccountLimits {
+  servers?: UsageAccountLimit;
+  users?: UsageAccountLimit;
+  email?: UsageAccountLimit;
+  sms?: UsageAccountLimit;
+}
+
+/**
+ * @class
+ * Initializes a new instance of the UsageTransaction class.
+ * @constructor
+ * @member {date} [timestamp] The date/time of the transaction.
+ * @member {number} [email] The number of emails.
+ * @member {number} [sms] The number of SMS messages.
+ */
+ export interface UsageTransaction {
+  timestamp?: Date;
+  email?: number;
+  sms?: number;
+}
+
+/**
+ * @class
+ * Initializes a new instance of the UsageTransactionListResult class.
+ * @constructor
+ * The result of a usage transactions request.
+ *
+ * @member {array} [items] The individual transactions that have occurred.
+ */
+ export interface UsageTransactionListResult {
+  items?: UsageTransaction[];
+}

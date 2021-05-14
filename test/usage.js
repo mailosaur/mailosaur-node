@@ -1,6 +1,5 @@
 const { assert } = require('chai');
 const MailosaurClient = require('../lib/mailosaur');
-const MailosaurError = require('../lib/models/mailosaurError');
 
 const outputError = (done) => (err) => {
   console.log(err.errorType, err.httpStatusCode, err.httpResponseBody);

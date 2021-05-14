@@ -24,16 +24,18 @@
   },
   "main": "lib/mailosaur.js",
   "devDependencies": {
-    "mocha": "~1.13.0",
     "chai": "~4.1.2",
-    "nodemailer": "~6.4.16",
     "eslint": "^6.6.0",
     "eslint-config-airbnb-base": "^14.1.0",
-    "eslint-plugin-import": "^2.20.1"
+    "eslint-plugin-import": "^2.20.1",
+    "mocha": "~1.13.0",
+    "nodemailer": "~6.4.16",
+    "typescript": "^4.2.4"
   },
   "scripts": {
-    "test": "node_modules/mocha/bin/_mocha -t 60000",
-    "lint": "node_modules/mocha/bin/eslint --ext .js ."
+    "test": "npm run lint && npm run tsc && node_modules/.bin/_mocha -t 60000",
+    "lint": "node_modules/.bin/eslint --ext .js .",
+    "tsc": "node_modules/.bin/tsc lib/mailosaur.d.ts"
   },
   "eslintConfig": {
     "extends": [
