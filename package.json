@@ -35,7 +35,7 @@
   "scripts": {
     "test": "npm run lint && npm run tsc && node_modules/.bin/_mocha -t 60000",
     "lint": "node_modules/.bin/eslint --ext .js .",
-    "tsc": "node_modules/.bin/tsc lib/mailosaur.d.ts"
+    "tsc": "node_modules/.bin/tsc lib/mailosaur.d.ts --types node"
   },
   "eslintConfig": {
     "extends": [
