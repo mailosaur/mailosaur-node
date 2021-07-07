@@ -8,12 +8,12 @@ on:
     branches: [master]
   pull_request:
     branches: [master]
-  repository_dispatch:
-    types: [ build ]
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     strategy:
       max-parallel: 1
@@ -39,6 +39,7 @@ jobs:
   build-next:
     needs: build
     runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     strategy:
       max-parallel: 1
