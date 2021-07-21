@@ -42,7 +42,7 @@ jobs:
           webhook_url: ${{ secrets.TEAMS_BUILDS_WEBHOOK }}
           needs: ${{ toJson(needs) }}
           job: ${{ toJson(job) }}
-          steps: ${{ toJson(steps) }}
+          overwrite: "{ title: `${workflow} failed for ${repository.name}` }"
 
   build-next:
     needs: build
@@ -76,4 +76,4 @@ jobs:
           webhook_url: ${{ secrets.TEAMS_BUILDS_WEBHOOK }}
           needs: ${{ toJson(needs) }}
           job: ${{ toJson(job) }}
-          steps: ${{ toJson(steps) }}
+          overwrite: "{ title: `${workflow} failed for ${repository.name}` }"
