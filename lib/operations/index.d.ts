@@ -365,6 +365,116 @@ export interface Messages {
   search(server: string, criteria: models.SearchCriteria, options?: { page?: number, itemsPerPage?: number, timeout?: number, receivedAfter?: Date, errorOnTimeout?: boolean }): Promise<models.MessageListResult>;
   search(server: string, criteria: models.SearchCriteria, callback: ServiceCallback<models.MessageListResult>): void;
   search(server: string, criteria: models.SearchCriteria, options: { page?: number, itemsPerPage?: number, timeout?: number, receivedAfter?: Date, errorOnTimeout?: boolean }, callback: ServiceCallback<models.MessageListResult>): void;
+
+  /**
+   * @summary Create a message
+   *
+   * Creates a new message that can be sent to a verified email address. This is
+   * useful in scenarios where you want an email to trigger a workflow in your
+   * product.
+   *
+   * @param {string} server The identifier of the server to create the message in.
+   *
+   * @param {object} options The options with which to create the message.
+   *
+   * @param {string} [options.to] The email address to which the email will be sent.
+   * Must be a verified email address.
+   *
+   * @param {string} [options.subject] The email subject line.
+   *
+   * @param {string} [options.html] The HTML body of the email.
+   *
+   * @param {boolean} [options.send] If true, email will be sent upon creation.
+   *
+   * @param {function} [optionalCallback] - The optional callback.
+   *
+   * @returns {function|Promise} If a callback was passed as the last parameter
+   * then it returns the callback else returns a Promise.
+   *
+   * {Promise} A promise is returned
+   *
+   *                      @resolve {null} - The deserialized result object.
+   *
+   *                      @reject {Error} - The error object.
+   *
+   * {function} optionalCallback(err, result, request, response)
+   *
+   *                      {Error}  err        - The Error object if an error occurred, null otherwise.
+   *
+   *                      {null} [result]   - The deserialized result object if an error did not occur.
+   */
+   create(server: string, options: { to?: string, subject?: string, html?: string, send?: boolean }): Promise<models.Message>;
+   create(server: string, options: { to?: string, subject?: string, html?: string, send?: boolean }, callback: ServiceCallback<models.Message>): void;
+
+  /**
+   * @summary Forward an email
+   *
+   * Forwards the specified email to a verified email address.
+   *
+   * @param {string} id The identifier of the email to forward.
+   *
+   * @param {object} options The options with which to forward the email.
+   *
+   * @param {string} [options.to] The email address to which the email will be sent.
+   * Must be a verified email address.
+   *
+   * @param {string} [options.html] Any additional HTML content to forward the email with.
+   *
+   * @param {string} [options.text] Any additional plain text content to forward the email with.
+   *
+   * @param {function} [optionalCallback] - The optional callback.
+   *
+   * @returns {function|Promise} If a callback was passed as the last parameter
+   * then it returns the callback else returns a Promise.
+   *
+   * {Promise} A promise is returned
+   *
+   *                      @resolve {null} - The deserialized result object.
+   *
+   *                      @reject {Error} - The error object.
+   *
+   * {function} optionalCallback(err, result, request, response)
+   *
+   *                      {Error}  err        - The Error object if an error occurred, null otherwise.
+   *
+   *                      {null} [result]   - The deserialized result object if an error did not occur.
+   */
+   forward(id: string, options: { to?: string, html?: string, text?: string }): Promise<models.Message>;
+   forward(id: string, options: { to?: string, html?: string, text?: string }, callback: ServiceCallback<models.Message>): void;
+
+  /**
+   * @summary Reply to an email
+   *
+   * Sends a reply to the specified email. This is useful for when simulating a user
+   * replying to one of your emails.
+   *
+   * @param {string} id The identifier of the email to forward.
+   *
+   * @param {object} options The options with which to reply to the email.
+   *
+   * @param {string} [options.html] Any additional HTML content to include in the reply.
+   *
+   * @param {string} [options.text] Any additional plain text content to include in the reply.
+   *
+   * @param {function} [optionalCallback] - The optional callback.
+   *
+   * @returns {function|Promise} If a callback was passed as the last parameter
+   * then it returns the callback else returns a Promise.
+   *
+   * {Promise} A promise is returned
+   *
+   *                      @resolve {null} - The deserialized result object.
+   *
+   *                      @reject {Error} - The error object.
+   *
+   * {function} optionalCallback(err, result, request, response)
+   *
+   *                      {Error}  err        - The Error object if an error occurred, null otherwise.
+   *
+   *                      {null} [result]   - The deserialized result object if an error did not occur.
+   */
+   reply(id: string, options: { html?: string, text?: string }): Promise<models.Message>;
+   reply(id: string, options: { html?: string, text?: string }, callback: ServiceCallback<models.Message>): void;
 }
 
 /**

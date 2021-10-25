@@ -6,6 +6,7 @@ const mailer = require('./mailer');
 const isoDateString = new Date().toISOString().slice(0, 10);
 
 const outputError = (done) => (err) => {
+  // eslint-disable-next-line no-console
   console.log(err.errorType, err.httpStatusCode, err.httpResponseBody);
   done(err);
 };
@@ -386,6 +387,64 @@ describe('emails', () => {
           assert.instanceOf(err, MailosaurError);
           done();
         });
+    });
+  });
+
+  xdescribe('create', () => {
+    it('should allow message creation', (done) => {
+      client.messages.create(server, {
+        to: 'TBC',
+        html: '<p>This is a <strong>test</strong> reply.</p>',
+        send: true
+      })
+        .then(done)
+        .catch(outputError(done));
+    });
+  });
+
+  xdescribe('reply', () => {
+    it('should allow reply with HTML', (done) => {
+      const targetEmailId = emails[0].id;
+
+      client.messages.reply(targetEmailId, {
+        html: '<p>This is a <strong>test</strong> reply.</p>'
+      })
+        .then(done)
+        .catch(outputError(done));
+    });
+
+    it('should allow reply with plain text', (done) => {
+      const targetEmailId = emails[0].id;
+
+      client.messages.reply(targetEmailId, {
+        text: 'This is a test reply.'
+      })
+        .then(done)
+        .catch(outputError(done));
+    });
+  });
+
+  xdescribe('forward', () => {
+    it('should allow forward with HTML', (done) => {
+      const targetEmailId = emails[0].id;
+
+      client.messages.reply(targetEmailId, {
+        to: 'TBC',
+        html: '<p>This is a forwarding <strong>test</strong>.</p>'
+      })
+        .then(done)
+        .catch(outputError(done));
+    });
+
+    it('should allow forward with plain text', (done) => {
+      const targetEmailId = emails[0].id;
+
+      client.messages.reply(targetEmailId, {
+        to: 'TBC',
+        text: 'This is a forwarding test.'
+      })
+        .then(done)
+        .catch(outputError(done));
     });
   });
 });

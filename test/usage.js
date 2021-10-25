@@ -2,6 +2,7 @@ const { assert } = require('chai');
 const MailosaurClient = require('../lib/mailosaur');
 
 const outputError = (done) => (err) => {
+  // eslint-disable-next-line no-console
   console.log(err.errorType, err.httpStatusCode, err.httpResponseBody);
   done(err);
 };

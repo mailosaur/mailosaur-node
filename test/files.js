@@ -3,6 +3,7 @@ const MailosaurClient = require('../lib/mailosaur');
 const mailer = require('./mailer');
 
 const outputError = (done) => (err) => {
+  // eslint-disable-next-line no-console
   console.log(err.errorType, err.httpStatusCode, err.httpResponseBody);
   done(err);
 };
