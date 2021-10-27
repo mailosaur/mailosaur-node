@@ -2,7 +2,7 @@ const nodemailer = require('nodemailer');
 const fs = require('fs');
 const path = require('path');
 
-const verifiedDomain = process.env.MAILOSAUR_VERIFIED_DOMAIN;
+const verifiedDomain = process.env.MAILOSAUR_VERIFIED_DOMAIN || 'mailosaur.net';
 
 const html = fs.readFileSync(path.join(__dirname, '/resources/testEmail.html'), 'utf-8');
 const text = fs.readFileSync(path.join(__dirname, '/resources/testEmail.txt'), 'utf-8');

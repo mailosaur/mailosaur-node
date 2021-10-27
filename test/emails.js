@@ -104,7 +104,7 @@ describe('emails', () => {
   let emails;
 
   before((done) => {
-    if (!apiKey || !server || !verifiedDomain) {
+    if (!apiKey || !server) {
       throw new Error('Missing necessary environment variables - refer to README.md');
     }
 
@@ -391,7 +391,7 @@ describe('emails', () => {
     });
   });
 
-  describe('create and send', () => {
+  (verifiedDomain ? describe : describe.skip)('create and send', () => {
     it('send with text content', (done) => {
       const subject = 'New message';
       client.messages.create(server, {
@@ -425,7 +425,7 @@ describe('emails', () => {
     });
   });
 
-  describe('forward', () => {
+  (verifiedDomain ? describe : describe.skip)('forward', () => {
     it('forward with text content', (done) => {
       const targetEmailId = emails[0].id;
       const body = 'Forwarded message';
@@ -459,7 +459,7 @@ describe('emails', () => {
     });
   });
 
-  describe('reply', () => {
+  (verifiedDomain ? describe : describe.skip)('reply', () => {
     it('reply with text content', (done) => {
       const targetEmailId = emails[0].id;
       const body = 'Reply message';
