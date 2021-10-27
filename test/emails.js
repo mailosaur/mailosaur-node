@@ -99,11 +99,12 @@ describe('emails', () => {
   const apiKey = process.env.MAILOSAUR_API_KEY;
   const server = process.env.MAILOSAUR_SERVER;
   const baseUrl = process.env.MAILOSAUR_BASE_URL || 'https://mailosaur.com/';
+  const verifiedDomain = process.env.MAILOSAUR_VERIFIED_DOMAIN;
   let client;
   let emails;
 
   before((done) => {
-    if (!apiKey || !server) {
+    if (!apiKey || !server || !verifiedDomain) {
       throw new Error('Missing necessary environment variables - refer to README.md');
     }
 
@@ -390,60 +391,102 @@ describe('emails', () => {
     });
   });
 
-  xdescribe('create', () => {
-    it('should allow message creation', (done) => {
+  describe('create and send', () => {
+    it('send with text content', (done) => {
+      const subject = 'New message';
       client.messages.create(server, {
-        to: 'TBC',
-        html: '<p>This is a <strong>test</strong> reply.</p>',
-        send: true
+        to: `anything@${verifiedDomain}`,
+        send: true,
+        subject,
+        text: 'This is a new email'
       })
-        .then(done)
+        .then((message) => {
+          assert.isNotEmpty(message.id);
+          assert.equal(message.subject, subject);
+          done();
+        })
+        .catch(outputError(done));
+    });
+
+    it('send with HTML content', (done) => {
+      const subject = 'New HTML message';
+      client.messages.create(server, {
+        to: `anything@${verifiedDomain}`,
+        send: true,
+        subject,
+        html: '<p>This is a new email.</p>'
+      })
+        .then((message) => {
+          assert.isNotEmpty(message.id);
+          assert.equal(message.subject, subject);
+          done();
+        })
         .catch(outputError(done));
     });
   });
 
-  xdescribe('reply', () => {
-    it('should allow reply with HTML', (done) => {
+  describe('forward', () => {
+    it('forward with text content', (done) => {
       const targetEmailId = emails[0].id;
+      const body = 'Forwarded message';
 
-      client.messages.reply(targetEmailId, {
-        html: '<p>This is a <strong>test</strong> reply.</p>'
+      client.messages.forward(targetEmailId, {
+        to: `anything@${verifiedDomain}`,
+        text: body
       })
-        .then(done)
+        .then((message) => {
+          assert.isNotEmpty(message.id);
+          assert.isTrue(message.text.body.indexOf(body) >= 0);
+          done();
+        })
         .catch(outputError(done));
     });
 
-    it('should allow reply with plain text', (done) => {
+    it('forward with HTML content', (done) => {
       const targetEmailId = emails[0].id;
+      const body = '<p>Forwarded <strong>HTML</strong> message.</p>';
 
-      client.messages.reply(targetEmailId, {
-        text: 'This is a test reply.'
+      client.messages.forward(targetEmailId, {
+        to: `anything@${verifiedDomain}`,
+        html: body
       })
-        .then(done)
+        .then((message) => {
+          assert.isNotEmpty(message.id);
+          assert.isTrue(message.html.body.indexOf(body) >= 0);
+          done();
+        })
         .catch(outputError(done));
     });
   });
 
-  xdescribe('forward', () => {
-    it('should allow forward with HTML', (done) => {
+  describe('reply', () => {
+    it('reply with text content', (done) => {
       const targetEmailId = emails[0].id;
+      const body = 'Reply message';
 
       client.messages.reply(targetEmailId, {
-        to: 'TBC',
-        html: '<p>This is a forwarding <strong>test</strong>.</p>'
+        text: body
       })
-        .then(done)
+        .then((message) => {
+          assert.isNotEmpty(message.id);
+          assert.isTrue(message.text.body.indexOf(body) >= 0);
+          done();
+        })
         .catch(outputError(done));
     });
 
-    it('should allow forward with plain text', (done) => {
+    it('reply with HTML content', (done) => {
       const targetEmailId = emails[0].id;
+      const body = '<p>Reply <strong>HTML</strong> message.</p>';
 
       client.messages.reply(targetEmailId, {
-        to: 'TBC',
-        text: 'This is a forwarding test.'
+        html: body
       })
-        .then(done)
+        .then((message) => {
+          assert.isNotEmpty(message.id);
+          assert.isTrue(message.html.body.indexOf(body) >= 0);
+          done();
+        })
         .catch(outputError(done));
     });
   });

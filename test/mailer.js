@@ -2,6 +2,8 @@ const nodemailer = require('nodemailer');
 const fs = require('fs');
 const path = require('path');
 
+const verifiedDomain = process.env.MAILOSAUR_VERIFIED_DOMAIN;
+
 const html = fs.readFileSync(path.join(__dirname, '/resources/testEmail.html'), 'utf-8');
 const text = fs.readFileSync(path.join(__dirname, '/resources/testEmail.txt'), 'utf-8');
 
@@ -34,7 +36,7 @@ module.exports = {
 
   sendEmail: (client, server, sendToAddress) => {
     const randomString = (Math.random() + 1).toString(36).substring(7);
-    const randomFromAddress = client.servers.generateEmailAddress(server);
+    const randomFromAddress = `${randomString}@${verifiedDomain}`;
     const randomToAddress = sendToAddress || client.servers.generateEmailAddress(server);
 
     return smtpTransport.sendMail({

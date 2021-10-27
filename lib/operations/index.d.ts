@@ -403,8 +403,8 @@ export interface Messages {
    *
    *                      {null} [result]   - The deserialized result object if an error did not occur.
    */
-   create(server: string, options: { to?: string, subject?: string, html?: string, send?: boolean }): Promise<models.Message>;
-   create(server: string, options: { to?: string, subject?: string, html?: string, send?: boolean }, callback: ServiceCallback<models.Message>): void;
+   create(server: string, options: models.MessageCreateOptions): Promise<models.Message>;
+   create(server: string, options: models.MessageCreateOptions, callback: ServiceCallback<models.Message>): void;
 
   /**
    * @summary Forward an email
@@ -439,8 +439,8 @@ export interface Messages {
    *
    *                      {null} [result]   - The deserialized result object if an error did not occur.
    */
-   forward(id: string, options: { to?: string, html?: string, text?: string }): Promise<models.Message>;
-   forward(id: string, options: { to?: string, html?: string, text?: string }, callback: ServiceCallback<models.Message>): void;
+   forward(id: string, options: models.MessageForwardOptions): Promise<models.Message>;
+   forward(id: string, options: models.MessageForwardOptions, callback: ServiceCallback<models.Message>): void;
 
   /**
    * @summary Reply to an email
@@ -473,8 +473,8 @@ export interface Messages {
    *
    *                      {null} [result]   - The deserialized result object if an error did not occur.
    */
-   reply(id: string, options: { html?: string, text?: string }): Promise<models.Message>;
-   reply(id: string, options: { html?: string, text?: string }, callback: ServiceCallback<models.Message>): void;
+   reply(id: string, options: models.MessageReplyOptions): Promise<models.Message>;
+   reply(id: string, options: models.MessageReplyOptions, callback: ServiceCallback<models.Message>): void;
 }
 
 /**
