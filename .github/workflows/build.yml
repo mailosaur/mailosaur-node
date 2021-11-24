@@ -46,6 +46,7 @@ jobs:
           overwrite: "{ title: `${workflow} failed for ${repository.name}` }"
 
   build-next:
+    if: ${{ always() }}
     needs: build
     runs-on: ubuntu-latest
     timeout-minutes: 10
