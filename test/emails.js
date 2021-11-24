@@ -1,3 +1,5 @@
+const fs = require('fs');
+const path = require('path');
 const { assert } = require('chai');
 const MailosaurClient = require('../lib/mailosaur');
 const MailosaurError = require('../lib/models/mailosaurError');
@@ -423,6 +425,36 @@ describe('emails', () => {
         })
         .catch(outputError(done));
     });
+
+    it('send with attachment', (done) => {
+      const subject = 'New message with attachment';
+
+      const buffer = fs.readFileSync(path.join(__dirname, '/resources/cat.png'));
+      const attachment = {
+        fileName: 'cat.png',
+        content: buffer.toString('base64'),
+        contentType: 'image/png'
+      };
+
+      client.messages.create(server, {
+        to: `anything@${verifiedDomain}`,
+        send: true,
+        subject,
+        html: '<p>This is a new email.</p>',
+        attachments: [attachment]
+      })
+        .then((message) => {
+          assert.equal(message.attachments.length, 1, 'Should have attachment');
+          const file1 = message.attachments[0];
+          assert.isOk(file1.id, 'First attachment should have file id');
+          assert.isOk(file1.url);
+          assert.equal(file1.length, 82138, 'First attachment should be correct size');
+          assert.equal(file1.fileName, 'cat.png', 'First attachment should have filename');
+          assert.equal(file1.contentType, 'image/png', 'First attachment should have correct MIME type');
+          done();
+        })
+        .catch(outputError(done));
+    });
   });
 
   (verifiedDomain ? describe : describe.skip)('forward', () => {
@@ -485,6 +517,33 @@ describe('emails', () => {
         .then((message) => {
           assert.isNotEmpty(message.id);
           assert.isTrue(message.html.body.indexOf(body) >= 0);
+          done();
+        })
+        .catch(outputError(done));
+    });
+
+    it('reply with attachment', (done) => {
+      const targetEmailId = emails[0].id;
+
+      const buffer = fs.readFileSync(path.join(__dirname, '/resources/cat.png'));
+      const attachment = {
+        fileName: 'cat.png',
+        content: buffer.toString('base64'),
+        contentType: 'image/png'
+      };
+
+      client.messages.reply(targetEmailId, {
+        html: '<p>This is a reply with attachment.</p>',
+        attachments: [attachment]
+      })
+        .then((message) => {
+          assert.equal(message.attachments.length, 1, 'Should have attachment');
+          const file1 = message.attachments[0];
+          assert.isOk(file1.id, 'First attachment should have file id');
+          assert.isOk(file1.url);
+          assert.equal(file1.length, 82138, 'First attachment should be correct size');
+          assert.equal(file1.fileName, 'cat.png', 'First attachment should have filename');
+          assert.equal(file1.contentType, 'image/png', 'First attachment should have correct MIME type');
           done();
         })
         .catch(outputError(done));

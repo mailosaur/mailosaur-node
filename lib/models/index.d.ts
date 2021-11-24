@@ -240,6 +240,7 @@ export interface MessageListResult {
  * @member {string} [subject] The email subject line.
  * @member {string} [text] The plain text body of the email. Note that only text or html can be supplied, not both.
  * @member {string} [html] The HTML body of the email. Note that only text or html can be supplied, not both.
+ * @member {array} [attachments] Any message attachments.
  */
 export interface MessageCreateOptions {
   to?: string;
@@ -247,6 +248,7 @@ export interface MessageCreateOptions {
   subject?: string;
   text?: string;
   html?: string;
+  attachments?: Attachment[];
 }
 
 /**
@@ -269,10 +271,12 @@ export interface MessageForwardOptions {
  * @constructor
  * @member {string} [text] Any additional plain text content to include in the reply. Note that only text or html can be supplied, not both.
  * @member {string} [html] Any additional HTML content to include in the reply. Note that only html or text can be supplied, not both.
+ * @member {array} [attachments] Any message attachments.
  */
 export interface MessageReplyOptions {
   text?: string;
   html?: string;
+  attachments?: Attachment[];
 }
 
 /**
@@ -348,7 +352,7 @@ export interface ServerCreateOptions {
  * @member {number} [limit] The limit.
  * @member {number} [current] The current usage.
  */
- export interface UsageAccountLimit {
+export interface UsageAccountLimit {
   limit?: number;
   current?: number;
 }
@@ -362,7 +366,7 @@ export interface ServerCreateOptions {
  * @member {UsageAccountLimit} [email] Email limits.
  * @member {UsageAccountLimit} [sms] SMS limits.
  */
- export interface UsageAccountLimits {
+export interface UsageAccountLimits {
   servers?: UsageAccountLimit;
   users?: UsageAccountLimit;
   email?: UsageAccountLimit;
@@ -377,7 +381,7 @@ export interface ServerCreateOptions {
  * @member {number} [email] The number of emails.
  * @member {number} [sms] The number of SMS messages.
  */
- export interface UsageTransaction {
+export interface UsageTransaction {
   timestamp?: Date;
   email?: number;
   sms?: number;
@@ -391,6 +395,6 @@ export interface ServerCreateOptions {
  *
  * @member {array} [items] The individual transactions that have occurred.
  */
- export interface UsageTransactionListResult {
+export interface UsageTransactionListResult {
   items?: UsageTransaction[];
 }
