@@ -7,7 +7,7 @@ const outputError = (done) => (err) => {
   done(err);
 };
 
-describe('servers', () => {
+describe('usage', () => {
   let client;
   const apiKey = process.env.MAILOSAUR_API_KEY;
   const baseUrl = process.env.MAILOSAUR_BASE_URL || 'https://mailosaur.com/';
