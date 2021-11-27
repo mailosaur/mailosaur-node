@@ -90,13 +90,10 @@ export interface Messages {
      * The unique identifier of the required server.
      */
     server: string,
-
-
-    options?: {
-      page?: number,
-      itemsPerPage?: number,
-      receivedAfter?: Date
-    }
+    /**
+     * Message listing options
+     */
+    options?: models.MessageListOptions
   ): Promise<models.MessageListResult>;
 
   /**
