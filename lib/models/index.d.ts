@@ -1,38 +1,541 @@
 /**
- * @class
- * Initializes a new instance of the SpamAssassinRule class.
- * @constructor
- * @member {number} [score]
- * @member {string} [rule]
- * @member {string} [description]
+ * Contact information for a message sender or recipient.
+ */
+export interface MessageAddress {
+  /**
+   * Display name, if one is specified.
+   */
+  name?: string;
+  /**
+   * Email address (applicable to email messages).
+   */
+  email?: string;
+  /**
+   * Phone number (applicable to SMS messages).
+   */
+  phone?: string;
+}
+
+/**
+ * Data associated with a hyperlink found within an email or SMS message.
+ */
+export interface Link {
+  /**
+   * The URL for the link.
+   */
+  href?: string;
+  /**
+   * The dispaly text of the link. This is particular useful for understanding how a
+   * link was displayed within HTML content.
+   */
+  text?: string;
+}
+
+/**
+ * Data associated with an image found within a message.
+ */
+export interface Image {
+  /**
+   * The value of the `src` attribute of the image.
+   */
+  src?: string;
+  /**
+   * The `alt` text (alternative text), used to describe the image.
+   */
+  alt?: string;
+}
+
+/**
+ * The content of the message.
+ */
+export interface MessageContent {
+  /**
+   * Any hyperlinks found within this content.
+   */
+  links?: Link[];
+  /**
+   * Any images found within this content.
+   */
+  images?: Image[];
+  /**
+   * The HTML or plain text body of the message.
+   */
+  body?: string;
+}
+
+/**
+ * Describes a message attachmnent.
+ */
+export interface Attachment {
+  /**
+   * Unique identifier for the attachment.
+   */
+  id: string;
+  /**
+   * The MIME type of the attachment.
+   */
+  contentType?: string;
+  /**
+   * The filename of the attachment.
+   */
+  fileName?: string;
+  /**
+   * The base64-encoded content of the attachment. Note: This is only populated when sending attachments.
+   */
+  content?: string;
+  /**
+   * The content identifier (for attachments that are embedded within the body of the message).
+   */
+  contentId?: string;
+  /**
+   * The file size, in bytes.
+   */
+  length?: number;
+  /**
+   * The URL from which the attachment can be downloaded.
+   */
+  url?: string;
+}
+
+/**
+ * Message header key/value pair.
+ */
+export interface MessageHeader {
+  /**
+   * Header key.
+   */
+  field?: string;
+  /**
+   * Header value.
+   */
+  value?: string;
+}
+
+/**
+ * Further metadata related to the message, including email headers.
+ */
+export interface Metadata {
+  /**
+   * Message headers
+   */
+  headers?: MessageHeader[];
+}
+
+/**
+ * The email or SMS message processed by Mailosaur.
+ */
+export interface Message {
+  /**
+   * Unique identifier for the message.
+   */
+  id?: string;
+  /**
+   * The sender of the message.
+   */
+  from?: MessageAddress[];
+  /**
+   * The recipients of the message.
+   */
+  to?: MessageAddress[];
+  /**
+   * Carbon-copied recipients for email messages.
+   */
+  cc?: MessageAddress[];
+  /**
+   * Blind carbon-copied recipients for email messages.
+   */
+  bcc?: MessageAddress[];
+  /**
+   * The date/time that this message was received by Mailosaur.
+   */
+  received?: Date;
+  /**
+   * The subject of the message.
+   */
+  subject?: string;
+  /**
+   * Message content that was sent in HTML format.
+   */
+  html?: MessageContent;
+  /**
+   * Message content that was sent in plain text format.
+   */
+  text?: MessageContent;
+  /**
+   * An array of attachment metadata for any attached files.
+   */
+  attachments?: Attachment[];
+  /**
+   * The email recipient given to Mailosaur by the sending server.
+   */
+  rcpt?: MessageAddress[];
+  /**
+   * Further metadata related to the message, including email headers.
+   */
+  metadata?: Metadata;
+  /**
+   * Identifier for the server in which the message is located.
+   */
+  server?: string;
+}
+
+/**
+ * A summary of the message processed by Mailosaur. This summary does not include
+ * the contents of the email or SMS message, for which you will need the full
+ * message object.
+ */
+export interface MessageSummary {
+  /**
+   * Unique identifier for the message.
+   */
+  id: string;
+  /**
+   * The sender of the message.
+   */
+  from?: MessageAddress[];
+  /**
+   * The recipients of the message.
+   */
+  to?: MessageAddress[];
+  /**
+   * Carbon-copied recipients for email messages.
+   */
+  cc?: MessageAddress[];
+  /**
+   * Blind carbon-copied recipients for email messages.
+   */
+  bcc?: MessageAddress[];
+  /**
+   * The date/time that this message was received by Mailosaur.
+   */
+  received?: Date;
+  /**
+   * The subject of the message.
+   */
+  subject?: string;
+  /**
+   * A short, summarized version of the message content.
+   */
+  summary?: string;
+  /**
+   * The number of attachments associated with the message.
+   */
+  attachments?: number;
+  /**
+   * The email recipient given to Mailosaur by the sending server.
+   */
+  rcpt?: MessageAddress[];
+  /**
+   * Identifier for the server in which the message is located.
+   */
+  server?: string;
+}
+
+/**
+ * The result of a message listing request.
+ */
+export interface MessageListResult {
+  /**
+   * The individual summaries of each message forming the
+   * result. Summaries are returned sorted by received date, with the most
+   * recently-received messages appearing first.
+   */
+  items?: MessageSummary[];
+}
+
+/**
+ * The criteria with which to find messages during a search.
+ */
+export interface SearchCriteria {
+  /**
+   * The full email address (or phone number for SMS) from which the target message was sent.
+   */
+  sentFrom?: string;
+  /**
+   * The full email address (or phone number for SMS) to which the target message was sent.
+   */
+  sentTo?: string;
+  /**
+   * The value to seek within the subject line of a target email.
+   */
+  subject?: string;
+  /**
+   * The value to seek within the body of the target message.
+   */
+  body?: string;
+  /**
+   * If set to `ALL` (default), then only results that match all specified criteria will be returned.
+   * If set to `ANY`, results that match any of the specified criteria will be returned
+   */
+  match?: "ALL" | "ANY";
+}
+
+/**
+ * Search options
+ */
+export interface SearchOptions {
+  /**
+   * Specify how long to wait for a matching result (in milliseconds, default value is 10 seconds).
+   */
+  timeout?: number,
+  /**
+   * Limits results to only messages received after this date/time (default 1 hour ago).
+   */
+  receivedAfter?: Date,
+  /**
+   * Used alongside `itemsPerPage` to paginate through results. This is zero-based, meaning `0` is the first page of results.
+   */
+  page?: number,
+  /**
+   * A limit on the number of results to be returned. This can be set between `1` and `1000`, with the default being `50`.
+   */
+  itemsPerPage?: number,
+  /**
+   * When using the 'get' method, this option can be used to prevent an error being thrown if no matching message is found in time.
+   */
+  suppressError?: boolean
+}
+
+/**
+ * Options to use when creating a new message.
+ */
+export interface MessageCreateOptions {
+  /**
+   * The email address to which the email will be sent. Must be a verified email address.
+   */
+  to?: string;
+  /**
+   * If true, email will be sent upon creation.
+   */
+  send?: boolean;
+  /**
+   * The email subject line.
+   */
+  subject?: string;
+  /**
+   * The plain text body of the message. Note that only text or html can be supplied, not both.
+   */
+  text?: string;
+  /**
+   * The HTML body of the message. Note that only text or html can be supplied, not both.
+   */
+  html?: string;
+  /**
+   * Any message attachments.
+   */
+  attachments?: Attachment[];
+}
+
+/**
+ * Options to use when forwarding a message.
+ */
+export interface MessageForwardOptions {
+  /**
+   * The email address to which the email will be sent. Must be a verified email address.
+   */
+  to: string;
+  /**
+   * Any plain text to include when forwarding the message. Note that only text or html can be supplied, not both.
+   */
+  text?: string;
+  /**
+   * Any HTML content to include when forwarding the message. Note that only text or html can be supplied, not both.
+   */
+  html?: string;
+}
+
+/**
+ * Options to use when replying to a message.
+ */
+export interface MessageReplyOptions {
+  /**
+   * Any additional plain text content to include in the reply. Note that only text or html can be supplied, not both.
+   */
+  text?: string;
+  /**
+   * Any additional HTML content to include in the reply. Note that only html or text can be supplied, not both.
+   */
+  html?: string;
+  /**
+   * Any message attachments.
+   */
+  attachments?: Attachment[];
+}
+
+/**
+ * Mailosaur virtual SMTP/SMS server.
+ */
+export interface Server {
+  /**
+   * Unique identifier for the server.
+   */
+  id?: string;
+  /**
+   * The name of the server.
+   */
+  name?: string;
+  /**
+   * Users (excluding administrators) who have access to the server (if it is restricted).
+   */
+  users?: string[];
+  /**
+   * The number of messages currently in the server.
+   */
+  messages?: number;
+}
+
+/**
+ * Options used to create a new Mailosaur server.
+ */
+export interface ServerCreateOptions {
+  /**
+   * A name used to identify the server.
+   */
+  name?: string;
+}
+
+/**
+ * The result of the server listing operation.
+ */
+export interface ServerListResult {
+  /**
+   * The individual servers forming the result. Servers
+   * are returned sorted by creation date, with the most recently-created server
+   * appearing first.
+   */
+  items?: Server[];
+}
+
+/**
+ * Search options
+ */
+export interface SearchOptions {
+  /**
+   * Specify how long to wait for a matching result (in milliseconds, default value is 10 seconds).
+   */
+  timeout?: number,
+  /**
+   * Limits results to only messages received after this date/time (default 1 hour ago).
+   */
+  receivedAfter?: Date,
+  /**
+   * Used alongside `itemsPerPage` to paginate through results. This is zero-based, meaning `0` is the first page of results.
+   */
+  page?: number,
+  /**
+   * A limit on the number of results to be returned. This can be set between `1` and `1000`, with the default being `50`.
+   */
+  itemsPerPage?: number,
+  /**
+   * When using the 'get' method, this option can be used to prevent an error being thrown if no matching message is found in time.
+   */
+  suppressError?: boolean
+}
+
+/**
+ * The result of an individual Spam Assassin rule
  */
 export interface SpamAssassinRule {
+  /**
+   * Spam Assassin score.
+   */
   score?: number;
+  /**
+   * Spam Assassin rule name.
+   */
   rule?: string;
+  /**
+   * Spam Assassin rule description.
+   */
   description?: string;
 }
 
 /**
- * @class
- * Initializes a new instance of the SpamFilterResults class.
- * @constructor
- * @member {array} [spamAssassin]
+ * Results for this email against various spam filters.
  */
 export interface SpamFilterResults {
+  /**
+   * Spam Assassin filter results.
+   */
   spamAssassin?: SpamAssassinRule[];
 }
 
 /**
- * @class
- * Initializes a new instance of the SpamAnalysisResult class.
- * @constructor
- * @member {object} [spamFilterResults]
- * @member {array} [spamFilterResults.spamAssassin]
- * @member {number} [score]
+ * The results of spam analysis performed by Mailosaur.
  */
 export interface SpamAnalysisResult {
+  /**
+   * Spam filter results.
+   */
   spamFilterResults?: SpamFilterResults;
+  /**
+   * Overall Mailosaur spam score.
+   */
   score?: number;
+}
+
+/**
+ * The detail of an individual account limit.
+ */
+export interface UsageAccountLimit {
+  /**
+   * The limit for your account.
+   */
+  limit?: number;
+  /**
+   * Your account usage so far.
+   */
+  current?: number;
+}
+
+/**
+ * The current limits and usage for your account.
+ */
+export interface UsageAccountLimits {
+  /**
+   * Server limits.
+   */
+  servers?: UsageAccountLimit;
+  /**
+   * User limits.
+   */
+  users?: UsageAccountLimit;
+  /**
+   * Emails per day limits.
+   */
+  email?: UsageAccountLimit;
+  /**
+   * SMS message per month limits.
+   */
+  sms?: UsageAccountLimit;
+}
+
+/**
+ * Usage transaction.
+ */
+export interface UsageTransaction {
+  /**
+   * The date/time of the transaction.
+   */
+  timestamp?: Date;
+  /**
+   * The number of emails.
+   */
+  email?: number;
+  /**
+   * The number of SMS messages.
+   */
+  sms?: number;
+}
+
+/**
+ * Usage transactions from your account.
+ */
+export interface UsageTransactionListResult {
+  /**
+   * The individual transactions that have occurred.
+   */
+  items?: UsageTransaction[];
 }
 
 /**
@@ -47,354 +550,4 @@ export interface MailosaurError {
   errorType?: string;
   httpStatusCode?: number;
   httpResponseBody?: string;
-}
-
-/**
- * @class
- * Initializes a new instance of the MessageAddress class.
- * @constructor
- * @member {string} [name] Display name, if one is specified.
- * @member {string} [email] Email address (applicable to email messages).
- * @member {string} [phone] Phone number (applicable to SMS messages).
- */
-export interface MessageAddress {
-  name?: string;
-  email?: string;
-  phone?: string;
-}
-
-/**
- * @class
- * Initializes a new instance of the Link class.
- * @constructor
- * @member {string} [href]
- * @member {string} [text]
- */
-export interface Link {
-  href?: string;
-  text?: string;
-}
-
-/**
- * @class
- * Initializes a new instance of the Image class.
- * @constructor
- * @member {string} [src]
- * @member {string} [alt]
- */
-export interface Image {
-  src?: string;
-  alt?: string;
-}
-
-/**
- * @class
- * Initializes a new instance of the MessageContent class.
- * @constructor
- * @member {array} [links]
- * @member {array} [images]
- * @member {string} [body]
- */
-export interface MessageContent {
-  links?: Link[];
-  images?: Image[];
-  body?: string;
-}
-
-/**
- * @class
- * Initializes a new instance of the Attachment class.
- * @constructor
- * @member {uuid} id
- * @member {string} [contentType]
- * @member {string} [fileName]
- * @member {string} [contentId]
- * @member {number} [length]
- * @member {string} [url]
- */
-export interface Attachment {
-  id: string;
-  contentType?: string;
-  fileName?: string;
-  contentId?: string;
-  length?: number;
-  url?: string;
-}
-
-/**
- * @class
- * Initializes a new instance of the MessageHeader class.
- * @constructor
- * @member {string} [field] Header key.
- * @member {string} [value] Header value.
- */
-export interface MessageHeader {
-  field?: string;
-  value?: string;
-}
-
-/**
- * @class
- * Initializes a new instance of the Metadata class.
- * @constructor
- * Advanced use case content related to the message.
- *
- * @member {array} [headers] Email headers.
- */
-export interface Metadata {
-  headers?: MessageHeader[];
-}
-
-/**
- * @class
- * Initializes a new instance of the Message class.
- * @constructor
- * @member {uuid} [id] Unique identifier for the message.
- * @member {array} [from] The sender of the message.
- * @member {array} [to] The message’s recipient.
- * @member {array} [cc] Carbon-copied recipients for email messages.
- * @member {array} [bcc] Blind carbon-copied recipients for email messages.
- * @member {date} [received] The datetime that this message was received by
- * Mailosaur.
- * @member {string} [subject] The message’s subject.
- * @member {object} [html] Message content that was sent in HTML format.
- * @member {array} [html.links]
- * @member {array} [html.images]
- * @member {string} [html.body]
- * @member {object} [text] Message content that was sent in plain text format.
- * @member {array} [text.links]
- * @member {array} [text.images]
- * @member {string} [text.body]
- * @member {array} [attachments] An array of attachment metadata for any
- * attached files.
- * @member {object} [metadata]
- * @member {array} [metadata.headers] Email headers.
- * @member {string} [server] Identifier for the server in which the message is
- * located.
- */
-export interface Message {
-  id?: string;
-  from?: MessageAddress[];
-  to?: MessageAddress[];
-  cc?: MessageAddress[];
-  bcc?: MessageAddress[];
-  received?: Date;
-  subject?: string;
-  html?: MessageContent;
-  text?: MessageContent;
-  attachments?: Attachment[];
-  metadata?: Metadata;
-  server?: string;
-}
-
-/**
- * @class
- * Initializes a new instance of the MessageSummary class.
- * @constructor
- * @member {uuid} id
- * @member {string} [server]
- * @member {array} [rcpt]
- * @member {array} [from]
- * @member {array} [to]
- * @member {array} [cc]
- * @member {array} [bcc]
- * @member {date} [received]
- * @member {string} [subject]
- * @member {string} [summary]
- * @member {number} [attachments]
- */
-export interface MessageSummary {
-  id: string;
-  server?: string;
-  rcpt?: MessageAddress[];
-  from?: MessageAddress[];
-  to?: MessageAddress[];
-  cc?: MessageAddress[];
-  bcc?: MessageAddress[];
-  received?: Date;
-  subject?: string;
-  summary?: string;
-  attachments?: number;
-}
-
-/**
- * @class
- * Initializes a new instance of the MessageListResult class.
- * @constructor
- * The result of a message listing request.
- *
- * @member {array} [items] The individual summaries of each message forming the
- * result. Summaries are returned sorted by received date, with the most
- * recently-received messages appearing first.
- */
-export interface MessageListResult {
-  items?: MessageSummary[];
-}
-
-/**
- * @class
- * Initializes a new instance of the MessageCreateOptions class.
- * @constructor
- * @member {string} [to] The email address to which the email will be sent.
- * @member {boolean} [send] If true, email will be sent upon creation.
- * @member {string} [subject] The email subject line.
- * @member {string} [text] The plain text body of the email. Note that only text or html can be supplied, not both.
- * @member {string} [html] The HTML body of the email. Note that only text or html can be supplied, not both.
- * @member {array} [attachments] Any message attachments.
- */
-export interface MessageCreateOptions {
-  to?: string;
-  send?: boolean;
-  subject?: string;
-  text?: string;
-  html?: string;
-  attachments?: Attachment[];
-}
-
-/**
- * @class
- * Initializes a new instance of the MessageForwardOptions class.
- * @constructor
- * @member {string} [to] The email address to which the email will be sent.
- * @member {string} [text] Any additional plain text content to forward the email with. Note that only text or html can be supplied, not both.
- * @member {string} [html] Any additional HTML content to forward the email with. Note that only html or text can be supplied, not both.
- */
-export interface MessageForwardOptions {
-  to: string;
-  text?: string;
-  html?: string;
-}
-
-/**
- * @class
- * Initializes a new instance of the MessageReplyOptions class.
- * @constructor
- * @member {string} [text] Any additional plain text content to include in the reply. Note that only text or html can be supplied, not both.
- * @member {string} [html] Any additional HTML content to include in the reply. Note that only html or text can be supplied, not both.
- * @member {array} [attachments] Any message attachments.
- */
-export interface MessageReplyOptions {
-  text?: string;
-  html?: string;
-  attachments?: Attachment[];
-}
-
-/**
- * @class
- * Initializes a new instance of the SearchCriteria class.
- * @constructor
- * @member {string} [sentFrom] The full email address from which the target email
- * was sent.
- * @member {string} [sentTo] The full email address to which the target email
- * was sent.
- * @member {string} [subject] The value to seek within the target email's
- * subject line.
- * @member {string} [body] The value to seek within the target email's HTML or
- * text body.
- * @member {string} [match] If set to ALL (default), then only results that match all
- * specified criteria will be returned. If set to ANY, results that match any of the
- * specified criteria will be returned.
- */
-export interface SearchCriteria {
-  sentFrom?: string;
-  sentTo?: string;
-  subject?: string;
-  body?: string;
-  match?: "ALL" | "ANY";
-}
-
-/**
- * @class
- * Initializes a new instance of the Server class.
- * @constructor
- * @member {string} [id] Unique identifier for the server. Used as username for
- * SMTP/POP3 authentication.
- * @member {string} [name] A name used to identify the server.
- * @member {array} [users] Users (excluding administrators) who have access to
- * the server.
- * @member {number} [messages] The number of messages currently in the server.
- */
-export interface Server {
-  id?: string;
-  name?: string;
-  users?: string[];
-  messages?: number;
-}
-
-/**
- * @class
- * Initializes a new instance of the ServerListResult class.
- * @constructor
- * The result of a server listing request.
- *
- * @member {array} [items] The individual servers forming the result. Servers
- * are returned sorted by creation date, with the most recently-created server
- * appearing first.
- */
-export interface ServerListResult {
-  items?: Server[];
-}
-
-/**
- * @class
- * Initializes a new instance of the ServerCreateOptions class.
- * @constructor
- * @member {string} [name] A name used to identify the server.
- */
-export interface ServerCreateOptions {
-  name?: string;
-}
-
-/**
- * @class
- * Initializes a new instance of the UsageAccountLimit class.
- * @constructor
- * @member {number} [limit] The limit.
- * @member {number} [current] The current usage.
- */
-export interface UsageAccountLimit {
-  limit?: number;
-  current?: number;
-}
-
-/**
- * @class
- * Initializes a new instance of the UsageAccountLimit class.
- * @constructor
- * @member {UsageAccountLimit} [servers] Server limits.
- * @member {UsageAccountLimit} [users] User limits.
- * @member {UsageAccountLimit} [email] Email limits.
- * @member {UsageAccountLimit} [sms] SMS limits.
- */
-export interface UsageAccountLimits {
-  servers?: UsageAccountLimit;
-  users?: UsageAccountLimit;
-  email?: UsageAccountLimit;
-  sms?: UsageAccountLimit;
-}
-
-/**
- * @class
- * Initializes a new instance of the UsageTransaction class.
- * @constructor
- * @member {date} [timestamp] The date/time of the transaction.
- * @member {number} [email] The number of emails.
- * @member {number} [sms] The number of SMS messages.
- */
-export interface UsageTransaction {
-  timestamp?: Date;
-  email?: number;
-  sms?: number;
-}
-
-/**
- * @class
- * Initializes a new instance of the UsageTransactionListResult class.
- * @constructor
- * The result of a usage transactions request.
- *
- * @member {array} [items] The individual transactions that have occurred.
- */
-export interface UsageTransactionListResult {
-  items?: UsageTransaction[];
 }

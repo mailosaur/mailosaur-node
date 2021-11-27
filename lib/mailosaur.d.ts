@@ -1,24 +1,46 @@
+/// <reference types="node" />
+
 import * as operations from "./operations";
+
+export = MailosaurClient;
 
 declare class MailosaurClient {
   /**
-   * @class
-   * Initializes a new instance of the MailosaurBaseClient class.
-   * @constructor
-   *
-   * @param {string} apiKey - Your Mailosaur API key.
-   *
-   * @param {string} [baseUrl] - The base URL of the Mailosaur service.
-   *
+   * Returns an instance of the Mailosaur client.
    */
-  constructor(apiKey: string, baseUrl?: string);
+  constructor(
+    /**
+     * Your Mailosaur API key.
+     */
+    apiKey: string,
+    /**
+     * Optionally overrides the base URL of the Mailosaur service.
+     */
+    baseUrl?: string
+  );
 
-  // Operation groups
+  /**
+   * Message analysis operations
+   */
   analysis: operations.Analysis;
+
+  /**
+   * File operations
+   */
   files: operations.Files;
+
+  /**
+   * Message operations
+   */
   messages: operations.Messages;
+
+  /**
+   * Server management operations
+   */
   servers: operations.Servers;
+
+  /**
+   * Account usage operations
+   */
   usage: operations.Usage;
 }
-
-export default MailosaurClient;

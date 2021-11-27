@@ -1,750 +1,259 @@
 import * as stream from 'stream';
 import * as models from '../models';
 
-type ServiceCallback<T> = (error: Error, data: T) => void;
-
 /**
- * @class
- * Analysis
- * __NOTE__: An instance of this class is automatically created for an
- * instance of the MailosaurClient.
+ * Message analysis operations.
  */
 export interface Analysis {
-
-
   /**
-   * @summary Perform a spam test
-   *
-   * Perform spam testing on the specified email
-   *
-   * @param {uuid} email The identifier of the email to be analyzed.
-   *
-   * @param {ServiceCallback} [optionalCallback] - The optional callback.
-   *
-   * @returns {ServiceCallback|Promise} If a callback was passed as the last
-   * parameter then it returns the callback else returns a Promise.
-   *
-   * {Promise} A promise is returned.
-   *
-   *                      @resolve {SpamAnalysisResult} - The deserialized result object.
-   *
-   *                      @reject {Error|ServiceError} - The error object.
-   *
-   * {ServiceCallback} optionalCallback(err, result, request, response)
-   *
-   *                      {Error|ServiceError}  err        - The Error object if an error occurred, null otherwise.
-   *
-   *                      {SpamAnalysisResult} [result]   - The deserialized result object if an error did not occur.
-   *                      See {@link SpamAnalysisResult} for more information.
+   * Perform a spam analysis of an email.
    */
-  spam(email: string): Promise<models.SpamAnalysisResult>;
-  spam(email: string, callback: ServiceCallback<models.SpamAnalysisResult>): void;
+  spam(
+    /**
+     * The identifier of the message to be analyzed.
+     */
+    messageId: string
+  ): Promise<models.SpamAnalysisResult>;
 }
 
 /**
- * @class
- * Files
- * __NOTE__: An instance of this class is automatically created for an
- * instance of the MailosaurClient.
+ * File operations.
  */
 export interface Files {
-
+  /**
+   * Downloads a single attachment.
+   */
+  getAttachment(
+    /**
+     * The identifier for the required attachment.
+     */
+    attachmentId: string
+  ): Promise<stream.Readable>;
 
   /**
-   * @summary Download an attachment
-   *
-   * Downloads a single attachment. Simply supply the unique identifier for the
-   * required attachment.
-   *
-   * @param {uuid} id The identifier of the attachment to be downloaded.
-   *
-   * @param {ServiceCallback} [optionalCallback] - The optional callback.
-   *
-   * @returns {ServiceCallback|Promise} If a callback was passed as the last
-   * parameter then it returns the callback else returns a Promise.
-   *
-   * {Promise} A promise is returned.
-   *
-   *                      @resolve {Object} - The deserialized result object.
-   *
-   *                      @reject {Error|ServiceError} - The error object.
-   *
-   * {ServiceCallback} optionalCallback(err, result, request, response)
-   *
-   *                      {Error|ServiceError}  err        - The Error object if an error occurred, null otherwise.
-   *
-   *                      {Object} [result]   - The deserialized result object if an error did not occur.
+   * Downloads an EML file representing the specified email.
    */
-  getAttachment(id: string): Promise<stream.Readable>;
-  getAttachment(id: string, callback: ServiceCallback<stream.Readable>): void;
-
-
-  /**
-   * @summary Download EML
-   *
-   * Downloads an EML file representing the specified email. Simply supply the
-   * unique identifier for the required email.
-   *
-   * @param {uuid} id The identifier of the email to be downloaded.
-   *
-   * @param {ServiceCallback} [optionalCallback] - The optional callback.
-   *
-   * @returns {ServiceCallback|Promise} If a callback was passed as the last
-   * parameter then it returns the callback else returns a Promise.
-   *
-   * {Promise} A promise is returned.
-   *
-   *                      @resolve {Object} - The deserialized result object.
-   *
-   *                      @reject {Error|ServiceError} - The error object.
-   *
-   * {ServiceCallback} optionalCallback(err, result, request, response)
-   *
-   *                      {Error|ServiceError}  err        - The Error object if an error occurred, null otherwise.
-   *
-   *                      {Object} [result]   - The deserialized result object if an error did not occur.
-   */
-  getEmail(id: string): Promise<stream.Readable>;
-  getEmail(id: string, callback: ServiceCallback<stream.Readable>): void;
+  getEmail(
+    /**
+     * The identifier for the required message.
+     */
+    messageId: string
+  ): Promise<stream.Readable>;
 }
 
-/**
- * @class
- * Messages
- * __NOTE__: An instance of this class is automatically created for an
- * instance of the MailosaurClient.
- */
 export interface Messages {
-
+  /**
+   * Waits for a message to be found. Returns as soon as a message matching the specified search criteria is found.
+   * **Recommended:** This is the most efficient method of looking up a message, therefore we recommend using it wherever possible.
+   */
+  get(
+    /**
+     * The unique identifier of the containing server.
+     */
+    serverId: string,
+    /**
+     * The criteria with which to find messages during a search.
+     */
+    criteria: models.SearchCriteria,
+    /**
+     * Search options
+     */
+    options?: models.SearchOptions
+  ): Promise<models.Message>;
 
   /**
-   * @summary Retrieve a message using search criteria
-   *
-   * Returns as soon as a message matching the specified search criteria is
-   * found. This is the most efficient method of looking up a message.
-   *
-   * @param {string} server The identifier of the server hosting the message.
-   *
-   * @param {object} criteria The search criteria to use in order to find a
-   * match.
-   *
-   * @param {string} [criteria.sentFrom] The full email address from which the target
-   * email was sent.
-   *
-   * @param {string} [criteria.sentTo] The full email address to which the target
-   * email was sent.
-   *
-   * @param {string} [criteria.subject] The value to seek within the target
-   * email's subject line.
-   *
-   * @param {string} [criteria.body] The value to seek within the target email's
-   * HTML or text body.
-   *
-   * @param {object} [options] Optional Parameters.
-   *
-   * @param {number} [options.timeout] Specify how long to wait for a matching
-   * result (in milliseconds).
-   *
-   * @param {date} [options.receivedAfter] Limits results to only messages
-   * received after this date/time (default 20 seconds ago).
-   *
-   * @param {ServiceCallback} [optionalCallback] - The optional callback.
-   *
-   * @returns {ServiceCallback|Promise} If a callback was passed as the last
-   * parameter then it returns the callback else returns a Promise.
-   *
-   * {Promise} A promise is returned.
-   *
-   *                      @resolve {Message} - The deserialized result object.
-   *
-   *                      @reject {Error|ServiceError} - The error object.
-   *
-   * {ServiceCallback} optionalCallback(err, result, request, response)
-   *
-   *                      {Error|ServiceError}  err        - The Error object if an error occurred, null otherwise.
-   *
-   *                      {Message} [result]   - The deserialized result object if an error did not occur.
-   *                      See {@link Message} for more information.
+   * Retrieves the detail for a single message. Must be used in conjunction with either list or
+   * search in order to get the unique identifier for the required message.
    */
-  get(server: string, criteria: models.SearchCriteria, options?: { timeout?: number, receivedAfter?: Date }): Promise<models.Message>;
-  get(server: string, criteria: models.SearchCriteria, options: { timeout?: number, receivedAfter?: Date }, callback: ServiceCallback<models.Message>): void;
-
+  getById(
+    /**
+     * The unique identifier of the message to be retrieved.
+     */
+    messageId: string
+  ): Promise<models.Message>;
 
   /**
-   * @summary Retrieve a message using message id
-   *
-   * Retrieves the detail for a single email message. Simply supply the unique
-   * identifier for the required message.
-   *
-   * @param {uuid} id The identifier of the email message to be retrieved.
-   *
-   * @param {ServiceCallback} [optionalCallback] - The optional callback.
-   *
-   * @returns {ServiceCallback|Promise} If a callback was passed as the last
-   * parameter then it returns the callback else returns a Promise.
-   *
-   * {Promise} A promise is returned.
-   *
-   *                      @resolve {Message} - The deserialized result object.
-   *
-   *                      @reject {Error|ServiceError} - The error object.
-   *
-   * {ServiceCallback} optionalCallback(err, result, request, response)
-   *
-   *                      {Error|ServiceError}  err        - The Error object if an error occurred, null otherwise.
-   *
-   *                      {Message} [result]   - The deserialized result object if an error did not occur.
-   *                      See {@link Message} for more information.
+   * Permanently deletes a message. Also deletes any attachments related to the message. This operation cannot be undone.
    */
-  getById(id: string): Promise<models.Message>;
-  getById(id: string, callback: ServiceCallback<models.Message>): void;
-
+  del(
+    /**
+     * The identifier for the message.
+     */
+    messageId: string
+  ): Promise<void>;
 
   /**
-   * @summary Delete a message
-   *
-   * Permanently deletes a message. This operation cannot be undone. Also deletes
-   * any attachments related to the message.
-   *
-   * @param {uuid} id The identifier of the message to be deleted.
-   *
-   * @param {ServiceCallback} [optionalCallback] - The optional callback.
-   *
-   * @returns {ServiceCallback|Promise} If a callback was passed as the last
-   * parameter then it returns the callback else returns a Promise.
-   *
-   * {Promise} A promise is returned.
-   *
-   *                      @resolve {null} - The deserialized result object.
-   *
-   *                      @reject {Error|ServiceError} - The error object.
-   *
-   * {ServiceCallback} optionalCallback(err, result, request, response)
-   *
-   *                      {Error|ServiceError}  err        - The Error object if an error occurred, null otherwise.
-   *
-   *                      {null} [result]   - The deserialized result object if an error did not occur.
+   * Returns a list of your messages in summary form. The summaries are returned sorted by received date, with the most recently-received messages appearing first.
    */
-  del(id: string): Promise<void>;
-  del(id: string, callback: ServiceCallback<void>): void;
+  list(
+    /**
+     * The unique identifier of the required server.
+     */
+    server: string,
 
+
+    options?: {
+      page?: number,
+      itemsPerPage?: number,
+      receivedAfter?: Date
+    }
+  ): Promise<models.MessageListResult>;
 
   /**
-   * @summary List all messages
-   *
-   * Returns a list of your messages in summary form. The summaries are returned
-   * sorted by received date, with the most recently-received messages appearing
-   * first.
-   *
-   * @param {string} server The identifier of the server hosting the messages.
-   *
-   * @param {object} [options] Optional Parameters.
-   *
-   * @param {number} [options.page] Used in conjunction with `itemsPerPage` to
-   * support pagination.
-   *
-   * @param {number} [options.itemsPerPage] A limit on the number of results to
-   * be returned per page. Can be set between 1 and 1000 items, the default is
-   * 50.
-   *
-   * @param {date} [options.receivedAfter] Limits results to only messages
-   * received after this date/time.
-   *
-   * @param {ServiceCallback} [optionalCallback] - The optional callback.
-   *
-   * @returns {ServiceCallback|Promise} If a callback was passed as the last
-   * parameter then it returns the callback else returns a Promise.
-   *
-   * {Promise} A promise is returned.
-   *
-   *                      @resolve {MessageListResult} - The deserialized result object.
-   *
-   *                      @reject {Error|ServiceError} - The error object.
-   *
-   * {ServiceCallback} optionalCallback(err, result, request, response)
-   *
-   *                      {Error|ServiceError}  err        - The Error object if an error occurred, null otherwise.
-   *
-   *                      {MessageListResult} [result]   - The deserialized result object if an error did not occur.
-   *                      See {@link MessageListResult} for more information.
+   * Permenantly delete all messages within a server.
    */
-  list(server: string, options?: { page?: number, itemsPerPage?: number, receivedAfter?: Date }): Promise<models.MessageListResult>;
-  list(server: string, callback: ServiceCallback<models.MessageListResult>): void;
-  list(server: string, options: { page?: number, itemsPerPage?: number, receivedAfter?: Date }, callback: ServiceCallback<models.MessageListResult>): void;
-
+  deleteAll(
+    /**
+     * The unique identifier of the server.
+     */
+    serverId: string
+  ): Promise<void>;
 
   /**
-   * @summary Delete all messages
-   *
-   * Permanently deletes all messages held by the specified server. This
-   * operation cannot be undone. Also deletes any attachments related to each
-   * message.
-   *
-   * @param {string} server The identifier of the server to be emptied.
-   *
-   * @param {ServiceCallback} [optionalCallback] - The optional callback.
-   *
-   * @returns {ServiceCallback|Promise} If a callback was passed as the last
-   * parameter then it returns the callback else returns a Promise.
-   *
-   * {Promise} A promise is returned.
-   *
-   *                      @resolve {null} - The deserialized result object.
-   *
-   *                      @reject {Error|ServiceError} - The error object.
-   *
-   * {ServiceCallback} optionalCallback(err, result, request, response)
-   *
-   *                      {Error|ServiceError}  err        - The Error object if an error occurred, null otherwise.
-   *
-   *                      {null} [result]   - The deserialized result object if an error did not occur.
+   * Returns a list of messages matching the specified search criteria, in summary form.
+   * The messages are returned sorted by received date, with the most recently-received messages appearing first.
    */
-  deleteAll(server: string): Promise<void>;
-  deleteAll(server: string, callback: ServiceCallback<void>): void;
-
+  search(
+    /**
+     * The unique identifier of the server to search.
+     */
+    serverId: string,
+    /**
+     * The criteria with which to find messages during a search.
+     */
+    criteria: models.SearchCriteria,
+    /**
+     * Search options
+     */
+    options?: models.SearchOptions
+  ): Promise<models.MessageListResult>;
 
   /**
-   * @summary Search for messages
-   *
-   * Returns a list of messages matching the specified search criteria, in
-   * summary form. The messages are returned sorted by received date, with the
-   * most recently-received messages appearing first.
-   *
-   * @param {string} server The identifier of the server hosting the messages.
-   *
-   * @param {object} criteria The search criteria to match results against.
-   *
-   * @param {string} [criteria.sentFrom] The full email address from which the target
-   * email was sent.
-   *
-   * @param {string} [criteria.sentTo] The full email address to which the target
-   * email was sent.
-   *
-   * @param {string} [criteria.subject] The value to seek within the target
-   * email's subject line.
-   *
-   * @param {string} [criteria.body] The value to seek within the target email's
-   * HTML or text body.
-   *
-   * @param {object} [options] Optional Parameters.
-   *
-   * @param {number} [options.page] Used in conjunction with `itemsPerPage` to
-   * support pagination.
-   *
-   * @param {number} [options.itemsPerPage] A limit on the number of results to
-   * be returned per page. Can be set between 1 and 1000 items, the default is
-   * 50.
-   *
-   * @param {number} [options.timeout] Specify how long to wait for a matching
-   * result (in milliseconds).
-   *
-   * @param {date} [options.receivedAfter] Limits results to only messages
-   * received after this date/time.
-   *
-   * @param {boolean} [options.errorOnTimeout] When set to false, an error will
-   * not be throw if timeout is reached (default: true).
-   *
-   * @param {ServiceCallback} [optionalCallback] - The optional callback.
-   *
-   * @returns {ServiceCallback|Promise} If a callback was passed as the last
-   * parameter then it returns the callback else returns a Promise.
-   *
-   * {Promise} A promise is returned.
-   *
-   *                      @resolve {MessageListResult} - The deserialized result object.
-   *
-   *                      @reject {Error|ServiceError} - The error object.
-   *
-   * {ServiceCallback} optionalCallback(err, result, request, response)
-   *
-   *                      {Error|ServiceError}  err        - The Error object if an error occurred, null otherwise.
-   *
-   *                      {MessageListResult} [result]   - The deserialized result object if an error did not occur.
-   *                      See {@link MessageListResult} for more information.
+   * Creates a new message that can be sent to a verified email address. This is useful
+   * in scenarios where you want an email to trigger a workflow in your product.
    */
-  search(server: string, criteria: models.SearchCriteria, options?: { page?: number, itemsPerPage?: number, timeout?: number, receivedAfter?: Date, errorOnTimeout?: boolean }): Promise<models.MessageListResult>;
-  search(server: string, criteria: models.SearchCriteria, callback: ServiceCallback<models.MessageListResult>): void;
-  search(server: string, criteria: models.SearchCriteria, options: { page?: number, itemsPerPage?: number, timeout?: number, receivedAfter?: Date, errorOnTimeout?: boolean }, callback: ServiceCallback<models.MessageListResult>): void;
+  create(
+    /**
+     * The unique identifier of the required server.
+     */
+    serverId: string,
+    /**
+     * Options to use when creating a new message.
+     */
+    options: models.MessageCreateOptions
+  ): Promise<models.Message>;
+
+  forward(
+    /**
+     * The unique identifier of the message to be forwarded.
+     */
+    messageId: string,
+    /**
+     * Options to use when forwarding a message.
+     */
+    options: models.MessageForwardOptions
+  ): Promise<models.Message>;
 
   /**
-   * @summary Create a message
-   *
-   * Creates a new message that can be sent to a verified email address. This is
-   * useful in scenarios where you want an email to trigger a workflow in your
-   * product.
-   *
-   * @param {string} server The identifier of the server to create the message in.
-   *
-   * @param {object} options The options with which to create the message.
-   *
-   * @param {string} [options.to] The email address to which the email will be sent.
-   * Must be a verified email address.
-   *
-   * @param {string} [options.subject] The email subject line.
-   *
-   * @param {string} [options.html] The HTML body of the email.
-   *
-   * @param {boolean} [options.send] If true, email will be sent upon creation.
-   *
-   * @param {function} [optionalCallback] - The optional callback.
-   *
-   * @returns {function|Promise} If a callback was passed as the last parameter
-   * then it returns the callback else returns a Promise.
-   *
-   * {Promise} A promise is returned
-   *
-   *                      @resolve {null} - The deserialized result object.
-   *
-   *                      @reject {Error} - The error object.
-   *
-   * {function} optionalCallback(err, result, request, response)
-   *
-   *                      {Error}  err        - The Error object if an error occurred, null otherwise.
-   *
-   *                      {null} [result]   - The deserialized result object if an error did not occur.
+   * Sends a reply to the specified message. This is useful for when simulating a user replying to one of your email or SMS messages.
    */
-   create(server: string, options: models.MessageCreateOptions): Promise<models.Message>;
-   create(server: string, options: models.MessageCreateOptions, callback: ServiceCallback<models.Message>): void;
-
-  /**
-   * @summary Forward an email
-   *
-   * Forwards the specified email to a verified email address.
-   *
-   * @param {string} id The identifier of the email to forward.
-   *
-   * @param {object} options The options with which to forward the email.
-   *
-   * @param {string} [options.to] The email address to which the email will be sent.
-   * Must be a verified email address.
-   *
-   * @param {string} [options.html] Any additional HTML content to forward the email with.
-   *
-   * @param {string} [options.text] Any additional plain text content to forward the email with.
-   *
-   * @param {function} [optionalCallback] - The optional callback.
-   *
-   * @returns {function|Promise} If a callback was passed as the last parameter
-   * then it returns the callback else returns a Promise.
-   *
-   * {Promise} A promise is returned
-   *
-   *                      @resolve {null} - The deserialized result object.
-   *
-   *                      @reject {Error} - The error object.
-   *
-   * {function} optionalCallback(err, result, request, response)
-   *
-   *                      {Error}  err        - The Error object if an error occurred, null otherwise.
-   *
-   *                      {null} [result]   - The deserialized result object if an error did not occur.
-   */
-   forward(id: string, options: models.MessageForwardOptions): Promise<models.Message>;
-   forward(id: string, options: models.MessageForwardOptions, callback: ServiceCallback<models.Message>): void;
-
-  /**
-   * @summary Reply to an email
-   *
-   * Sends a reply to the specified email. This is useful for when simulating a user
-   * replying to one of your emails.
-   *
-   * @param {string} id The identifier of the email to forward.
-   *
-   * @param {object} options The options with which to reply to the email.
-   *
-   * @param {string} [options.html] Any additional HTML content to include in the reply.
-   *
-   * @param {string} [options.text] Any additional plain text content to include in the reply.
-   *
-   * @param {function} [optionalCallback] - The optional callback.
-   *
-   * @returns {function|Promise} If a callback was passed as the last parameter
-   * then it returns the callback else returns a Promise.
-   *
-   * {Promise} A promise is returned
-   *
-   *                      @resolve {null} - The deserialized result object.
-   *
-   *                      @reject {Error} - The error object.
-   *
-   * {function} optionalCallback(err, result, request, response)
-   *
-   *                      {Error}  err        - The Error object if an error occurred, null otherwise.
-   *
-   *                      {null} [result]   - The deserialized result object if an error did not occur.
-   */
-   reply(id: string, options: models.MessageReplyOptions): Promise<models.Message>;
-   reply(id: string, options: models.MessageReplyOptions, callback: ServiceCallback<models.Message>): void;
+  reply(
+    /**
+     * The unique identifier of the message to be forwarded.
+     */
+    messageId: string,
+    /**
+     * Options to use when replying to a message.
+     */
+    options: models.MessageReplyOptions
+  ): Promise<models.Message>;
 }
 
-/**
- * @class
- * Servers
- * __NOTE__: An instance of this class is automatically created for an
- * instance of the MailosaurClient.
- */
 export interface Servers {
-
-
   /**
-   * @summary List all servers
-   *
-   * Returns a list of your virtual SMTP servers. Servers are returned sorted in
-   * alphabetical order.
-   *
-   * @param {ServiceCallback} [optionalCallback] - The optional callback.
-   *
-   * @returns {ServiceCallback|Promise} If a callback was passed as the last
-   * parameter then it returns the callback else returns a Promise.
-   *
-   * {Promise} A promise is returned.
-   *
-   *                      @resolve {ServerListResult} - The deserialized result object.
-   *
-   *                      @reject {Error|ServiceError} - The error object.
-   *
-   * {ServiceCallback} optionalCallback(err, result, request, response)
-   *
-   *                      {Error|ServiceError}  err        - The Error object if an error occurred, null otherwise.
-   *
-   *                      {ServerListResult} [result]   - The deserialized result object if an error did not occur.
-   *                      See {@link ServerListResult} for more information.
+   * Returns a list of your virtual servers. Servers are returned sorted in alphabetical order.
    */
-  list(): Promise<models.ServerListResult>;
-  list(callback: ServiceCallback<models.ServerListResult>): void;
-
+  list(
+  ): Promise<models.ServerListResult>;
 
   /**
-   * @summary Create a server
-   *
-   * Creates a new virtual SMTP server and returns it.
-   *
-   * @param {object} serverCreateOptions
-   *
-   * @param {string} [serverCreateOptions.name] A name used to identify the
-   * server.
-   *
-   * @param {ServiceCallback} [optionalCallback] - The optional callback.
-   *
-   * @returns {ServiceCallback|Promise} If a callback was passed as the last
-   * parameter then it returns the callback else returns a Promise.
-   *
-   * {Promise} A promise is returned.
-   *
-   *                      @resolve {Server} - The deserialized result object.
-   *
-   *                      @reject {Error|ServiceError} - The error object.
-   *
-   * {ServiceCallback} optionalCallback(err, result, request, response)
-   *
-   *                      {Error|ServiceError}  err        - The Error object if an error occurred, null otherwise.
-   *
-   *                      {Server} [result]   - The deserialized result object if an error did not occur.
-   *                      See {@link Server} for more information.
+   * Creates a new virtual server.
    */
-  create(serverCreateOptions: models.ServerCreateOptions): Promise<models.Server>;
-  create(serverCreateOptions: models.ServerCreateOptions, callback: ServiceCallback<models.Server>): void;
-
+  create(
+    /**
+     * Options used to create a new Mailosaur server.
+     */
+    options: models.ServerCreateOptions
+  ): Promise<models.Server>;
 
   /**
-   * @summary Retrieve a server
-   *
-   * Retrieves the detail for a single server. Simply supply the unique
-   * identifier for the required server.
-   *
-   * @param {string} id The identifier of the server to be retrieved.
-   *
-   * @param {ServiceCallback} [optionalCallback] - The optional callback.
-   *
-   * @returns {ServiceCallback|Promise} If a callback was passed as the last
-   * parameter then it returns the callback else returns a Promise.
-   *
-   * {Promise} A promise is returned.
-   *
-   *                      @resolve {Server} - The deserialized result object.
-   *
-   *                      @reject {Error|ServiceError} - The error object.
-   *
-   * {ServiceCallback} optionalCallback(err, result, request, response)
-   *
-   *                      {Error|ServiceError}  err        - The Error object if an error occurred, null otherwise.
-   *
-   *                      {Server} [result]   - The deserialized result object if an error did not occur.
-   *                      See {@link Server} for more information.
+   * Retrieves the detail for a single server.
    */
-  get(id: string): Promise<models.Server>;
-  get(id: string, callback: ServiceCallback<models.Server>): void;
+  get(
+    /**
+     * The unique identifier of the server.
+     */
+    serverId: string
+  ): Promise<models.Server>;
 
   /**
-   * @summary Retrieve the password of a server
-   *
-   * Retrieves the password for use with SMTP and POP3 for a single server.
-   * Simply supply the unique identifier for the required server.
-   *
-   * @param {string} id The identifier of the server.
-   *
-   * @param {function} [optionalCallback] - The optional callback.
-   *
-   * @returns {function|Promise} If a callback was passed as the last parameter
-   * then it returns the callback else returns a Promise.
-   *
-   * {Promise} A promise is returned
-   *
-   *                      @resolve {string} - The server password.
-   *
-   *                      @reject {Error} - The error object.
-   *
-   * {function} optionalCallback(err, result, request, response)
-   *
-   *                      {Error}  err        - The Error object if an error occurred, null otherwise.
-   *
-   *                      {string} [result]   - The server password if an error did not occur.
+   * Retrieves the password for a server. This password can be used for SMTP, POP3, and IMAP connectivity.
    */
-  getPassword(id: string): Promise<string>;
-  getPassword(id: string, callback: ServiceCallback<string>): void;
+  getPassword(
+    /**
+     * The unique identifier of the server.
+     */
+    serverId: string
+  ): Promise<string>;
 
   /**
-   * @summary Update a server
-   *
-   * Updates a single server and returns it.
-   *
-   * @param {string} id The identifier of the server to be updated.
-   *
-   * @param {object} server
-   *
-   * @param {string} [server.id] Unique identifier for the server. Used as
-   * username for SMTP/POP3 authentication.
-   *
-   * @param {string} [server.name] A name used to identify the server.
-   *
-   * @param {array} [server.users] Users (excluding administrators) who have
-   * access to the server.
-   *
-   * @param {number} [server.messages] The number of messages currently in the
-   * server.
-   *
-   * @param {ServiceCallback} [optionalCallback] - The optional callback.
-   *
-   * @returns {ServiceCallback|Promise} If a callback was passed as the last
-   * parameter then it returns the callback else returns a Promise.
-   *
-   * {Promise} A promise is returned.
-   *
-   *                      @resolve {Server} - The deserialized result object.
-   *
-   *                      @reject {Error|ServiceError} - The error object.
-   *
-   * {ServiceCallback} optionalCallback(err, result, request, response)
-   *
-   *                      {Error|ServiceError}  err        - The Error object if an error occurred, null otherwise.
-   *
-   *                      {Server} [result]   - The deserialized result object if an error did not occur.
-   *                      See {@link Server} for more information.
+   * Updates the attributes of a server.
    */
-  update(id: string, server: models.Server): Promise<models.Server>;
-  update(id: string, server: models.Server, callback: ServiceCallback<models.Server>): void;
-
+  update(
+    /**
+     * The unique identifier of the server.
+     */
+    serverId: string,
+    /**
+     * The updated server.
+     */
+    server: models.Server
+  ): Promise<models.Server>;
 
   /**
-   * @summary Delete a server
-   *
-   * Permanently deletes a server. This operation cannot be undone. Also deletes
-   * all messages and associated attachments within the server.
-   *
-   * @param {string} id The identifier of the server to be deleted.
-   *
-   * @param {ServiceCallback} [optionalCallback] - The optional callback.
-   *
-   * @returns {ServiceCallback|Promise} If a callback was passed as the last
-   * parameter then it returns the callback else returns a Promise.
-   *
-   * {Promise} A promise is returned.
-   *
-   *                      @resolve {null} - The deserialized result object.
-   *
-   *                      @reject {Error|ServiceError} - The error object.
-   *
-   * {ServiceCallback} optionalCallback(err, result, request, response)
-   *
-   *                      {Error|ServiceError}  err        - The Error object if an error occurred, null otherwise.
-   *
-   *                      {null} [result]   - The deserialized result object if an error did not occur.
+   * Permanently delete a server. This will also delete all messages, associated attachments, etc. within the server. This operation cannot be undone.
    */
-  del(id: string): Promise<void>;
-  del(id: string, callback: ServiceCallback<void>): void;
+  del(
+    /**
+     * The unique identifier of the server.
+     */
+    serverId: string
+  ): Promise<void>;
 
   /**
- * @summary Generate random email address for a server
- *
- * Generates a random email address for a given server.
- *
- * @param {string} server The identifier of the server to use.
- *
- * @returns {string} Returns a string.
- *
- * {string} A string is returned
- *
- *                      {string} - The randomly generated email address.
- */
-  generateEmailAddress(server: string): string;
+   * Generates a random email address by appending a random string in front of the server's
+   * domain name.
+   */
+  generateEmailAddress(
+    /**
+     * The identifier of the server.
+     */
+    serverId: string
+  ): string;
 }
 
-/**
- * @class
- * Usage
- * __NOTE__: An instance of this class is automatically created for an
- * instance of the MailosaurClient.
- */
- export interface Usage {
+export interface Usage {
   /**
-   * @summary Retrieve account usage limits.
-   *
-   * Details the current limits and usage for your account.
-   *
-   * @param {ServiceCallback} [optionalCallback] - The optional callback.
-   *
-   * @returns {ServiceCallback|Promise} If a callback was passed as the last
-   * parameter then it returns the callback else returns a Promise.
-   *
-   * {Promise} A promise is returned.
-   *
-   *                      @resolve {ServerListResult} - The deserialized result object.
-   *
-   *                      @reject {Error|ServiceError} - The error object.
-   *
-   * {ServiceCallback} optionalCallback(err, result, request, response)
-   *
-   *                      {Error|ServiceError}  err        - The Error object if an error occurred, null otherwise.
-   *
-   *                      {ServerListResult} [result]   - The deserialized result object if an error did not occur.
-   *                      See {@link ServerListResult} for more information.
+   * Retrieve account usage limits. Details the current limits and usage for your account.
+   * This endpoint requires authentication with an account-level API key.
    */
-  limits(): Promise<models.UsageAccountLimits>;
-  limits(callback: ServiceCallback<models.UsageAccountLimits>): void;
+  limits(
+  ): Promise<models.UsageAccountLimits>;
 
   /**
-   * @summary List account transactions
-   *
    * Retrieves the last 31 days of transactional usage.
-   *
-   * @param {ServiceCallback} [optionalCallback] - The optional callback.
-   *
-   * @returns {ServiceCallback|Promise} If a callback was passed as the last
-   * parameter then it returns the callback else returns a Promise.
-   *
-   * {Promise} A promise is returned.
-   *
-   *                      @resolve {ServerListResult} - The deserialized result object.
-   *
-   *                      @reject {Error|ServiceError} - The error object.
-   *
-   * {ServiceCallback} optionalCallback(err, result, request, response)
-   *
-   *                      {Error|ServiceError}  err        - The Error object if an error occurred, null otherwise.
-   *
-   *                      {ServerListResult} [result]   - The deserialized result object if an error did not occur.
-   *                      See {@link ServerListResult} for more information.
+   * This endpoint requires authentication with an account-level API key.
    */
-   transactions(): Promise<models.UsageTransactionListResult>;
-   transactions(callback: ServiceCallback<models.UsageTransactionListResult>): void;
+  transactions(
+  ): Promise<models.UsageTransactionListResult>;
 }

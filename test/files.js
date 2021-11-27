@@ -53,16 +53,6 @@ describe('files', () => {
         })
         .catch(outputError(done));
     });
-
-    it('should return a file via callback', (done) => {
-      client.files.getEmail(email.id, (err, result) => {
-        assert.isNull(err);
-        assert.isOk(result);
-        assert.isTrue(result.length > 1);
-        assert.isTrue(result.indexOf(email.subject) !== -1);
-        done();
-      });
-    });
   });
 
   describe('getAttachment', () => {
@@ -76,17 +66,6 @@ describe('files', () => {
           done();
         })
         .catch(outputError(done));
-    });
-
-    it('should return a file via callback', (done) => {
-      const attachment = email.attachments[0];
-
-      client.files.getAttachment(attachment.id, (err, result) => {
-        assert.isNull(err);
-        assert.isOk(result);
-        assert.equal(result.length, attachment.length);
-        done();
-      });
     });
   });
 });
