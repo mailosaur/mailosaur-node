@@ -89,6 +89,9 @@ const validateEmail = (email) => {
   validateAttachments(email);
   validateHtml(email);
   validateText(email);
+  assert.isOk(email.metadata.ehlo, 'ehlo is empty');
+  assert.isOk(email.metadata.mailFrom, 'mailFrom is empty');
+  assert.equal(email.metadata.rcptTo.length, 1);
 };
 
 const validateEmailSummary = (email) => {
