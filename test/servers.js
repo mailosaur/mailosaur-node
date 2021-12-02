@@ -116,7 +116,7 @@ describe('servers', () => {
           assert.equal(err.message, 'Request had one or more invalid parameters.');
           assert.equal(err.errorType, 'invalid_request');
           assert.equal(err.httpStatusCode, 400);
-          assert.equal(err.httpResponseBody, '{"type":"ValidationError","messages":{"name":"Please provide a name for your server"}}');
+          assert.isTrue(err.httpResponseBody.indexOf('"type":') !== -1);
           done();
         });
     });

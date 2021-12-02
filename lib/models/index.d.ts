@@ -25,7 +25,7 @@ export interface Link {
    */
   href?: string;
   /**
-   * The dispaly text of the link. This is particular useful for understanding how a
+   * The display text of the link. This is particular useful for understanding how a
    * link was displayed within HTML content.
    */
   text?: string;
@@ -64,7 +64,7 @@ export interface MessageContent {
 }
 
 /**
- * Describes a message attachmnent.
+ * Describes a message attachment.
  */
 export interface Attachment {
   /**
@@ -265,7 +265,7 @@ export interface SearchCriteria {
   body?: string;
   /**
    * If set to `ALL` (default), then only results that match all specified criteria will be returned.
-   * If set to `ANY`, results that match any of the specified criteria will be returned
+   * If set to `ANY`, results that match any of the specified criteria will be returned.
    */
   match?: "ALL" | "ANY";
 }
@@ -455,7 +455,7 @@ export interface SearchOptions {
  */
 export interface SpamAssassinRule {
   /**
-   * Spam Assassin score.
+   * Spam Assassin rule score.
    */
   score?: number;
   /**
