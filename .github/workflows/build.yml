@@ -10,7 +10,9 @@ on:
     branches: [master]
   workflow_dispatch:
 
-concurrency: mailosaur-node
+concurrency: 
+  group: mailosaur-node
+  cancel-in-progress: true
 
 jobs:
   build:
