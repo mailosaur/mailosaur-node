@@ -202,6 +202,21 @@ describe('emails', () => {
         });
     });
 
+    it('should throw a meaningful error if the timeout is reached', (done) => {
+      const testFromEmail = 'zzyy@test.com';
+      client.messages
+        .search(server, {
+          sentFrom: testFromEmail
+        }, {
+          timeout: 1,
+        })
+        .catch((err) => {
+          assert.instanceOf(err, MailosaurError);
+          assert.equal(err.message, `No matching messages found in time. By default, only messages received in the last hour are checked (use receivedAfter to override this). The search criteria used for this query was [{"sentFrom":"${testFromEmail}"}] which timed out after 1ms`);
+          done();
+        });
+    });
+
     it('should return empty array if errors suppressed', (done) => {
       client.messages.search(server, {
         sentTo: 'neverfound@example.com'
