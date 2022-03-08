@@ -6,4 +6,8 @@ REPLACED_DURING_TEST text
 
 this is an image:[image: Inline image 1] <https://mailosaur.com/>
 
+Your verification code is 654321
+
+Your special ID is 5H0Y2
+
 this is an invalid link: invalid

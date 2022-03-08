@@ -26,6 +26,11 @@ const validateHtml = (email) => {
   assert.equal(email.html.links[2].href, 'http://invalid/', 'Third link should have href');
   assert.equal(email.html.links[2].text, 'invalid', 'Third link should have text');
 
+  // Codes
+  assert.equal(email.html.codes.length, 2, 'Should have verification codes');
+  assert.equal(email.html.codes[0].value, '123456');
+  assert.equal(email.html.codes[1].value, 'G3H1Y2');
+
   // Images
   assert.match(email.html.images[1].src, /cid:/);
   assert.equal(email.html.images[1].alt, 'Inline image 1', 'Second image should have alt text');
@@ -41,6 +46,11 @@ const validateText = (email) => {
   assert.equal(email.text.links[0].text, email.text.links[0].href, 'First text link href & text should match');
   assert.equal(email.text.links[1].href, 'https://mailosaur.com/', 'Second link should have href');
   assert.equal(email.text.links[1].text, email.text.links[1].href, 'Second text link href & text should match');
+
+  // Codes
+  assert.equal(email.text.codes.length, 2, 'Should have verification codes');
+  assert.equal(email.text.codes[0].value, '654321');
+  assert.equal(email.text.codes[1].value, '5H0Y2');
 };
 
 const validateHeaders = (email) => {

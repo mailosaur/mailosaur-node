@@ -32,6 +32,16 @@ export interface Link {
 }
 
 /**
+ * Data associated with an automatically-extracted verification code.
+ */
+export interface Code {
+  /**
+   * The value.
+   */
+  value?: string;
+}
+
+/**
  * Data associated with an image found within a message.
  */
 export interface Image {
@@ -53,6 +63,10 @@ export interface MessageContent {
    * Any hyperlinks found within this content.
    */
   links?: Link[];
+  /**
+   * Any verification codes found within this content.
+   */
+  codes?: Code[];
   /**
    * Any images found within this content.
    */

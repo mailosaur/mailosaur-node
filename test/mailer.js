@@ -18,6 +18,16 @@ const smtpTransport = nodemailer.createTransport({
   }
 });
 
+const getRandomString = (length) => {
+  let result = '';
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+  for (let i = 0; i < length; i += 1) {
+    result += characters.charAt(Math.floor(Math.random() *
+      characters.length));
+  }
+  return result;
+};
+
 module.exports = {
   sendEmails: (mailer, client, server, quantity) => {
     const promises = [];
@@ -35,7 +45,7 @@ module.exports = {
   },
 
   sendEmail: (client, server, sendToAddress) => {
-    const randomString = (Math.random() + 1).toString(36).substring(7);
+    const randomString = getRandomString(7);
     const randomFromAddress = `${randomString}@${verifiedDomain}`;
     const randomToAddress = sendToAddress || client.servers.generateEmailAddress(server);
 
