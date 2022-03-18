@@ -256,17 +256,6 @@ describe('emails', () => {
           })
           .catch(outputError(done));
       });
-
-      it('should throw an error on invalid email address', (done) => {
-        client.messages
-          .search(server, {
-            sentFrom: '.not_an_email_address'
-          })
-          .catch((err) => {
-            assert.instanceOf(err, MailosaurError);
-            done();
-          });
-      });
     });
 
     describe('by sentTo', () => {
@@ -283,17 +272,6 @@ describe('emails', () => {
             done();
           })
           .catch(outputError(done));
-      });
-
-      it('should throw an error on invalid email address', (done) => {
-        client.messages
-          .search(server, {
-            sentTo: '.not_an_email_address'
-          })
-          .catch((err) => {
-            assert.instanceOf(err, MailosaurError);
-            done();
-          });
       });
     });
 
