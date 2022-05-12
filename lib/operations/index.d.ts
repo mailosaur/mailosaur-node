@@ -254,3 +254,41 @@ export interface Usage {
   transactions(
   ): Promise<models.UsageTransactionListResult>;
 }
+
+export interface Devices {
+  /**
+   * Returns a list of your virtual security devices.
+   */
+  list(
+  ): Promise<models.DeviceListResult>;
+
+  /**
+   * Creates a new virtual security device.
+   */
+  create(
+    /**
+     * Options used to create a new Mailosaur virtual security device.
+     */
+    options: models.DeviceCreateOptions
+  ): Promise<models.Device>;
+
+  /**
+   * Retrieves the current one-time password for a saved device, or given base32-encoded shared secret.
+   */
+  otp(
+    /**
+     * Either the unique identifier of the device, or a base32-encoded shared secret.
+     */
+    query: string
+  ): Promise<models.OtpResult>;
+
+  /**
+   * Permanently delete a virtual security device. This operation cannot be undone.
+   */
+  del(
+    /**
+     * The unique identifier of the device.
+     */
+    deviceId: string
+  ): Promise<void>;
+}

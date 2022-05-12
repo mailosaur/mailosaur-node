@@ -43,4 +43,9 @@ declare class MailosaurClient {
    * Account usage operations
    */
   usage: operations.Usage;
+
+  /**
+   * Device management operations
+   */
+  devices: operations.Devices;
 }

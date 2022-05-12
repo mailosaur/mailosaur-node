@@ -595,3 +595,55 @@ export interface MailosaurError {
   httpStatusCode?: number;
   httpResponseBody?: string;
 }
+
+/**
+ * Mailosaur virtual security device.
+ */
+export interface Device {
+  /**
+   * Unique identifier for the device.
+   */
+  id?: string;
+  /**
+   * The name of the device.
+   */
+  name?: string;
+}
+
+/**
+ * Options used to create a new Mailosaur virtual security device.
+ */
+export interface DeviceCreateOptions {
+  /**
+   * A name used to identify the device.
+   */
+  name?: string;
+  /**
+   * The base32-encoded shared secret for this device.
+   */
+  sharedSecret?: string;
+}
+
+/**
+ * The result of the device listing operation.
+ */
+export interface DeviceListResult {
+  /**
+   * The individual devices forming the result.
+   */
+  items?: Device[];
+}
+
+/**
+ * Mailosaur virtual security device OTP result.
+ */
+export interface OtpResult {
+  /**
+   * The current one-time password.
+   */
+  code?: string;
+  /**
+   * The expiry date/time of the current one-time password.
+   */
+  expires?: Date;
+}
