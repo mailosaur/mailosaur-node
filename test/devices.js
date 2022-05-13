@@ -49,14 +49,14 @@ describe('devices', () => {
 
     it('should delete an existing device', (done) => {
       client.devices.list().then((result) => {
-        assert.equal(result.items.length, 1);
+        assert.isTrue(result.items.some(x => x.id === createdDevice.id));
       }).then(() => (
         client.devices.del(createdDevice.id)
       )).then(() => (
         client.devices.list()
       ))
         .then((result) => {
-          assert.equal(result.items.length, 0);
+          assert.isFalse(result.items.some(x => x.id === createdDevice.id));
           done();
         })
         .catch(outputError(done));
