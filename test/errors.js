@@ -21,7 +21,7 @@ describe('error handling', () => {
   it('Bad Request', (done) => {
     const client = new MailosaurClient(process.env.MAILOSAUR_API_KEY);
     client.servers.create({}).catch((err) => {
-      assert.equal(err.toString(), 'Error: (name) Please provide a name for your server\r\n');
+      assert.equal(err.toString(), 'Error: (name) Servers need a name\r\n');
       done();
     });
   });

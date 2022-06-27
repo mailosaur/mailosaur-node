@@ -113,7 +113,7 @@ describe('servers', () => {
       client.servers.create({})
         .catch((err) => {
           assert.instanceOf(err, MailosaurError);
-          assert.equal(err.message, '(name) Please provide a name for your server\r\n');
+          assert.equal(err.message, '(name) Servers need a name\r\n');
           assert.equal(err.errorType, 'invalid_request');
           assert.equal(err.httpStatusCode, 400);
           assert.isTrue(err.httpResponseBody.indexOf('{"type":') !== -1);
