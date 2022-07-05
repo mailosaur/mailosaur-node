@@ -28,10 +28,12 @@ If you get stuck, just contact us at support@mailosaur.com.
 
 ### Installation
 
-Install the Mailosaur Node.js library via npm:
+Install the Mailosaur Node.js library via npm or yarn:
 
-```
-npm install mailosaur --save-dev
+```sh
+npm i -D mailosaur
+# or
+yarn add -D mailosaur
 ```
 
 Then import the library into your code. The value for `YOUR_API_KEY` is covered in the next step ([creating an account](#creating-an-account)):
@@ -183,7 +185,9 @@ console.log(message.html.body) // "<html><head ..."
 If you need to traverse the HTML content of an email. For example, finding an element via a CSS selector, you can use the [JSDOM](https://github.com/jsdom/jsdom) library.
 
 ```sh
-npm install jsdom --save-dev
+npm i -D jsdom
+# or
+yarn add -D jsdom
 ```
 
 ```js
