@@ -1,12 +1,6 @@
 const { assert } = require('chai');
 const MailosaurClient = require('../lib/mailosaur');
 
-const outputError = (done) => (err) => {
-  // eslint-disable-next-line no-console
-  console.log(err.errorType, err.httpStatusCode, err.httpResponseBody);
-  done(err);
-};
-
 describe('devices', () => {
   let client;
   const apiKey = process.env.MAILOSAUR_API_KEY;
@@ -25,51 +19,37 @@ describe('devices', () => {
     const sharedSecret = 'ONSWG4TFOQYTEMY=';
     let createdDevice;
 
-    it('should create a new device', (done) => {
-      client.devices.create({
+    it('should create a new device', async () => {
+      createdDevice = await client.devices.create({
         name: deviceName,
         sharedSecret
-      }).then((device) => {
-        createdDevice = device;
-        assert.isNotEmpty(createdDevice.id);
-        assert.equal(createdDevice.name, deviceName);
-        done();
-      }).catch(outputError(done));
+      });
+
+      assert.isNotEmpty(createdDevice.id);
+      assert.equal(createdDevice.name, deviceName);
     });
 
-    it('retrieve an otp via device ID', (done) => {
-      client.devices.otp(createdDevice.id)
-        .then((otpResult) => {
-          assert.isString(otpResult.code);
-          assert.equal(otpResult.code.length, 6);
-          done();
-        })
-        .catch(outputError(done));
+    it('retrieve an otp via device ID', async () => {
+      const otpResult = await client.devices.otp(createdDevice.id);
+
+      assert.isString(otpResult.code);
+      assert.equal(otpResult.code.length, 6);
     });
 
-    it('should delete an existing device', (done) => {
-      client.devices.list().then((result) => {
-        assert.isTrue(result.items.some(x => x.id === createdDevice.id));
-      }).then(() => (
-        client.devices.del(createdDevice.id)
-      )).then(() => (
-        client.devices.list()
-      ))
-        .then((result) => {
-          assert.isFalse(result.items.some(x => x.id === createdDevice.id));
-          done();
-        })
-        .catch(outputError(done));
+    it('should delete an existing device', async () => {
+      const resultBefore = await client.devices.list();
+      assert.isTrue(resultBefore.items.some(x => x.id === createdDevice.id));
+
+      await client.devices.del(createdDevice.id);
+      const resultAfter = await client.devices.list();
+      assert.isFalse(resultAfter.items.some(x => x.id === createdDevice.id));
     });
 
-    it('retrieve an otp via shared secret', (done) => {
-      client.devices.otp(sharedSecret)
-        .then((otpResult) => {
-          assert.isString(otpResult.code);
-          assert.equal(otpResult.code.length, 6);
-          done();
-        })
-        .catch(outputError(done));
+    it('retrieve an otp via shared secret', async () => {
+      const otpResult = await client.devices.otp(sharedSecret);
+
+      assert.isString(otpResult.code);
+      assert.equal(otpResult.code.length, 6);
     });
   });
 });
