@@ -58,6 +58,7 @@ const validateHeaders = (email) => {
 };
 
 const validateMetadata = (email) => {
+  assert.equal(email.type, 'Email');
   assert.equal(email.from.length, 1);
   assert.equal(email.to.length, 1);
   assert.isNotEmpty(email.from[0].email);
