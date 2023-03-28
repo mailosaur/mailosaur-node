@@ -39,6 +39,17 @@ export interface Files {
      */
     messageId: string
   ): Promise<stream.Readable>;
+
+  /**
+   * Downloads a screenshot of your email rendered in a real email client. Simply supply
+   * the unique identifier for the required preview.
+   */
+  getPreview(
+    /**
+     * The identifier of the email preview to be downloaded.
+     */
+    previewId: string
+  ): Promise<stream.Readable>;
 }
 
 export interface Messages {
@@ -164,6 +175,20 @@ export interface Messages {
      */
     options: models.MessageReplyOptions
   ): Promise<models.Message>;
+
+  /**
+   * Generates screenshots of an email rendered in the specified email clients.
+   */
+  generatePreviews(
+    /**
+     * The identifier of the email to preview.
+     */
+    messageId: string,
+    /**
+     * The options with which to generate previews.
+     */
+    options: models.PreviewRequestOptions
+  ): Promise<models.PreviewListResult>;
 }
 
 export interface Servers {
@@ -291,4 +316,12 @@ export interface Devices {
      */
     deviceId: string
   ): Promise<void>;
+}
+
+export interface Previews {
+  /**
+   * List all email clients that can be used to generate email previews.
+   */
+  listEmailClients(
+  ): Promise<models.PreviewEmailClientListResult>;
 }

@@ -671,3 +671,99 @@ export interface OtpResult {
    */
   expires?: Date;
 }
+
+/**
+ * Describes an email preview.
+ */
+export interface Preview {
+  /**
+   * Unique identifier for the email preview.
+   */
+  id?: string;
+  /**
+   * The email client the preview was generated with.
+   */
+  emailClient?: string;
+  /**
+   * True if images were disabled in the preview.
+   */
+  disableImages?: boolean;
+}
+
+/**
+ * A list of requested email previews.
+ */
+export interface PreviewListResult {
+  /**
+   * The summaries for each requested preview.
+   */
+  items?: Preview[];
+}
+
+/**
+ * Describes an email client with which email previews can be generated.
+ */
+export interface PreviewEmailClient {
+  /**
+   * The unique identifier of the email client.
+   */
+  id?: string;
+  /**
+   * The display name of the email client.
+   */
+  name?: string;
+  /**
+   * Whether the platform is desktop, mobile, or web-based.
+   */
+  platformGroup?: string;
+  /**
+   * The type of platform on which the email client is running.
+   */
+  platformType?: string;
+  /**
+   * The platform version number.
+   */
+  platformVersion?: string;
+  /**
+   * If true, images can be disabled when generating previews.
+   */
+  canDisableImages?: boolean;
+  /**
+   * The current status of the email client.
+   */
+  status?: string;
+}
+
+/**
+ * A list of available email clients with which to generate email previews.
+ */
+export interface PreviewEmailClientListResult {
+  /**
+   * A list of available email clients.
+   */
+  items?: PreviewEmailClient[];
+}
+
+/**
+ * Describes an email preview request.
+ */
+export interface PreviewRequest {
+  /**
+   * The email client you wish to generate a preview for.
+   */
+  emailClient?: string;
+  /**
+   * If true, images will be disabled (only if supported by the client).
+   */
+  disableImages?: boolean;
+}
+
+/**
+ * Preview request options.
+ */
+export interface PreviewRequestOptions {
+  /**
+   * The list of email preview requests.
+   */
+  previews: PreviewRequest[];
+}

@@ -48,4 +48,9 @@ declare class MailosaurClient {
    * Device management operations
    */
   devices: operations.Devices;
+
+  /**
+   * Email Previews operations
+   */
+  previews: operations.Previews;
 }
