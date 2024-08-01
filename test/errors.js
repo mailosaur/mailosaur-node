@@ -3,7 +3,7 @@ const MailosaurClient = require('../lib/mailosaur');
 
 describe('error handling', () => {
   it('Unauthorized', (done) => {
-    const client = new MailosaurClient('invalid_key');
+    const client = new MailosaurClient('invalid_key', process.env.MAILOSAUR_API_KEY);
     client.servers.list().catch((err) => {
       assert.equal(err.toString(), 'Error: Authentication failed, check your API key.');
       done();
