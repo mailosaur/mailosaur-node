@@ -14,6 +14,16 @@ export interface Analysis {
      */
     messageId: string
   ): Promise<models.SpamAnalysisResult>;
+
+    /**
+   * Perform a deliverability report of an email.
+   */
+    deliverability(
+      /**
+       * The identifier of the message to be analyzed.
+       */
+      messageId: string
+    ): Promise<models.DeliverabilityReport>;
 }
 
 /**
