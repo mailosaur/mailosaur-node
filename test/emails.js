@@ -304,6 +304,43 @@ describe('emails', () => {
     });
   });
 
+  describe('deliverabilityReport', () => {
+    it('should perform a deliverability report on an email', async () => {
+      const targetId = emails[0].id;
+      const result = await client.analysis.deliverability(targetId);
+
+      assert.isOk(result.spf);
+
+      assert.isOk(result.dkim);
+      result.dkim.forEach((dkim) => {
+        assert.isOk(dkim);
+      });
+
+      assert.isOk(result.dmarc);
+
+      assert.isOk(result.blockLists);
+      result.blockLists.forEach((blockList) => {
+        assert.isOk(blockList);
+        assert.isOk(blockList.id);
+        assert.isOk(blockList.name);
+      });
+
+      assert.isOk(result.content);
+
+      assert.isOk(result.dnsRecords);
+      assert.isOk(result.dnsRecords.a);
+      assert.isOk(result.dnsRecords.mx);
+      assert.isOk(result.dnsRecords.ptr);
+
+      assert.isOk(result.spamAssassin);
+      result.spamAssassin.rules.forEach((rule) => {
+        assert.isNumber(rule.score);
+        assert.isOk(rule.rule);
+        assert.isOk(rule.description);
+      });
+    });
+  });
+
   describe('del', () => {
     it('should delete an email', async () => {
       const targetEmailId = emails[4].id;
