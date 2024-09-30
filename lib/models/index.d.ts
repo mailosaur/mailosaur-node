@@ -695,28 +695,6 @@ export interface SpamAssassinResult{
   rules?: SpamAssassinRule[];
 }
 
-// /**
-//  * The result of a deliverability check
-//  */
-// export enum ResultEnum{
-//   /**
-//    * The check had a positive result
-//    */
-//   Pass,
-//   /**
-//    * The check was acceptable but could be improved
-//    */
-//   Warning,
-//   /**
-//    * The check had a negative result
-//    */
-//   Fail,
-//   /**
-//    * The check was inconclusive due to a timeout
-//    */
-//   Timeout
-// }
-
 /**
  * The detail of an individual account limit.
  */
