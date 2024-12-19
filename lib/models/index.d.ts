@@ -365,6 +365,10 @@ export interface MessageCreateOptions {
    */
   to?: string;
   /**
+   * The email address to which the email will be CC'd to. Must be a verified email address.
+   */
+  cc?: string;
+  /**
    * Allows for the partial override of the message's 'from' address. This **must** be an address ending with `YOUR_SERVER.mailosaur.net`, such as `my-emails@a1bcdef2.mailosaur.net`.
    */
   from?: string;
@@ -399,6 +403,10 @@ export interface MessageForwardOptions {
    */
   to: string;
   /**
+   * The email address to which the email will be CC'd to. Must be a verified email address.
+   */
+  cc?: string;
+  /**
    * Any plain text to include when forwarding the message. Note that only text or html can be supplied, not both.
    */
   text?: string;
@@ -412,6 +420,10 @@ export interface MessageForwardOptions {
  * Options to use when replying to a message.
  */
 export interface MessageReplyOptions {
+  /**
+   * The email address to which the email will be CC'd to. Must be a verified email address.
+   */
+  cc?: string;
   /**
    * Any additional plain text content to include in the reply. Note that only text or html can be supplied, not both.
    */

@@ -383,6 +383,22 @@ describe('emails', () => {
       assert.equal(message.subject, subject);
     });
 
+    it('send with HTML content to CC recipient', async () => {
+      const subject = 'CC Message';
+      const ccRecipient = `someoneelse@${verifiedDomain}`;
+      const message = await client.messages.create(server, {
+        to: `anything@${verifiedDomain}`,
+        send: true,
+        subject,
+        cc: ccRecipient,
+        html: '<p>This is a new email.</p>'
+      });
+      assert.isNotEmpty(message.id);
+      assert.equal(message.subject, subject);
+      assert.equal(message.cc.length, 1);
+      assert.equal(message.cc[0].email, ccRecipient);
+    });
+
     it('send with attachment', async () => {
       const subject = 'New message with attachment';
 
@@ -434,6 +450,22 @@ describe('emails', () => {
       assert.isNotEmpty(message.id);
       assert.isTrue(message.html.body.indexOf(body) >= 0);
     });
+
+    it('forward with HTML content to CC recipient', async () => {
+      const targetEmailId = emails[0].id;
+      const body = '<p>Forwarded <strong>HTML</strong> message.</p>';
+      const ccRecipient = `someoneelse@${verifiedDomain}`;
+
+      const message = await client.messages.forward(targetEmailId, {
+        to: `anything@${verifiedDomain}`,
+        html: body,
+        cc: ccRecipient
+      });
+      assert.isNotEmpty(message.id);
+      assert.isTrue(message.html.body.indexOf(body) >= 0);
+      assert.equal(message.cc.length, 1);
+      assert.equal(message.cc[0].email, ccRecipient);
+    });
   });
 
   (verifiedDomain ? describe : describe.skip)('reply', () => {
@@ -457,6 +489,21 @@ describe('emails', () => {
       });
       assert.isNotEmpty(message.id);
       assert.isTrue(message.html.body.indexOf(body) >= 0);
+    });
+
+    it('reply with HTML content to CC recipient', async () => {
+      const targetEmailId = emails[0].id;
+      const body = '<p>Reply <strong>HTML</strong> message.</p>';
+      const ccRecipient = `someoneelse@${verifiedDomain}`;
+
+      const message = await client.messages.reply(targetEmailId, {
+        html: body,
+        cc: ccRecipient
+      });
+      assert.isNotEmpty(message.id);
+      assert.isTrue(message.html.body.indexOf(body) >= 0);
+      assert.equal(message.cc.length, 1);
+      assert.equal(message.cc[0].email, ccRecipient);
     });
 
     it('reply with attachment', async () => {
