@@ -152,7 +152,6 @@ export interface Metadata {
    * https://datatracker.ietf.org/doc/html/rfc5321#section-4.1.1.3
    */
   rcptTo?: MessageAddress[];
-
 }
 
 /**
@@ -166,7 +165,7 @@ export interface Message {
   /**
    * The type of message.
    */
-  type: 'Email' | 'SMS';
+  type: "Email" | "SMS";
   /**
    * The sender of the message.
    */
@@ -226,7 +225,7 @@ export interface MessageSummary {
   /**
    * The type of message.
    */
-  type: 'Email' | 'SMS';
+  type: "Email" | "SMS";
   /**
    * The sender of the message.
    */
@@ -311,27 +310,27 @@ export interface SearchOptions {
   /**
    * Specify how long to wait for a matching result (in milliseconds, default value is 10 seconds).
    */
-  timeout?: number,
+  timeout?: number;
   /**
    * Limits results to only messages received after this date/time (default 1 hour ago).
    */
-  receivedAfter?: Date,
+  receivedAfter?: Date;
   /**
    * Used alongside `itemsPerPage` to paginate through results. This is zero-based, meaning `0` is the first page of results.
    */
-  page?: number,
+  page?: number;
   /**
    * A limit on the number of results to be returned. This can be set between `1` and `1000`, with the default being `50`.
    */
-  itemsPerPage?: number,
+  itemsPerPage?: number;
   /**
    * When using the 'get' method, this option can be used to prevent an error being thrown if no matching message is found in time.
    */
-  suppressError?: boolean
+  errorOnTimeout?: boolean;
   /**
    * Optionally limits results based on the direction (`Sent` or `Received`), with the default being `Received`.
    */
-  dir?: string
+  dir?: string;
 }
 
 /**
@@ -341,19 +340,19 @@ export interface MessageListOptions {
   /**
    * Limits results to only messages received after this date/time (default 1 hour ago).
    */
-  receivedAfter?: Date,
+  receivedAfter?: Date;
   /**
    * Used alongside `itemsPerPage` to paginate through results. This is zero-based, meaning `0` is the first page of results.
    */
-  page?: number,
+  page?: number;
   /**
    * A limit on the number of results to be returned. This can be set between `1` and `1000`, with the default being `50`.
    */
-  itemsPerPage?: number
+  itemsPerPage?: number;
   /**
    * Optionally limits results based on the direction (`Sent` or `Received`), with the default being `Received`.
    */
-  dir?: string
+  dir?: string;
 }
 
 /**
@@ -483,36 +482,6 @@ export interface ServerListResult {
 }
 
 /**
- * Search options
- */
-export interface SearchOptions {
-  /**
-   * Specify how long to wait for a matching result (in milliseconds, default value is 10 seconds).
-   */
-  timeout?: number,
-  /**
-   * Limits results to only messages received after this date/time (default 1 hour ago).
-   */
-  receivedAfter?: Date,
-  /**
-   * Used alongside `itemsPerPage` to paginate through results. This is zero-based, meaning `0` is the first page of results.
-   */
-  page?: number,
-  /**
-   * A limit on the number of results to be returned. This can be set between `1` and `1000`, with the default being `50`.
-   */
-  itemsPerPage?: number,
-  /**
-   * When using the 'get' method, this option can be used to prevent an error being thrown if no matching message is found in time.
-   */
-  suppressError?: boolean
-  /**
-   * Optionally limits results based on the direction (`Sent` or `Received`), with the default being `Received`.
-   */
-  dir?: string
-}
-
-/**
  * The result of an individual Spam Assassin rule
  */
 export interface SpamAssassinRule {
@@ -554,7 +523,6 @@ export interface SpamAnalysisResult {
   score?: number;
 }
 
-
 /**
  * The results of deliverability report performed by Mailosaur.
  */
@@ -584,14 +552,14 @@ export interface DeliverabilityReport {
    */
   dnsRecords?: DnsRecords;
   /**
-   * The result of spam analysis performed by Mailosaur 
+   * The result of spam analysis performed by Mailosaur
    */
   spamAssassin?: SpamAssassinResult;
 }
 
 /**
-* The result of an email domain check
-*/
+ * The result of an email domain check
+ */
 export interface EmailAuthenticationResult {
   /**
    * The result of the check
@@ -605,16 +573,16 @@ export interface EmailAuthenticationResult {
    * The raw values returned from the check
    */
   rawValue: string;
-  /** 
+  /**
    * The seperated tags returned from the check
-  */
-  tags: { [key: string]: string};
+   */
+  tags: { [key: string]: string };
 }
 
 /**
-* The result of an domain check against a blocklist checker
-*/
-export interface BlockListResult{
+ * The result of an domain check against a blocklist checker
+ */
+export interface BlockListResult {
   /**
    * The identifier of the blocklist
    */
@@ -630,9 +598,9 @@ export interface BlockListResult{
 }
 
 /**
-* The results of email content analysis
-*/
-export interface Content{
+ * The results of email content analysis
+ */
+export interface Content {
   /**
    * The content contained embed tags
    */
@@ -672,9 +640,9 @@ export interface Content{
 }
 
 /**
-* The records found when checking DNS records of an email sender's domain
-*/
-export interface DnsRecords{
+ * The records found when checking DNS records of an email sender's domain
+ */
+export interface DnsRecords {
   /**
    * The A Records of the sender's domain
    */
@@ -690,9 +658,9 @@ export interface DnsRecords{
 }
 
 /**
-* The results of spam assassin check performed by Mailosaur.
-*/
-export interface SpamAssassinResult{
+ * The results of spam assassin check performed by Mailosaur.
+ */
+export interface SpamAssassinResult {
   /**
    * Overall Mailosaur spam score.
    */
