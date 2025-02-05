@@ -1,5 +1,5 @@
-import * as stream from 'stream';
-import * as models from '../models';
+import * as stream from "stream";
+import * as models from "../models";
 
 /**
  * Message analysis operations.
@@ -15,15 +15,15 @@ export interface Analysis {
     messageId: string
   ): Promise<models.SpamAnalysisResult>;
 
-    /**
+  /**
    * Perform a deliverability report of an email.
    */
-    deliverability(
-      /**
-       * The identifier of the message to be analyzed.
-       */
-      messageId: string
-    ): Promise<models.DeliverabilityReport>;
+  deliverability(
+    /**
+     * The identifier of the message to be analyzed.
+     */
+    messageId: string
+  ): Promise<models.DeliverabilityReport>;
 }
 
 /**
@@ -79,7 +79,7 @@ export interface Messages {
     /**
      * Search options
      */
-    options?: models.SearchOptions
+    options?: Omit<models.SearchOptions, "errorOnTimeout">
   ): Promise<models.Message>;
 
   /**
@@ -205,8 +205,7 @@ export interface Servers {
   /**
    * Returns a list of your virtual servers. Servers are returned sorted in alphabetical order.
    */
-  list(
-  ): Promise<models.ServerListResult>;
+  list(): Promise<models.ServerListResult>;
 
   /**
    * Creates a new virtual server.
@@ -279,23 +278,20 @@ export interface Usage {
    * Retrieve account usage limits. Details the current limits and usage for your account.
    * This endpoint requires authentication with an account-level API key.
    */
-  limits(
-  ): Promise<models.UsageAccountLimits>;
+  limits(): Promise<models.UsageAccountLimits>;
 
   /**
    * Retrieves the last 31 days of transactional usage.
    * This endpoint requires authentication with an account-level API key.
    */
-  transactions(
-  ): Promise<models.UsageTransactionListResult>;
+  transactions(): Promise<models.UsageTransactionListResult>;
 }
 
 export interface Devices {
   /**
    * Returns a list of your virtual security devices.
    */
-  list(
-  ): Promise<models.DeviceListResult>;
+  list(): Promise<models.DeviceListResult>;
 
   /**
    * Creates a new virtual security device.
@@ -332,6 +328,5 @@ export interface Previews {
   /**
    * List all email clients that can be used to generate email previews.
    */
-  listEmailClients(
-  ): Promise<models.PreviewEmailClientListResult>;
+  listEmailClients(): Promise<models.PreviewEmailClientListResult>;
 }
