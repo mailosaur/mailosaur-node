@@ -5,12 +5,12 @@ name: CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
   workflow_dispatch:
 
-concurrency: 
+concurrency:
   group: mailosaur-node
   cancel-in-progress: true
 
@@ -18,11 +18,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 10
-
-    strategy:
-      max-parallel: 1
-      matrix:
-        node-version: [12.x, 14.x]
 
     env:
       MAILOSAUR_BASE_URL: https://mailosaur.com/
@@ -35,10 +30,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
       - run: npm i
       - run: npm test
       - name: Notify on Failure
@@ -56,11 +49,6 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
-    strategy:
-      max-parallel: 1
-      matrix:
-        node-version: [12.x, 14.x]
-
     env:
       MAILOSAUR_BASE_URL: https://next.mailosaur.com/
       MAILOSAUR_SMTP_HOST: mailosaur.email
@@ -72,10 +60,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
       - run: npm i
       - run: npm test
       - name: Notify on Failure
