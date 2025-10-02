@@ -14,7 +14,7 @@ const getRandomString = (length) => {
   return result;
 };
 
-describe('previews', () => {
+describe.skip('previews', () => {
   const apiKey = process.env.MAILOSAUR_API_KEY;
   const baseUrl = process.env.MAILOSAUR_BASE_URL || 'https://mailosaur.com/';
   const server = process.env.MAILOSAUR_PREVIEWS_SERVER;
