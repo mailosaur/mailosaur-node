@@ -328,5 +328,5 @@ export interface Previews {
   /**
    * List all email clients that can be used to generate email previews.
    */
-  listEmailClients(): Promise<models.PreviewEmailClientListResult>;
+  listEmailClients(): Promise<models.EmailClientListResult>;
 }

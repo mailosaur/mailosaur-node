@@ -26,7 +26,6 @@ jobs:
       MAILOSAUR_API_KEY: ${{ secrets.MAILOSAUR_API_KEY }}
       MAILOSAUR_SERVER: ${{ secrets.MAILOSAUR_SERVER }}
       MAILOSAUR_VERIFIED_DOMAIN: ${{ secrets.MAILOSAUR_VERIFIED_DOMAIN }}
-      MAILOSAUR_PREVIEWS_SERVER: ${{ secrets.MAILOSAUR_PREVIEWS_SERVER }}
 
     steps:
       - uses: actions/checkout@v2
@@ -56,7 +55,6 @@ jobs:
       MAILOSAUR_API_KEY: ${{ secrets.MAILOSAUR_API_KEY }}
       MAILOSAUR_SERVER: ${{ secrets.MAILOSAUR_SERVER }}
       MAILOSAUR_VERIFIED_DOMAIN: ${{ secrets.MAILOSAUR_VERIFIED_DOMAIN }}
-      MAILOSAUR_PREVIEWS_SERVER: ${{ secrets.MAILOSAUR_PREVIEWS_SERVER }}
 
     steps:
       - uses: actions/checkout@v2
