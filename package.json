@@ -1,6 +1,6 @@
 {
   "name": "mailosaur",
-  "version": "9.0.0",
+  "version": "10.0.0",
   "description": "The Mailosaur Node library lets you integrate email and SMS testing into your continuous integration process.",
   "keywords": [
     "email",

@@ -1,6 +1,6 @@
 const { assert } = require('chai');
+const fs = require('fs');
 const MailosaurClient = require('../lib/mailosaur');
-const PreviewRequest = require('../lib/models/previewRequest');
 const PreviewRequestOptions = require('../lib/models/previewRequestOptions');
 const mailer = require('./mailer');
 
@@ -14,14 +14,14 @@ const getRandomString = (length) => {
   return result;
 };
 
-describe.skip('previews', () => {
+describe('previews', () => {
   const apiKey = process.env.MAILOSAUR_API_KEY;
   const baseUrl = process.env.MAILOSAUR_BASE_URL || 'https://mailosaur.com/';
-  const server = process.env.MAILOSAUR_PREVIEWS_SERVER;
+  const server = process.env.MAILOSAUR_SERVER;
   let client;
 
   before(async () => {
-    if (!apiKey) {
+    if (!apiKey || !server) {
       throw new Error('Missing necessary environment variables - refer to README.md');
     }
 
@@ -36,7 +36,7 @@ describe.skip('previews', () => {
     });
   });
 
-  (server ? describe : describe.skip)('generatePreviews', () => {
+  describe('generatePreviews', () => {
     it('should generate previews', async () => {
       const randomString = getRandomString(7);
       const host = process.env.MAILOSAUR_SMTP_HOST || 'mailosaur.net';
@@ -48,8 +48,7 @@ describe.skip('previews', () => {
         sentTo: testEmailAddress
       });
 
-      const request = new PreviewRequest('OL2021');
-      const options = new PreviewRequestOptions([request]);
+      const options = new PreviewRequestOptions(['iphone-16plus-applemail-lightmode-portrait']);
       const result = await client.messages.generatePreviews(email.id, options);
 
       assert.isOk(result);
@@ -57,6 +56,7 @@ describe.skip('previews', () => {
 
       // Ensure we can download one of the generated preview
       const file = await client.files.getPreview(result.items[0].id);
+      fs.writeFileSync('image3.png', file);
       assert.isOk(file);
     });
   });

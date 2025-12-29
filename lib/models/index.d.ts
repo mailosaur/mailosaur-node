@@ -836,59 +836,25 @@ export interface PreviewListResult {
 /**
  * Describes an email client with which email previews can be generated.
  */
-export interface PreviewEmailClient {
+export interface EmailClient {
   /**
-   * The unique identifier of the email client.
+   * The unique email client label. Used when generating email preview requests.
    */
-  id?: string;
+  label?: string;
   /**
    * The display name of the email client.
    */
   name?: string;
-  /**
-   * Whether the platform is desktop, mobile, or web-based.
-   */
-  platformGroup?: string;
-  /**
-   * The type of platform on which the email client is running.
-   */
-  platformType?: string;
-  /**
-   * The platform version number.
-   */
-  platformVersion?: string;
-  /**
-   * If true, images can be disabled when generating previews.
-   */
-  canDisableImages?: boolean;
-  /**
-   * The current status of the email client.
-   */
-  status?: string;
 }
 
 /**
  * A list of available email clients with which to generate email previews.
  */
-export interface PreviewEmailClientListResult {
+export interface EmailClientListResult {
   /**
    * A list of available email clients.
    */
-  items?: PreviewEmailClient[];
-}
-
-/**
- * Describes an email preview request.
- */
-export interface PreviewRequest {
-  /**
-   * The email client you wish to generate a preview for.
-   */
-  emailClient?: string;
-  /**
-   * If true, images will be disabled (only if supported by the client).
-   */
-  disableImages?: boolean;
+  items?: EmailClient[];
 }
 
 /**
@@ -896,7 +862,7 @@ export interface PreviewRequest {
  */
 export interface PreviewRequestOptions {
   /**
-   * The list of email preview requests.
+   * The list email clients to generate previews with.
    */
-  previews: PreviewRequest[];
+  emailClients: string[];
 }
