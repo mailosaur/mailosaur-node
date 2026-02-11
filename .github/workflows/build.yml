@@ -22,6 +22,7 @@ jobs:
     
     strategy:
       fail-fast: false
+      max-parallel: 1
       matrix:
         environment: [live, next]
 
@@ -50,6 +51,7 @@ jobs:
         run: npm test
 
   notify:
+    name: Notify
     if: ${{ always() }}
     needs: build
     runs-on: ${{ vars.LINUX }}
