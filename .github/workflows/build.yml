@@ -54,7 +54,7 @@ jobs:
   build-next:
     if: ${{ always() }}
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: ${{ vars.LINUX }}
     timeout-minutes: 10
 
     env:
