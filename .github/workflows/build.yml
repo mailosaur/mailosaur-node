@@ -40,7 +40,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v5
       - name: Install dependencies
-        run: npm iFAIL
+        run: npm i
       - name: Test
         run: npm test
 
