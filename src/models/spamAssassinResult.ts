@@ -8,7 +8,7 @@ class SpamAssassinResult {
   constructor(data: Record<string, any> = {}) {
     this.score = data.score;
     this.result = data.result;
-    this.rules = (data.rules || []).map((i: any) => (new SpamAssassinRule(i)));
+    this.rules = (data.rules || []).map((i: any) => new SpamAssassinRule(i));
   }
 }
 

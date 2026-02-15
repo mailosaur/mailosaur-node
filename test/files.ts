@@ -11,7 +11,9 @@ describe('files', () => {
 
   before(async () => {
     if (!apiKey || !server) {
-      throw new Error('Missing necessary environment variables - refer to README.md');
+      throw new Error(
+        'Missing necessary environment variables - refer to README.md'
+      );
     }
 
     client = new MailosaurClient(apiKey, baseUrl);
@@ -21,7 +23,7 @@ describe('files', () => {
     const testEmailAddress = `files_test@${server}.${host}`;
     await mailer.sendEmail(client, server, testEmailAddress);
     email = await client.messages.get(server, {
-      sentTo: testEmailAddress
+      sentTo: testEmailAddress,
     });
   });
 

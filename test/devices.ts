@@ -8,7 +8,9 @@ describe('devices', () => {
 
   before(() => {
     if (!apiKey) {
-      throw new Error('Missing necessary environment variables - refer to README.md');
+      throw new Error(
+        'Missing necessary environment variables - refer to README.md'
+      );
     }
 
     client = new MailosaurClient(apiKey, baseUrl);
@@ -22,7 +24,7 @@ describe('devices', () => {
     it('should create a new device', async () => {
       createdDevice = await client.devices.create({
         name: deviceName,
-        sharedSecret
+        sharedSecret,
       });
 
       assert.isNotEmpty(createdDevice.id);
@@ -38,11 +40,15 @@ describe('devices', () => {
 
     it('should delete an existing device', async () => {
       const resultBefore = await client.devices.list();
-      assert.isTrue(resultBefore.items.some((x: any) => x.id === createdDevice.id));
+      assert.isTrue(
+        resultBefore.items.some((x: any) => x.id === createdDevice.id)
+      );
 
       await client.devices.del(createdDevice.id);
       const resultAfter = await client.devices.list();
-      assert.isFalse(resultAfter.items.some((x: any) => x.id === createdDevice.id));
+      assert.isFalse(
+        resultAfter.items.some((x: any) => x.id === createdDevice.id)
+      );
     });
 
     it('retrieve an otp via shared secret', async () => {

@@ -8,8 +8,7 @@ const getRandomString = (length: number): string => {
   let result = '';
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
   for (let i = 0; i < length; i += 1) {
-    result += characters.charAt(Math.floor(Math.random() *
-      characters.length));
+    result += characters.charAt(Math.floor(Math.random() * characters.length));
   }
   return result;
 };
@@ -22,7 +21,9 @@ describe('previews', () => {
 
   before(async () => {
     if (!apiKey || !server) {
-      throw new Error('Missing necessary environment variables - refer to README.md');
+      throw new Error(
+        'Missing necessary environment variables - refer to README.md'
+      );
     }
 
     client = new MailosaurClient(apiKey, baseUrl);
@@ -45,10 +46,12 @@ describe('previews', () => {
       await mailer.sendEmail(client, server, testEmailAddress);
 
       const email = await client.messages.get(server, {
-        sentTo: testEmailAddress
+        sentTo: testEmailAddress,
       });
 
-      const options = new PreviewRequestOptions(['iphone-16plus-applemail-lightmode-portrait']);
+      const options = new PreviewRequestOptions([
+        'iphone-16plus-applemail-lightmode-portrait',
+      ]);
       const result = await client.messages.generatePreviews(email.id, options);
 
       assert.isOk(result);

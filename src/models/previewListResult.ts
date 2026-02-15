@@ -4,7 +4,7 @@ class PreviewListResult {
   items?: Preview[];
 
   constructor(data: Record<string, any> = {}) {
-    this.items = (data.items || []).map((i: any) => (new Preview(i)));
+    this.items = (data.items || []).map((i: any) => new Preview(i));
   }
 }
 

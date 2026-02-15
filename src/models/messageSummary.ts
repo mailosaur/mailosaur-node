@@ -17,10 +17,10 @@ class MessageSummary {
     this.id = data.id;
     this.type = data.type;
     this.server = data.server;
-    this.from = (data.from || []).map((i: any) => (new MessageAddress(i)));
-    this.to = (data.to || []).map((i: any) => (new MessageAddress(i)));
-    this.cc = (data.cc || []).map((i: any) => (new MessageAddress(i)));
-    this.bcc = (data.bcc || []).map((i: any) => (new MessageAddress(i)));
+    this.from = (data.from || []).map((i: any) => new MessageAddress(i));
+    this.to = (data.to || []).map((i: any) => new MessageAddress(i));
+    this.cc = (data.cc || []).map((i: any) => new MessageAddress(i));
+    this.bcc = (data.bcc || []).map((i: any) => new MessageAddress(i));
     this.received = new Date(data.received);
     this.subject = data.subject;
     this.summary = data.summary;

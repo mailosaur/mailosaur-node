@@ -9,7 +9,9 @@ describe('servers', () => {
 
   before(() => {
     if (!apiKey) {
-      throw new Error('Missing necessary environment variables - refer to README.md');
+      throw new Error(
+        'Missing necessary environment variables - refer to README.md'
+      );
     }
 
     client = new MailosaurClient(apiKey, baseUrl);
@@ -39,7 +41,7 @@ describe('servers', () => {
 
     it('should create a new server', async () => {
       createdServer = await client.servers.create({
-        name: serverName
+        name: serverName,
       });
       assert.isNotEmpty(createdServer.id);
       assert.equal(createdServer.name, serverName);
@@ -62,7 +64,10 @@ describe('servers', () => {
 
     it('should update an existing server', async () => {
       retrievedServer.name += ' updated with ellipsis … and emoji 👨🏿‍🚒';
-      const server = await client.servers.update(retrievedServer.id, retrievedServer);
+      const server = await client.servers.update(
+        retrievedServer.id,
+        retrievedServer
+      );
       assert.equal(server.id, retrievedServer.id);
       assert.equal(server.name, retrievedServer.name);
       assert.deepEqual(server.users, retrievedServer.users);

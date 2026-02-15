@@ -1,5 +1,5 @@
-import * as stream from "stream";
-import * as models from "../models";
+import * as stream from 'stream';
+import * as models from '../models';
 
 /**
  * Message analysis operations.
@@ -79,7 +79,7 @@ export interface Messages {
     /**
      * Search options
      */
-    options?: Omit<models.SearchOptions, "errorOnTimeout">
+    options?: Omit<models.SearchOptions, 'errorOnTimeout'>
   ): Promise<models.Message>;
 
   /**

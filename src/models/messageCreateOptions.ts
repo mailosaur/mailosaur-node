@@ -1,4 +1,4 @@
-import Attachment from './attachment';
+import type Attachment from './attachment';
 
 class MessageCreateOptions {
   to?: string;

@@ -1,7 +1,7 @@
 import DeviceListResult from '../models/deviceListResult';
 import Device from '../models/device';
 import OtpResult from '../models/otpResult';
-import DeviceCreateOptions from '../models/deviceCreateOptions';
+import type DeviceCreateOptions from '../models/deviceCreateOptions';
 import type MailosaurClient from '../mailosaur';
 
 class Devices {
@@ -15,12 +15,16 @@ class Devices {
     const url = `api/devices`;
 
     return new Promise<DeviceListResult>((resolve, reject) => {
-      this.client.request.get(url, {}, (err: Error | null, response?: any, body?: any) => {
-        if (err || response?.statusCode !== 200) {
-          return reject(err || this.client.httpError(response!));
+      this.client.request.get(
+        url,
+        {},
+        (err: Error | null, response?: any, body?: any) => {
+          if (err || response?.statusCode !== 200) {
+            return reject(err || this.client.httpError(response as any));
+          }
+          resolve(new DeviceListResult(body));
         }
-        resolve(new DeviceListResult(body));
-      });
+      );
     });
   }
 
@@ -28,12 +32,16 @@ class Devices {
     const url = `api/devices`;
 
     return new Promise<Device>((resolve, reject) => {
-      this.client.request.post(url, { body: options }, (err: Error | null, response?: any, body?: any) => {
-        if (err || response?.statusCode !== 200) {
-          return reject(err || this.client.httpError(response!));
+      this.client.request.post(
+        url,
+        { body: options },
+        (err: Error | null, response?: any, body?: any) => {
+          if (err || response?.statusCode !== 200) {
+            return reject(err || this.client.httpError(response as any));
+          }
+          resolve(new Device(body));
         }
-        resolve(new Device(body));
-      });
+      );
     });
   }
 
@@ -42,23 +50,31 @@ class Devices {
       const url = `api/devices/${query}/otp`;
 
       return new Promise<OtpResult>((resolve, reject) => {
-        this.client.request.get(url, {}, (err: Error | null, response?: any, body?: any) => {
-          if (err || response?.statusCode !== 200) {
-            return reject(err || this.client.httpError(response!));
+        this.client.request.get(
+          url,
+          {},
+          (err: Error | null, response?: any, body?: any) => {
+            if (err || response?.statusCode !== 200) {
+              return reject(err || this.client.httpError(response as any));
+            }
+            resolve(new OtpResult(body));
           }
-          resolve(new OtpResult(body));
-        });
+        );
       });
     }
 
     return new Promise<OtpResult>((resolve, reject) => {
       const url = `api/devices/otp`;
-      this.client.request.post(url, { body: { sharedSecret: query } }, (err: Error | null, response?: any, body?: any) => {
-        if (err || response?.statusCode !== 200) {
-          return reject(err || this.client.httpError(response!));
+      this.client.request.post(
+        url,
+        { body: { sharedSecret: query } },
+        (err: Error | null, response?: any, body?: any) => {
+          if (err || response?.statusCode !== 200) {
+            return reject(err || this.client.httpError(response as any));
+          }
+          resolve(new OtpResult(body));
         }
-        resolve(new OtpResult(body));
-      });
+      );
     });
   }
 
@@ -68,7 +84,7 @@ class Devices {
     return new Promise<void>((resolve, reject) => {
       this.client.request.del(url, {}, (err: Error | null, response?: any) => {
         if (err || response?.statusCode !== 204) {
-          return reject(err || this.client.httpError(response!));
+          return reject(err || this.client.httpError(response as any));
         }
         resolve();
       });

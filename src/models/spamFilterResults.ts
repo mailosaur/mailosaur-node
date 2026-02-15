@@ -4,7 +4,9 @@ class SpamFilterResults {
   spamAssassin?: SpamAssassinRule[];
 
   constructor(data: Record<string, any> = {}) {
-    this.spamAssassin = (data.spamAssassin || []).map((i: any) => (new SpamAssassinRule(i)));
+    this.spamAssassin = (data.spamAssassin || []).map(
+      (i: any) => new SpamAssassinRule(i)
+    );
   }
 }
 

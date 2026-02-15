@@ -22,12 +22,12 @@ class MailosaurClient {
 
   constructor(apiKey: string, baseUrl?: string) {
     if (!apiKey) {
-      throw new Error('\'apiKey\' must be set.');
+      throw new Error("'apiKey' must be set.");
     }
 
     this.request = new Request({
       baseUrl: baseUrl || 'https://mailosaur.com/',
-      apiKey
+      apiKey,
     });
 
     this.analysis = new Analysis(this);
@@ -42,31 +42,65 @@ class MailosaurClient {
 
   httpError(response: { statusCode: number; body?: any }): MailosaurError {
     const httpStatusCode = response.statusCode;
-    const httpResponseBody = response.body ? JSON.stringify(response.body) : null;
+    const httpResponseBody = response.body
+      ? JSON.stringify(response.body)
+      : null;
     let message = '';
 
     switch (httpStatusCode) {
       case 400:
         try {
-          const json = JSON.parse(httpResponseBody!);
+          if (!httpResponseBody) {
+            throw new Error('Empty response body');
+          }
+          const json = JSON.parse(httpResponseBody);
           json.errors.forEach((err: any) => {
             message += `(${err.field}) ${err.detail[0].description}\r\n`;
           });
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (_e) {
           message = 'Request had one or more invalid parameters.';
         }
-        return new MailosaurError(message, 'invalid_request', httpStatusCode, httpResponseBody);
+        return new MailosaurError(
+          message,
+          'invalid_request',
+          httpStatusCode,
+          httpResponseBody
+        );
       case 401:
-        return new MailosaurError('Authentication failed, check your API key.', 'authentication_error', httpStatusCode, httpResponseBody);
+        return new MailosaurError(
+          'Authentication failed, check your API key.',
+          'authentication_error',
+          httpStatusCode,
+          httpResponseBody
+        );
       case 403:
-        return new MailosaurError('Insufficient permission to perform that task.', 'permission_error', httpStatusCode, httpResponseBody);
+        return new MailosaurError(
+          'Insufficient permission to perform that task.',
+          'permission_error',
+          httpStatusCode,
+          httpResponseBody
+        );
       case 404:
-        return new MailosaurError('Not found, check input parameters.', 'invalid_request', httpStatusCode, httpResponseBody);
+        return new MailosaurError(
+          'Not found, check input parameters.',
+          'invalid_request',
+          httpStatusCode,
+          httpResponseBody
+        );
       case 410:
-        return new MailosaurError('Permanently expired or deleted.', 'gone', httpStatusCode, httpResponseBody);
+        return new MailosaurError(
+          'Permanently expired or deleted.',
+          'gone',
+          httpStatusCode,
+          httpResponseBody
+        );
       default:
-        return new MailosaurError('An API error occurred, see httpResponse for further information.', 'api_error', httpStatusCode, httpResponseBody);
+        return new MailosaurError(
+          'An API error occurred, see httpResponse for further information.',
+          'api_error',
+          httpStatusCode,
+          httpResponseBody
+        );
     }
   }
 }
@@ -74,10 +108,10 @@ class MailosaurClient {
 export default MailosaurClient;
 
 // CommonJS compatibility - allows `const MailosaurClient = require('mailosaur')`
-// @ts-ignore
+// @ts-expect-error
 if (typeof module !== 'undefined' && module.exports) {
-  // @ts-ignore
+  // @ts-expect-error
   module.exports = MailosaurClient;
-  // @ts-ignore
+  // @ts-expect-error
   module.exports.default = MailosaurClient;
 }

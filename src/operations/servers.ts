@@ -1,6 +1,6 @@
 import ServerListResult from '../models/serverListResult';
 import Server from '../models/server';
-import ServerCreateOptions from '../models/serverCreateOptions';
+import type ServerCreateOptions from '../models/serverCreateOptions';
 import type MailosaurClient from '../mailosaur';
 
 class Servers {
@@ -14,12 +14,16 @@ class Servers {
     const url = `api/servers`;
 
     return new Promise<ServerListResult>((resolve, reject) => {
-      this.client.request.get(url, {}, (err: Error | null, response?: any, body?: any) => {
-        if (err || response?.statusCode !== 200) {
-          return reject(err || this.client.httpError(response!));
+      this.client.request.get(
+        url,
+        {},
+        (err: Error | null, response?: any, body?: any) => {
+          if (err || response?.statusCode !== 200) {
+            return reject(err || this.client.httpError(response as any));
+          }
+          resolve(new ServerListResult(body));
         }
-        resolve(new ServerListResult(body));
-      });
+      );
     });
   }
 
@@ -27,12 +31,16 @@ class Servers {
     const url = `api/servers`;
 
     return new Promise<Server>((resolve, reject) => {
-      this.client.request.post(url, { body: options }, (err: Error | null, response?: any, body?: any) => {
-        if (err || response?.statusCode !== 200) {
-          return reject(err || this.client.httpError(response!));
+      this.client.request.post(
+        url,
+        { body: options },
+        (err: Error | null, response?: any, body?: any) => {
+          if (err || response?.statusCode !== 200) {
+            return reject(err || this.client.httpError(response as any));
+          }
+          resolve(new Server(body));
         }
-        resolve(new Server(body));
-      });
+      );
     });
   }
 
@@ -40,12 +48,16 @@ class Servers {
     const url = `api/servers/${serverId}`;
 
     return new Promise<Server>((resolve, reject) => {
-      this.client.request.get(url, {}, (err: Error | null, response?: any, body?: any) => {
-        if (err || response?.statusCode !== 200) {
-          return reject(err || this.client.httpError(response!));
+      this.client.request.get(
+        url,
+        {},
+        (err: Error | null, response?: any, body?: any) => {
+          if (err || response?.statusCode !== 200) {
+            return reject(err || this.client.httpError(response as any));
+          }
+          resolve(new Server(body));
         }
-        resolve(new Server(body));
-      });
+      );
     });
   }
 
@@ -53,12 +65,16 @@ class Servers {
     const url = `api/servers/${serverId}/password`;
 
     return new Promise<string>((resolve, reject) => {
-      this.client.request.get(url, {}, (err: Error | null, response?: any, body?: any) => {
-        if (err || response?.statusCode !== 200) {
-          return reject(err || this.client.httpError(response!));
+      this.client.request.get(
+        url,
+        {},
+        (err: Error | null, response?: any, body?: any) => {
+          if (err || response?.statusCode !== 200) {
+            return reject(err || this.client.httpError(response as any));
+          }
+          resolve(body.value);
         }
-        resolve(body.value);
-      });
+      );
     });
   }
 
@@ -66,12 +82,16 @@ class Servers {
     const url = `api/servers/${serverId}`;
 
     return new Promise<Server>((resolve, reject) => {
-      this.client.request.put(url, { body: server }, (err: Error | null, response?: any, body?: any) => {
-        if (err || response?.statusCode !== 200) {
-          return reject(err || this.client.httpError(response!));
+      this.client.request.put(
+        url,
+        { body: server },
+        (err: Error | null, response?: any, body?: any) => {
+          if (err || response?.statusCode !== 200) {
+            return reject(err || this.client.httpError(response as any));
+          }
+          resolve(new Server(body));
         }
-        resolve(new Server(body));
-      });
+      );
     });
   }
 
@@ -81,7 +101,7 @@ class Servers {
     return new Promise<void>((resolve, reject) => {
       this.client.request.del(url, {}, (err: Error | null, response?: any) => {
         if (err || response?.statusCode !== 204) {
-          return reject(err || this.client.httpError(response!));
+          return reject(err || this.client.httpError(response as any));
         }
         resolve();
       });

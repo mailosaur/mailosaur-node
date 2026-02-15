@@ -15,9 +15,13 @@ class DeliverabilityReport {
 
   constructor(data: Record<string, any> = {}) {
     this.spf = new EmailAuthenticationResult(data.spf);
-    this.dkim = (data.dkim || []).map((i: any) => (new EmailAuthenticationResult(i)));
+    this.dkim = (data.dkim || []).map(
+      (i: any) => new EmailAuthenticationResult(i)
+    );
     this.dmarc = new EmailAuthenticationResult(data.dmarc);
-    this.blockLists = (data.blockLists || []).map((i: any) => (new BlockListResult(i)));
+    this.blockLists = (data.blockLists || []).map(
+      (i: any) => new BlockListResult(i)
+    );
     this.content = new Content(data.content);
     this.dnsRecords = new DnsRecords(data.dnsRecords);
     this.spamAssassin = new SpamAssassinResult(data.spamAssassin);

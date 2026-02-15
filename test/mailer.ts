@@ -4,8 +4,14 @@ import path from 'path';
 
 const verifiedDomain = process.env.MAILOSAUR_VERIFIED_DOMAIN || 'mailosaur.net';
 
-const html = fs.readFileSync(path.join(__dirname, '/resources/testEmail.html'), 'utf-8');
-const text = fs.readFileSync(path.join(__dirname, '/resources/testEmail.txt'), 'utf-8');
+const html = fs.readFileSync(
+  path.join(__dirname, '/resources/testEmail.html'),
+  'utf-8'
+);
+const text = fs.readFileSync(
+  path.join(__dirname, '/resources/testEmail.txt'),
+  'utf-8'
+);
 
 const smtpTransport = nodemailer.createTransport({
   host: process.env.MAILOSAUR_SMTP_HOST || 'mailosaur.net',
@@ -14,23 +20,27 @@ const smtpTransport = nodemailer.createTransport({
   ignoreTLS: false,
   tls: {
     // Do not fail on certificate mismatch
-    rejectUnauthorized: false
-  }
+    rejectUnauthorized: false,
+  },
 });
 
 const getRandomString = (length: number): string => {
   let result = '';
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
   for (let i = 0; i < length; i += 1) {
-    result += characters.charAt(Math.floor(Math.random() *
-      characters.length));
+    result += characters.charAt(Math.floor(Math.random() * characters.length));
   }
   return result;
 };
 
 const mailer = {
-  sendEmails: (mailerModule: any, client: any, server: string, quantity: number): Promise<any> => {
-    const promises: Array<Promise<any>> = [];
+  sendEmails: (
+    mailerModule: any,
+    client: any,
+    server: string,
+    quantity: number
+  ): Promise<any> => {
+    const promises: Promise<any>[] = [];
 
     return new Promise((resolve, reject) => {
       let i = 0;
@@ -38,16 +48,19 @@ const mailer = {
         promises.push(mailerModule.sendEmail(client, server));
       }
 
-      Promise.all(promises)
-        .then(resolve)
-        .catch(reject);
+      Promise.all(promises).then(resolve).catch(reject);
     });
   },
 
-  sendEmail: (client: any, server: string, sendToAddress?: string): Promise<any> => {
+  sendEmail: (
+    client: any,
+    server: string,
+    sendToAddress?: string
+  ): Promise<any> => {
     const randomString = getRandomString(7);
     const randomFromAddress = `${randomString}@${verifiedDomain}`;
-    const randomToAddress = sendToAddress || client.servers.generateEmailAddress(server);
+    const randomToAddress =
+      sendToAddress || client.servers.generateEmailAddress(server);
 
     return smtpTransport.sendMail({
       subject: `${randomString} subject`,
@@ -61,15 +74,15 @@ const mailer = {
         {
           filename: 'cat.png',
           path: path.join(__dirname, '/resources/cat.png'),
-          cid: 'ii_1435fadb31d523f6'
+          cid: 'ii_1435fadb31d523f6',
         },
         {
           fileName: 'dog.png',
-          path: path.join(__dirname, '/resources/dog.png')
-        }
-      ]
+          path: path.join(__dirname, '/resources/dog.png'),
+        },
+      ],
     });
-  }
+  },
 };
 
 export default mailer;

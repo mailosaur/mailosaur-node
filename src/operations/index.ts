@@ -6,12 +6,4 @@ import Previews from './previews';
 import Servers from './servers';
 import Usage from './usage';
 
-export {
-  Analysis,
-  Devices,
-  Files,
-  Messages,
-  Previews,
-  Servers,
-  Usage
-};
+export { Analysis, Devices, Files, Messages, Previews, Servers, Usage };

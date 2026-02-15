@@ -13,12 +13,16 @@ class Usage {
     const url = `api/usage/limits`;
 
     return new Promise<UsageAccountLimits>((resolve, reject) => {
-      this.client.request.get(url, {}, (err: Error | null, response?: any, body?: any) => {
-        if (err || response?.statusCode !== 200) {
-          return reject(err || this.client.httpError(response!));
+      this.client.request.get(
+        url,
+        {},
+        (err: Error | null, response?: any, body?: any) => {
+          if (err || response?.statusCode !== 200) {
+            return reject(err || this.client.httpError(response as any));
+          }
+          resolve(new UsageAccountLimits(body));
         }
-        resolve(new UsageAccountLimits(body));
-      });
+      );
     });
   }
 
@@ -26,12 +30,16 @@ class Usage {
     const url = `api/usage/transactions`;
 
     return new Promise<UsageTransactionListResult>((resolve, reject) => {
-      this.client.request.get(url, {}, (err: Error | null, response?: any, body?: any) => {
-        if (err || response?.statusCode !== 200) {
-          return reject(err || this.client.httpError(response!));
+      this.client.request.get(
+        url,
+        {},
+        (err: Error | null, response?: any, body?: any) => {
+          if (err || response?.statusCode !== 200) {
+            return reject(err || this.client.httpError(response as any));
+          }
+          resolve(new UsageTransactionListResult(body));
         }
-        resolve(new UsageTransactionListResult(body));
-      });
+      );
     });
   }
 }

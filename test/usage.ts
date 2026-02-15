@@ -8,7 +8,9 @@ describe('usage', () => {
 
   before(() => {
     if (!apiKey) {
-      throw new Error('Missing necessary environment variables - refer to README.md');
+      throw new Error(
+        'Missing necessary environment variables - refer to README.md'
+      );
     }
 
     client = new MailosaurClient(apiKey, baseUrl);

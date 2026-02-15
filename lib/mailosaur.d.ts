@@ -1,6 +1,6 @@
 /// <reference types="node" />
 
-import * as operations from "./operations";
+import * as operations from './operations';
 
 export = MailosaurClient;
 

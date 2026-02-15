@@ -38,15 +38,11 @@
     "LICENSE"
   ],
   "devDependencies": {
+    "@biomejs/biome": "2.3.13",
     "@types/node": "^22.0.0",
     "@types/chai": "^5.0.0",
     "@types/mocha": "^10.0.0",
-    "@typescript-eslint/eslint-plugin": "^8.0.0",
-    "@typescript-eslint/parser": "^8.0.0",
     "chai": "~6.2.0",
-    "eslint": "^8.57.0",
-    "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-plugin-import": "^2.29.1",
     "mocha": "^11.7.4",
     "nodemailer": "~7.0.6",
     "ts-node": "^10.9.2",
@@ -67,7 +63,11 @@
     "clean": "rm -rf cjs esm",
     "prepack": "npm run build",
     "test": "npm run lint && TS_NODE_PROJECT=tsconfig.test.json mocha -t 60000",
-    "lint": "node_modules/.bin/eslint --ext .ts src"
+    "lint": "if [ -n \"$CI\" ]; then (npm run lint:strict) else (npm run lint:default) fi",
+    "lint:default": "npx biome check . --diagnostic-level=warn",
+    "lint:strict": "npx biome check . --error-on-warnings",
+    "lint:fix": "npx biome check --write .",
+    "format": "npx biome format --write ."
   },
   "eslintConfig": {
     "extends": [

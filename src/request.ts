@@ -44,25 +44,32 @@ class Request {
     this.headers = {
       Accept: 'application/json',
       Authorization: `Basic ${encodedKey}`,
-      'User-Agent': options.agent || `mailosaur-node/${pkg.version}`
+      'User-Agent': options.agent || `mailosaur-node/${pkg.version}`,
     };
 
-    const httpProxy = process.env.https_proxy || process.env.HTTPS_PROXY ||
-                      process.env.http_proxy || process.env.HTTP_PROXY;
+    const httpProxy =
+      process.env.https_proxy ||
+      process.env.HTTPS_PROXY ||
+      process.env.http_proxy ||
+      process.env.HTTP_PROXY;
     if (httpProxy) {
       this.proxyAgent = new HttpsProxyAgent(httpProxy);
     }
   }
 
-  private buildOptions(method: string, path: string, options: BuildOptionsParams = {}): InvokeOptions {
+  private buildOptions(
+    method: string,
+    path: string,
+    options: BuildOptionsParams = {}
+  ): InvokeOptions {
     const result: InvokeOptions = {
       method,
       url: `${this.baseUrl}${path}`,
       headers: {
         Accept: this.headers.Accept,
         Authorization: this.headers.Authorization,
-        'User-Agent': this.headers['User-Agent']
-      }
+        'User-Agent': this.headers['User-Agent'],
+      },
     };
 
     if (options.buffer) {
@@ -70,8 +77,9 @@ class Request {
     }
 
     if (options.qs) {
-      Object.keys(options.qs).forEach((key, index) => {
-        let value = options.qs![key];
+      const qs = options.qs;
+      Object.keys(qs).forEach((key, index) => {
+        let value = qs[key];
         if (!value) {
           return;
         }
@@ -97,12 +105,18 @@ class Request {
     return result;
   }
 
-  private invoke(options: InvokeOptions, callback: (err: Error | null, response?: HttpResponse, body?: unknown) => void): void {
+  private invoke(
+    options: InvokeOptions,
+    callback: (
+      err: Error | null,
+      response?: HttpResponse,
+      body?: unknown
+    ) => void
+  ): void {
     let urlResult: url.URL | url.UrlWithStringQuery;
 
     try {
       urlResult = new url.URL(options.url);
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (_ex) {
       urlResult = url.parse(options.url);
     }
@@ -111,20 +125,19 @@ class Request {
       ...options,
       protocol: urlResult.protocol as any,
       hostname: urlResult.hostname as any,
-      path: (urlResult.pathname || '') + (urlResult.search || '')
+      path: (urlResult.pathname || '') + (urlResult.search || ''),
     };
 
-    const req = https.request(spread, (res) => {
+    const req = https.request(spread, res => {
       const data: Buffer[] = [];
       res.on('data', (chunk: Buffer) => data.push(chunk));
       res.on('end', () => {
         try {
           if (data) {
-            (res as HttpResponse).body = options.buffer ?
-              Buffer.concat(data) :
-              JSON.parse(Buffer.concat(data).toString());
+            (res as HttpResponse).body = options.buffer
+              ? Buffer.concat(data)
+              : JSON.parse(Buffer.concat(data).toString());
           }
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (_ex) {
           (res as HttpResponse).body = data;
         }
@@ -142,7 +155,16 @@ class Request {
     req.end();
   }
 
-  request(method: string, path: string, options?: BuildOptionsParams, callback?: (err: Error | null, response?: HttpResponse, body?: unknown) => void): void {
+  request(
+    method: string,
+    path: string,
+    options?: BuildOptionsParams,
+    callback?: (
+      err: Error | null,
+      response?: HttpResponse,
+      body?: unknown
+    ) => void
+  ): void {
     let cb = callback;
     let opts = options;
     if (typeof options === 'function') {
@@ -151,22 +173,57 @@ class Request {
     }
 
     const requestOptions = this.buildOptions(method, path, opts);
-    this.invoke(requestOptions, cb!);
+    if (!cb) {
+      throw new Error('Callback is required.');
+    }
+    this.invoke(requestOptions, cb);
   }
 
-  get(path: string, options?: BuildOptionsParams, callback?: (err: Error | null, response?: HttpResponse, body?: unknown) => void): void {
+  get(
+    path: string,
+    options?: BuildOptionsParams,
+    callback?: (
+      err: Error | null,
+      response?: HttpResponse,
+      body?: unknown
+    ) => void
+  ): void {
     this.request('GET', path, options, callback);
   }
 
-  put(path: string, options?: BuildOptionsParams, callback?: (err: Error | null, response?: HttpResponse, body?: unknown) => void): void {
+  put(
+    path: string,
+    options?: BuildOptionsParams,
+    callback?: (
+      err: Error | null,
+      response?: HttpResponse,
+      body?: unknown
+    ) => void
+  ): void {
     this.request('PUT', path, options, callback);
   }
 
-  post(path: string, options?: BuildOptionsParams, callback?: (err: Error | null, response?: HttpResponse, body?: unknown) => void): void {
+  post(
+    path: string,
+    options?: BuildOptionsParams,
+    callback?: (
+      err: Error | null,
+      response?: HttpResponse,
+      body?: unknown
+    ) => void
+  ): void {
     this.request('POST', path, options, callback);
   }
 
-  del(path: string, options?: BuildOptionsParams, callback?: (err: Error | null, response?: HttpResponse, body?: unknown) => void): void {
+  del(
+    path: string,
+    options?: BuildOptionsParams,
+    callback?: (
+      err: Error | null,
+      response?: HttpResponse,
+      body?: unknown
+    ) => void
+  ): void {
     this.request('DELETE', path, options, callback);
   }
 }

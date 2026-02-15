@@ -12,12 +12,16 @@ class Previews {
     const url = `api/screenshots/clients`;
 
     return new Promise<EmailClientListResult>((resolve, reject) => {
-      this.client.request.get(url, {}, (err: Error | null, response?: any, body?: any) => {
-        if (err || response?.statusCode !== 200) {
-          return reject(err || this.client.httpError(response!));
+      this.client.request.get(
+        url,
+        {},
+        (err: Error | null, response?: any, body?: any) => {
+          if (err || response?.statusCode !== 200) {
+            return reject(err || this.client.httpError(response as any));
+          }
+          resolve(new EmailClientListResult(body));
         }
-        resolve(new EmailClientListResult(body));
-      });
+      );
     });
   }
 }

@@ -165,7 +165,7 @@ export interface Message {
   /**
    * The type of message.
    */
-  type: "Email" | "SMS";
+  type: 'Email' | 'SMS';
   /**
    * The sender of the message.
    */
@@ -225,7 +225,7 @@ export interface MessageSummary {
   /**
    * The type of message.
    */
-  type: "Email" | "SMS";
+  type: 'Email' | 'SMS';
   /**
    * The sender of the message.
    */
@@ -300,7 +300,7 @@ export interface SearchCriteria {
    * If set to `ALL` (default), then only results that match all specified criteria will be returned.
    * If set to `ANY`, results that match any of the specified criteria will be returned.
    */
-  match?: "ALL" | "ANY";
+  match?: 'ALL' | 'ANY';
 }
 
 /**

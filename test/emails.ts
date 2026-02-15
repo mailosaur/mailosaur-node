@@ -13,12 +13,32 @@ const validateHtml = (email: any) => {
 
   // Links
   assert.equal(email.html.links.length, 3, 'Should have HTML links');
-  assert.equal(email.html.links[0].href, 'https://mailosaur.com/', 'First link should have href');
-  assert.equal(email.html.links[0].text, 'mailosaur', 'First link should have text');
-  assert.equal(email.html.links[1].href, 'https://mailosaur.com/', 'Second link should have href');
+  assert.equal(
+    email.html.links[0].href,
+    'https://mailosaur.com/',
+    'First link should have href'
+  );
+  assert.equal(
+    email.html.links[0].text,
+    'mailosaur',
+    'First link should have text'
+  );
+  assert.equal(
+    email.html.links[1].href,
+    'https://mailosaur.com/',
+    'Second link should have href'
+  );
   assert.isNull(email.html.links[1].text, 'Second link should have no text');
-  assert.equal(email.html.links[2].href, 'http://invalid/', 'Third link should have href');
-  assert.equal(email.html.links[2].text, 'invalid', 'Third link should have text');
+  assert.equal(
+    email.html.links[2].href,
+    'http://invalid/',
+    'Third link should have href'
+  );
+  assert.equal(
+    email.html.links[2].text,
+    'invalid',
+    'Third link should have text'
+  );
 
   // Codes
   assert.equal(email.html.codes.length, 2, 'Should have verification codes');
@@ -27,7 +47,11 @@ const validateHtml = (email: any) => {
 
   // Images
   assert.match(email.html.images[1].src, /cid:/);
-  assert.equal(email.html.images[1].alt, 'Inline image 1', 'Second image should have alt text');
+  assert.equal(
+    email.html.images[1].alt,
+    'Inline image 1',
+    'Second image should have alt text'
+  );
 };
 
 const validateText = (email: any) => {
@@ -36,10 +60,26 @@ const validateText = (email: any) => {
 
   // Links
   assert.equal(email.text.links.length, 2, 'Should have Text links');
-  assert.equal(email.text.links[0].href, 'https://mailosaur.com/', 'First link should have href');
-  assert.equal(email.text.links[0].text, email.text.links[0].href, 'First text link href & text should match');
-  assert.equal(email.text.links[1].href, 'https://mailosaur.com/', 'Second link should have href');
-  assert.equal(email.text.links[1].text, email.text.links[1].href, 'Second text link href & text should match');
+  assert.equal(
+    email.text.links[0].href,
+    'https://mailosaur.com/',
+    'First link should have href'
+  );
+  assert.equal(
+    email.text.links[0].text,
+    email.text.links[0].href,
+    'First text link href & text should match'
+  );
+  assert.equal(
+    email.text.links[1].href,
+    'https://mailosaur.com/',
+    'Second link should have href'
+  );
+  assert.equal(
+    email.text.links[1].text,
+    email.text.links[1].href,
+    'Second text link href & text should match'
+  );
 
   // Codes
   assert.equal(email.text.codes.length, 2, 'Should have verification codes');
@@ -52,9 +92,21 @@ const validateHeaders = (email: any) => {
   const expectedToHeader = `${email.to[0].name} <${email.to[0].email}>`;
   const { headers } = email.metadata;
 
-  assert.equal(headers.find((h: any) => h.field.toLowerCase() === 'from').value, expectedFromHeader, 'From header should be accurate');
-  assert.equal(headers.find((h: any) => h.field.toLowerCase() === 'to').value, expectedToHeader, 'To header should be accurate');
-  assert.equal(headers.find((h: any) => h.field.toLowerCase() === 'subject').value, email.subject, 'Subject header should be accurate');
+  assert.equal(
+    headers.find((h: any) => h.field.toLowerCase() === 'from').value,
+    expectedFromHeader,
+    'From header should be accurate'
+  );
+  assert.equal(
+    headers.find((h: any) => h.field.toLowerCase() === 'to').value,
+    expectedToHeader,
+    'To header should be accurate'
+  );
+  assert.equal(
+    headers.find((h: any) => h.field.toLowerCase() === 'subject').value,
+    email.subject,
+    'Subject header should be accurate'
+  );
 };
 
 const validateMetadata = (email: any) => {
@@ -78,15 +130,35 @@ const validateAttachments = (email: any) => {
   assert.isOk(file1.id, 'First attachment should have file id');
   assert.isOk(file1.url);
   assert.equal(file1.length, 82138, 'First attachment should be correct size');
-  assert.equal(file1.fileName, 'cat.png', 'First attachment should have filename');
-  assert.equal(file1.contentType, 'image/png', 'First attachment should have correct MIME type');
+  assert.equal(
+    file1.fileName,
+    'cat.png',
+    'First attachment should have filename'
+  );
+  assert.equal(
+    file1.contentType,
+    'image/png',
+    'First attachment should have correct MIME type'
+  );
 
   const file2 = email.attachments[1];
   assert.isOk(file2.id, 'Second attachment should have file id');
   assert.isOk(file2.url);
-  assert.equal(file2.length, 212080, 'Second attachment should be correct size');
-  assert.equal(file2.fileName, 'dog.png', 'Second attachment should have filename');
-  assert.equal(file2.contentType, 'image/png', 'Second attachment should have correct MIME type');
+  assert.equal(
+    file2.length,
+    212080,
+    'Second attachment should be correct size'
+  );
+  assert.equal(
+    file2.fileName,
+    'dog.png',
+    'Second attachment should have filename'
+  );
+  assert.equal(
+    file2.contentType,
+    'image/png',
+    'Second attachment should have correct MIME type'
+  );
 };
 
 const validateEmail = (email: any) => {
@@ -115,7 +187,9 @@ describe('emails', () => {
 
   before(async () => {
     if (!apiKey || !server) {
-      throw new Error('Missing necessary environment variables - refer to README.md');
+      throw new Error(
+        'Missing necessary environment variables - refer to README.md'
+      );
     }
 
     client = new MailosaurClient(apiKey, baseUrl);
@@ -131,7 +205,9 @@ describe('emails', () => {
     it('should filter on older received after date', async () => {
       const pastDate = new Date();
       pastDate.setMinutes(pastDate.getMinutes() - 10);
-      const result = await client.messages.list(server, { receivedAfter: pastDate });
+      const result = await client.messages.list(server, {
+        receivedAfter: pastDate,
+      });
       assert.isTrue(result.items.length > 0);
     });
 
@@ -149,7 +225,7 @@ describe('emails', () => {
       const testEmailAddress = `wait_for_test@${server}.${host}`;
       await mailer.sendEmail(client, server, testEmailAddress);
       const email = await client.messages.get(server, {
-        sentTo: testEmailAddress
+        sentTo: testEmailAddress,
       });
       validateEmail(email);
     });
@@ -184,24 +260,35 @@ describe('emails', () => {
       const testFromEmail = 'zzyy@test.com';
 
       try {
-        await client.messages.search(server, {
-          sentFrom: testFromEmail
-        }, {
-          timeout: 1,
-        });
+        await client.messages.search(
+          server,
+          {
+            sentFrom: testFromEmail,
+          },
+          {
+            timeout: 1,
+          }
+        );
       } catch (err: any) {
         assert.instanceOf(err, MailosaurError);
-        assert.equal(err.message, `No matching messages found in time. By default, only messages received in the last hour are checked (use receivedAfter to override this). The search criteria used for this query was [{"sentFrom":"${testFromEmail}"}] which timed out after 1ms`);
+        assert.equal(
+          err.message,
+          `No matching messages found in time. By default, only messages received in the last hour are checked (use receivedAfter to override this). The search criteria used for this query was [{"sentFrom":"${testFromEmail}"}] which timed out after 1ms`
+        );
       }
     });
 
     it('should return empty array if errors suppressed', async () => {
-      const result = await client.messages.search(server, {
-        sentTo: 'neverfound@example.com'
-      }, {
-        timeout: 1,
-        errorOnTimeout: false
-      });
+      const result = await client.messages.search(
+        server,
+        {
+          sentTo: 'neverfound@example.com',
+        },
+        {
+          timeout: 1,
+          errorOnTimeout: false,
+        }
+      );
 
       assert.equal(result.items.length, 0);
     });
@@ -210,7 +297,7 @@ describe('emails', () => {
       it('should return matching results', async () => {
         const targetEmail = emails[1];
         const result = await client.messages.search(server, {
-          sentFrom: targetEmail.from[0].email
+          sentFrom: targetEmail.from[0].email,
         });
         assert.equal(result.items.length, 1);
         assert.equal(result.items[0].from[0].email, targetEmail.from[0].email);
@@ -222,7 +309,7 @@ describe('emails', () => {
       it('should return matching results', async () => {
         const targetEmail = emails[1];
         const result = await client.messages.search(server, {
-          sentTo: targetEmail.to[0].email
+          sentTo: targetEmail.to[0].email,
         });
         assert.equal(result.items.length, 1);
         assert.equal(result.items[0].to[0].email, targetEmail.to[0].email);
@@ -233,9 +320,12 @@ describe('emails', () => {
     describe('by body', () => {
       it('should return matching results', async () => {
         const targetEmail = emails[1];
-        const uniqueString = targetEmail.subject.substr(0, targetEmail.subject.indexOf(' subject'));
+        const uniqueString = targetEmail.subject.substr(
+          0,
+          targetEmail.subject.indexOf(' subject')
+        );
         const result = await client.messages.search(server, {
-          body: `${uniqueString} html`
+          body: `${uniqueString} html`,
         });
         assert.equal(result.items.length, 1);
         assert.equal(result.items[0].to[0].email, targetEmail.to[0].email);
@@ -246,9 +336,12 @@ describe('emails', () => {
     describe('by subject', () => {
       it('should return matching results', async () => {
         const targetEmail = emails[1];
-        const uniqueString = targetEmail.subject.substr(0, targetEmail.subject.indexOf(' subject'));
+        const uniqueString = targetEmail.subject.substr(
+          0,
+          targetEmail.subject.indexOf(' subject')
+        );
         const result = await client.messages.search(server, {
-          subject: uniqueString
+          subject: uniqueString,
         });
         assert.equal(result.items.length, 1);
         assert.equal(result.items[0].to[0].email, targetEmail.to[0].email);
@@ -259,11 +352,14 @@ describe('emails', () => {
     describe('with match all', () => {
       it('should return matching results', async () => {
         const targetEmail = emails[1];
-        const uniqueString = targetEmail.subject.substr(0, targetEmail.subject.indexOf(' subject'));
+        const uniqueString = targetEmail.subject.substr(
+          0,
+          targetEmail.subject.indexOf(' subject')
+        );
         const result = await client.messages.search(server, {
           subject: uniqueString,
           body: 'this is a link',
-          match: 'ALL'
+          match: 'ALL',
         });
         assert.equal(result.items.length, 1);
       });
@@ -272,11 +368,14 @@ describe('emails', () => {
     describe('with match any', () => {
       it('should return matching results', async () => {
         const targetEmail = emails[1];
-        const uniqueString = targetEmail.subject.substr(0, targetEmail.subject.indexOf(' subject'));
+        const uniqueString = targetEmail.subject.substr(
+          0,
+          targetEmail.subject.indexOf(' subject')
+        );
         const result = await client.messages.search(server, {
           subject: uniqueString,
           body: 'this is a link',
-          match: 'ANY'
+          match: 'ANY',
         });
         assert.equal(result.items.length, 6);
       });
@@ -285,7 +384,7 @@ describe('emails', () => {
     describe('with special characters', () => {
       it('should support special characters', async () => {
         const result = await client.messages.search(server, {
-          subject: 'Search with ellipsis … and emoji 👨🏿‍🚒'
+          subject: 'Search with ellipsis … and emoji 👨🏿‍🚒',
         });
         assert.equal(result.items.length, 0);
       });
@@ -365,7 +464,7 @@ describe('emails', () => {
         to: `anything@${verifiedDomain}`,
         send: true,
         subject,
-        text: 'This is a new email'
+        text: 'This is a new email',
       });
       assert.isNotEmpty(message.id);
       assert.equal(message.subject, subject);
@@ -377,7 +476,7 @@ describe('emails', () => {
         to: `anything@${verifiedDomain}`,
         send: true,
         subject,
-        html: '<p>This is a new email.</p>'
+        html: '<p>This is a new email.</p>',
       });
       assert.isNotEmpty(message.id);
       assert.equal(message.subject, subject);
@@ -391,7 +490,7 @@ describe('emails', () => {
         send: true,
         subject,
         cc: ccRecipient,
-        html: '<p>This is a new email.</p>'
+        html: '<p>This is a new email.</p>',
       });
       assert.isNotEmpty(message.id);
       assert.equal(message.subject, subject);
@@ -402,11 +501,13 @@ describe('emails', () => {
     it('send with attachment', async () => {
       const subject = 'New message with attachment';
 
-      const buffer = fs.readFileSync(path.join(__dirname, '/resources/cat.png'));
+      const buffer = fs.readFileSync(
+        path.join(__dirname, '/resources/cat.png')
+      );
       const attachment = {
         fileName: 'cat.png',
         content: buffer.toString('base64'),
-        contentType: 'image/png'
+        contentType: 'image/png',
       };
 
       const message = await client.messages.create(server, {
@@ -414,15 +515,27 @@ describe('emails', () => {
         send: true,
         subject,
         html: '<p>This is a new email.</p>',
-        attachments: [attachment]
+        attachments: [attachment],
       });
       assert.equal(message.attachments.length, 1, 'Should have attachment');
       const file1 = message.attachments[0];
       assert.isOk(file1.id, 'First attachment should have file id');
       assert.isOk(file1.url);
-      assert.equal(file1.length, 82138, 'First attachment should be correct size');
-      assert.equal(file1.fileName, 'cat.png', 'First attachment should have filename');
-      assert.equal(file1.contentType, 'image/png', 'First attachment should have correct MIME type');
+      assert.equal(
+        file1.length,
+        82138,
+        'First attachment should be correct size'
+      );
+      assert.equal(
+        file1.fileName,
+        'cat.png',
+        'First attachment should have filename'
+      );
+      assert.equal(
+        file1.contentType,
+        'image/png',
+        'First attachment should have correct MIME type'
+      );
     });
   });
 
@@ -433,7 +546,7 @@ describe('emails', () => {
 
       const message = await client.messages.forward(targetEmailId, {
         to: `anything@${verifiedDomain}`,
-        text: body
+        text: body,
       });
       assert.isNotEmpty(message.id);
       assert.isTrue(message.text.body.indexOf(body) >= 0);
@@ -445,7 +558,7 @@ describe('emails', () => {
 
       const message = await client.messages.forward(targetEmailId, {
         to: `anything@${verifiedDomain}`,
-        html: body
+        html: body,
       });
       assert.isNotEmpty(message.id);
       assert.isTrue(message.html.body.indexOf(body) >= 0);
@@ -459,7 +572,7 @@ describe('emails', () => {
       const message = await client.messages.forward(targetEmailId, {
         to: `anything@${verifiedDomain}`,
         html: body,
-        cc: ccRecipient
+        cc: ccRecipient,
       });
       assert.isNotEmpty(message.id);
       assert.isTrue(message.html.body.indexOf(body) >= 0);
@@ -474,7 +587,7 @@ describe('emails', () => {
       const body = 'Reply message';
 
       const message = await client.messages.reply(targetEmailId, {
-        text: body
+        text: body,
       });
       assert.isNotEmpty(message.id);
       assert.isTrue(message.text.body.indexOf(body) >= 0);
@@ -485,7 +598,7 @@ describe('emails', () => {
       const body = '<p>Reply <strong>HTML</strong> message.</p>';
 
       const message = await client.messages.reply(targetEmailId, {
-        html: body
+        html: body,
       });
       assert.isNotEmpty(message.id);
       assert.isTrue(message.html.body.indexOf(body) >= 0);
@@ -498,7 +611,7 @@ describe('emails', () => {
 
       const message = await client.messages.reply(targetEmailId, {
         html: body,
-        cc: ccRecipient
+        cc: ccRecipient,
       });
       assert.isNotEmpty(message.id);
       assert.isTrue(message.html.body.indexOf(body) >= 0);
@@ -509,24 +622,38 @@ describe('emails', () => {
     it('reply with attachment', async () => {
       const targetEmailId = emails[0].id;
 
-      const buffer = fs.readFileSync(path.join(__dirname, '/resources/cat.png'));
+      const buffer = fs.readFileSync(
+        path.join(__dirname, '/resources/cat.png')
+      );
       const attachment = {
         fileName: 'cat.png',
         content: buffer.toString('base64'),
-        contentType: 'image/png'
+        contentType: 'image/png',
       };
 
       const message = await client.messages.reply(targetEmailId, {
         html: '<p>This is a reply with attachment.</p>',
-        attachments: [attachment]
+        attachments: [attachment],
       });
       assert.equal(message.attachments.length, 1, 'Should have attachment');
       const file1 = message.attachments[0];
       assert.isOk(file1.id, 'First attachment should have file id');
       assert.isOk(file1.url);
-      assert.equal(file1.length, 82138, 'First attachment should be correct size');
-      assert.equal(file1.fileName, 'cat.png', 'First attachment should have filename');
-      assert.equal(file1.contentType, 'image/png', 'First attachment should have correct MIME type');
+      assert.equal(
+        file1.length,
+        82138,
+        'First attachment should be correct size'
+      );
+      assert.equal(
+        file1.fileName,
+        'cat.png',
+        'First attachment should have filename'
+      );
+      assert.equal(
+        file1.contentType,
+        'image/png',
+        'First attachment should have correct MIME type'
+      );
     });
   });
 });
