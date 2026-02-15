@@ -1,13 +1,13 @@
-const { assert } = require('chai');
-const MailosaurClient = require('../lib/mailosaur');
-const mailer = require('./mailer');
+import { assert } from 'chai';
+import MailosaurClient from '../src/mailosaur';
+import mailer from './mailer';
 
 describe('files', () => {
   const apiKey = process.env.MAILOSAUR_API_KEY;
   const server = process.env.MAILOSAUR_SERVER;
   const baseUrl = process.env.MAILOSAUR_BASE_URL || 'https://mailosaur.com/';
-  let client;
-  let email;
+  let client: MailosaurClient;
+  let email: any;
 
   before(async () => {
     if (!apiKey || !server) {
@@ -27,7 +27,7 @@ describe('files', () => {
 
   describe('getEmail', () => {
     it('should return a file', async () => {
-      const result = await client.files.getEmail(email.id);
+      const result: any = await client.files.getEmail(email.id);
       assert.isOk(result);
       assert.isTrue(result.length > 1);
       assert.isTrue(result.indexOf(email.subject) !== -1);
@@ -38,7 +38,7 @@ describe('files', () => {
     it('should return a file', async () => {
       const attachment = email.attachments[0];
 
-      const result = await client.files.getAttachment(attachment.id);
+      const result: any = await client.files.getAttachment(attachment.id);
       assert.isOk(result);
       assert.equal(result.length, attachment.length);
     });

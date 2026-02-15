@@ -1,8 +1,8 @@
-const { assert } = require('chai');
-const MailosaurClient = require('../lib/mailosaur');
+import { assert } from 'chai';
+import MailosaurClient from '../src/mailosaur';
 
 describe('devices', () => {
-  let client;
+  let client: MailosaurClient;
   const apiKey = process.env.MAILOSAUR_API_KEY;
   const baseUrl = process.env.MAILOSAUR_BASE_URL || 'https://mailosaur.com/';
 
@@ -17,7 +17,7 @@ describe('devices', () => {
   describe('CRUD', () => {
     const deviceName = 'My test';
     const sharedSecret = 'ONSWG4TFOQYTEMY=';
-    let createdDevice;
+    let createdDevice: any;
 
     it('should create a new device', async () => {
       createdDevice = await client.devices.create({
@@ -38,11 +38,11 @@ describe('devices', () => {
 
     it('should delete an existing device', async () => {
       const resultBefore = await client.devices.list();
-      assert.isTrue(resultBefore.items.some(x => x.id === createdDevice.id));
+      assert.isTrue(resultBefore.items.some((x: any) => x.id === createdDevice.id));
 
       await client.devices.del(createdDevice.id);
       const resultAfter = await client.devices.list();
-      assert.isFalse(resultAfter.items.some(x => x.id === createdDevice.id));
+      assert.isFalse(resultAfter.items.some((x: any) => x.id === createdDevice.id));
     });
 
     it('retrieve an otp via shared secret', async () => {

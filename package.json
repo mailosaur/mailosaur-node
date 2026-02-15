@@ -20,28 +20,62 @@
   },
   "bugs": "https://github.com/mailosaur/mailosaur-node/issues",
   "engines": {
-    "node": ">= v6.0.0"
+    "node": ">=16"
   },
-  "types": "lib/mailosaur.d.ts",
-  "main": "lib/mailosaur.js",
+  "main": "cjs/mailosaur.js",
+  "types": "cjs/mailosaur.d.ts",
+  "exports": {
+    ".": {
+      "types": "./cjs/mailosaur.d.ts",
+      "import": "./esm/mailosaur.js",
+      "require": "./cjs/mailosaur.js"
+    }
+  },
+  "files": [
+    "cjs/",
+    "esm/",
+    "README.md",
+    "LICENSE"
+  ],
   "devDependencies": {
-    "@types/node": "^24.6.2",
+    "@types/node": "^22.0.0",
+    "@types/chai": "^5.0.0",
+    "@types/mocha": "^10.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.0.0",
+    "@typescript-eslint/parser": "^8.0.0",
     "chai": "~6.2.0",
     "eslint": "^8.57.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.29.1",
     "mocha": "^11.7.4",
     "nodemailer": "~7.0.6",
+    "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
   },
+  "peerDependencies": {
+    "@types/node": ">=16"
+  },
+  "peerDependenciesMeta": {
+    "@types/node": {
+      "optional": true
+    }
+  },
   "scripts": {
-    "test": "npm run lint && npm run tsc && node_modules/.bin/_mocha -t 60000",
-    "lint": "node_modules/.bin/eslint --ext .js .",
-    "tsc": "node_modules/.bin/tsc lib/mailosaur.d.ts --types node"
+    "build:cjs": "tsc -p tsconfig.cjs.json && echo '{\"type\":\"commonjs\"}' > cjs/package.json",
+    "build:esm": "tsc -p tsconfig.esm.json && echo '{\"type\":\"module\"}' > esm/package.json",
+    "build": "npm run build:cjs && npm run build:esm",
+    "clean": "rm -rf cjs esm",
+    "prepack": "npm run build",
+    "test": "npm run lint && TS_NODE_PROJECT=tsconfig.test.json mocha -t 60000",
+    "lint": "node_modules/.bin/eslint --ext .ts src"
   },
   "eslintConfig": {
     "extends": [
       "airbnb-base"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+      "@typescript-eslint"
     ],
     "env": {
       "node": true,
@@ -67,7 +101,17 @@
       "implicit-arrow-linebreak": 0,
       "no-else-return": 0,
       "indent": 0,
-      "lines-between-class-members": 0
+      "lines-between-class-members": 0,
+      "import/extensions": 0,
+      "import/no-unresolved": 0,
+      "import/no-import-module-exports": 0,
+      "no-useless-catch": 0,
+      "global-require": 0,
+      "no-trailing-spaces": 0,
+      "no-unused-vars": 0,
+      "@typescript-eslint/no-unused-vars": [
+        "error"
+      ]
     }
   },
   "dependencies": {

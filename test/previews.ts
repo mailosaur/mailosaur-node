@@ -1,10 +1,10 @@
-const { assert } = require('chai');
-const fs = require('fs');
-const MailosaurClient = require('../lib/mailosaur');
-const PreviewRequestOptions = require('../lib/models/previewRequestOptions');
-const mailer = require('./mailer');
+import { assert } from 'chai';
+import fs from 'fs';
+import MailosaurClient from '../src/mailosaur';
+import PreviewRequestOptions from '../src/models/previewRequestOptions';
+import mailer from './mailer';
 
-const getRandomString = (length) => {
+const getRandomString = (length: number): string => {
   let result = '';
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
   for (let i = 0; i < length; i += 1) {
@@ -18,7 +18,7 @@ describe('previews', () => {
   const apiKey = process.env.MAILOSAUR_API_KEY;
   const baseUrl = process.env.MAILOSAUR_BASE_URL || 'https://mailosaur.com/';
   const server = process.env.MAILOSAUR_SERVER;
-  let client;
+  let client: MailosaurClient;
 
   before(async () => {
     if (!apiKey || !server) {
@@ -55,8 +55,8 @@ describe('previews', () => {
       assert.isTrue(result.items.length > 0);
 
       // Ensure we can download one of the generated preview
-      const file = await client.files.getPreview(result.items[0].id);
-      fs.writeFileSync('image3.png', file);
+      const file: any = await client.files.getPreview(result.items[0].id);
+      fs.writeFileSync('test-result.png', file);
       assert.isOk(file);
     });
   });

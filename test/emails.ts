@@ -1,13 +1,13 @@
-const fs = require('fs');
-const path = require('path');
-const { assert } = require('chai');
-const MailosaurClient = require('../lib/mailosaur');
-const MailosaurError = require('../lib/models/mailosaurError');
-const mailer = require('./mailer');
+import fs from 'fs';
+import path from 'path';
+import { assert } from 'chai';
+import MailosaurClient from '../src/mailosaur';
+import MailosaurError from '../src/models/mailosaurError';
+import mailer from './mailer';
 
 const isoDateString = new Date().toISOString().slice(0, 10);
 
-const validateHtml = (email) => {
+const validateHtml = (email: any) => {
   // Body
   assert.match(email.html.body, /^<div dir="ltr">/, 'HTML body should match');
 
@@ -30,7 +30,7 @@ const validateHtml = (email) => {
   assert.equal(email.html.images[1].alt, 'Inline image 1', 'Second image should have alt text');
 };
 
-const validateText = (email) => {
+const validateText = (email: any) => {
   // Body
   assert.match(email.text.body, /^this is a test/);
 
@@ -47,17 +47,17 @@ const validateText = (email) => {
   assert.equal(email.text.codes[1].value, '5H0Y2');
 };
 
-const validateHeaders = (email) => {
+const validateHeaders = (email: any) => {
   const expectedFromHeader = `${email.from[0].name} <${email.from[0].email}>`;
   const expectedToHeader = `${email.to[0].name} <${email.to[0].email}>`;
   const { headers } = email.metadata;
 
-  assert.equal(headers.find(h => h.field.toLowerCase() === 'from').value, expectedFromHeader, 'From header should be accurate');
-  assert.equal(headers.find(h => h.field.toLowerCase() === 'to').value, expectedToHeader, 'To header should be accurate');
-  assert.equal(headers.find(h => h.field.toLowerCase() === 'subject').value, email.subject, 'Subject header should be accurate');
+  assert.equal(headers.find((h: any) => h.field.toLowerCase() === 'from').value, expectedFromHeader, 'From header should be accurate');
+  assert.equal(headers.find((h: any) => h.field.toLowerCase() === 'to').value, expectedToHeader, 'To header should be accurate');
+  assert.equal(headers.find((h: any) => h.field.toLowerCase() === 'subject').value, email.subject, 'Subject header should be accurate');
 };
 
-const validateMetadata = (email) => {
+const validateMetadata = (email: any) => {
   assert.equal(email.type, 'Email');
   assert.equal(email.from.length, 1);
   assert.equal(email.to.length, 1);
@@ -71,7 +71,7 @@ const validateMetadata = (email) => {
   assert.equal(email.received.toISOString().slice(0, 10), isoDateString);
 };
 
-const validateAttachments = (email) => {
+const validateAttachments = (email: any) => {
   assert.equal(email.attachments.length, 2, 'Should have attachments');
 
   const file1 = email.attachments[0];
@@ -89,7 +89,7 @@ const validateAttachments = (email) => {
   assert.equal(file2.contentType, 'image/png', 'Second attachment should have correct MIME type');
 };
 
-const validateEmail = (email) => {
+const validateEmail = (email: any) => {
   validateMetadata(email);
   validateAttachments(email);
   validateHtml(email);
@@ -99,7 +99,7 @@ const validateEmail = (email) => {
   assert.equal(email.metadata.rcptTo.length, 1);
 };
 
-const validateEmailSummary = (email) => {
+const validateEmailSummary = (email: any) => {
   validateMetadata(email);
   assert.isNotEmpty(email.summary);
   assert.equal(email.attachments, 2);
@@ -110,8 +110,8 @@ describe('emails', () => {
   const server = process.env.MAILOSAUR_SERVER;
   const baseUrl = process.env.MAILOSAUR_BASE_URL || 'https://mailosaur.com/';
   const verifiedDomain = process.env.MAILOSAUR_VERIFIED_DOMAIN;
-  let client;
-  let emails;
+  let client: MailosaurClient;
+  let emails: any[];
 
   before(async () => {
     if (!apiKey || !server) {
@@ -189,7 +189,7 @@ describe('emails', () => {
         }, {
           timeout: 1,
         });
-      } catch (err) {
+      } catch (err: any) {
         assert.instanceOf(err, MailosaurError);
         assert.equal(err.message, `No matching messages found in time. By default, only messages received in the last hour are checked (use receivedAfter to override this). The search criteria used for this query was [{"sentFrom":"${testFromEmail}"}] which timed out after 1ms`);
       }
@@ -296,7 +296,7 @@ describe('emails', () => {
     it('should perform a spam analysis on an email', async () => {
       const targetId = emails[0].id;
       const result = await client.analysis.spam(targetId);
-      result.spamFilterResults.spamAssassin.forEach((rule) => {
+      result.spamFilterResults.spamAssassin.forEach((rule: any) => {
         assert.isNumber(rule.score);
         assert.isOk(rule.rule);
         assert.isOk(rule.description);
@@ -312,14 +312,14 @@ describe('emails', () => {
       assert.isOk(result.spf);
 
       assert.isOk(result.dkim);
-      result.dkim.forEach((dkim) => {
+      result.dkim.forEach((dkim: any) => {
         assert.isOk(dkim);
       });
 
       assert.isOk(result.dmarc);
 
       assert.isOk(result.blockLists);
-      result.blockLists.forEach((blockList) => {
+      result.blockLists.forEach((blockList: any) => {
         assert.isOk(blockList);
         assert.isOk(blockList.id);
         assert.isOk(blockList.name);
@@ -333,7 +333,7 @@ describe('emails', () => {
       assert.isOk(result.dnsRecords.ptr);
 
       assert.isOk(result.spamAssassin);
-      result.spamAssassin.rules.forEach((rule) => {
+      result.spamAssassin.rules.forEach((rule: any) => {
         assert.isNumber(rule.score);
         assert.isOk(rule.rule);
         assert.isOk(rule.description);

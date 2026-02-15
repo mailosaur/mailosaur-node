@@ -1,6 +1,6 @@
-const nodemailer = require('nodemailer');
-const fs = require('fs');
-const path = require('path');
+import nodemailer from 'nodemailer';
+import fs from 'fs';
+import path from 'path';
 
 const verifiedDomain = process.env.MAILOSAUR_VERIFIED_DOMAIN || 'mailosaur.net';
 
@@ -18,7 +18,7 @@ const smtpTransport = nodemailer.createTransport({
   }
 });
 
-const getRandomString = (length) => {
+const getRandomString = (length: number): string => {
   let result = '';
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
   for (let i = 0; i < length; i += 1) {
@@ -28,14 +28,14 @@ const getRandomString = (length) => {
   return result;
 };
 
-module.exports = {
-  sendEmails: (mailer, client, server, quantity) => {
-    const promises = [];
+const mailer = {
+  sendEmails: (mailerModule: any, client: any, server: string, quantity: number): Promise<any> => {
+    const promises: Array<Promise<any>> = [];
 
     return new Promise((resolve, reject) => {
       let i = 0;
       for (i = 0; i < quantity; i += 1) {
-        promises.push(mailer.sendEmail(client, server));
+        promises.push(mailerModule.sendEmail(client, server));
       }
 
       Promise.all(promises)
@@ -44,7 +44,7 @@ module.exports = {
     });
   },
 
-  sendEmail: (client, server, sendToAddress) => {
+  sendEmail: (client: any, server: string, sendToAddress?: string): Promise<any> => {
     const randomString = getRandomString(7);
     const randomFromAddress = `${randomString}@${verifiedDomain}`;
     const randomToAddress = sendToAddress || client.servers.generateEmailAddress(server);
@@ -71,3 +71,5 @@ module.exports = {
     });
   }
 };
+
+export default mailer;

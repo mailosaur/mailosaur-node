@@ -1,8 +1,8 @@
-const { assert } = require('chai');
-const MailosaurClient = require('../lib/mailosaur');
+import { assert } from 'chai';
+import MailosaurClient from '../src/mailosaur';
 
 describe('usage', () => {
-  let client;
+  let client: MailosaurClient;
   const apiKey = process.env.MAILOSAUR_API_KEY;
   const baseUrl = process.env.MAILOSAUR_BASE_URL || 'https://mailosaur.com/';
 

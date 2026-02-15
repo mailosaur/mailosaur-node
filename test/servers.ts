@@ -1,9 +1,9 @@
-const { assert } = require('chai');
-const MailosaurClient = require('../lib/mailosaur');
-const MailosaurError = require('../lib/models/mailosaurError');
+import { assert } from 'chai';
+import MailosaurClient from '../src/mailosaur';
+import MailosaurError from '../src/models/mailosaurError';
 
 describe('servers', () => {
-  let client;
+  let client: MailosaurClient;
   const apiKey = process.env.MAILOSAUR_API_KEY;
   const baseUrl = process.env.MAILOSAUR_BASE_URL || 'https://mailosaur.com/';
 
@@ -34,8 +34,8 @@ describe('servers', () => {
 
   describe('CRUD', () => {
     const serverName = 'My test';
-    let createdServer;
-    let retrievedServer;
+    let createdServer: any;
+    let retrievedServer: any;
 
     it('should create a new server', async () => {
       createdServer = await client.servers.create({
@@ -84,7 +84,7 @@ describe('servers', () => {
     it('should fail to create a server with no name', async () => {
       try {
         await client.servers.create({});
-      } catch (err) {
+      } catch (err: any) {
         assert.instanceOf(err, MailosaurError);
         assert.equal(err.message, '(name) Servers need a name\r\n');
         assert.equal(err.errorType, 'invalid_request');
