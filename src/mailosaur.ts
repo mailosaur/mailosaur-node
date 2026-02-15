@@ -108,10 +108,7 @@ class MailosaurClient {
 export default MailosaurClient;
 
 // CommonJS compatibility - allows `const MailosaurClient = require('mailosaur')`
-// @ts-expect-error
 if (typeof module !== 'undefined' && module.exports) {
-  // @ts-expect-error
   module.exports = MailosaurClient;
-  // @ts-expect-error
   module.exports.default = MailosaurClient;
 }
