@@ -9,6 +9,10 @@ class Usage {
     this.client = client;
   }
 
+  /**
+   * Retrieve account usage limits. Details the current limits and usage for your account.
+   * This endpoint requires authentication with an account-level API key.
+   */
   async limits(): Promise<UsageAccountLimits> {
     const url = `api/usage/limits`;
 
@@ -26,6 +30,10 @@ class Usage {
     });
   }
 
+  /**
+   * Retrieves the last 31 days of transactional usage.
+   * This endpoint requires authentication with an account-level API key.
+   */
   async transactions(): Promise<UsageTransactionListResult> {
     const url = `api/usage/transactions`;
 

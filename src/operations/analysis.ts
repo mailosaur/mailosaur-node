@@ -2,6 +2,9 @@ import SpamAnalysisResult from '../models/spamAnalysisResult';
 import DeliverabilityReport from '../models/deliverabilityReport';
 import type MailosaurClient from '../mailosaur';
 
+/**
+ * Message analysis operations.
+ */
 class Analysis {
   client: MailosaurClient;
 
@@ -9,6 +12,10 @@ class Analysis {
     this.client = client;
   }
 
+  /**
+   * Perform a spam analysis of an email.
+   * @param messageId The identifier of the message to be analyzed.
+   */
   async spam(messageId: string): Promise<SpamAnalysisResult> {
     const url = `api/analysis/spam/${messageId}`;
 
@@ -26,6 +33,10 @@ class Analysis {
     });
   }
 
+  /**
+   * Perform a deliverability report of an email.
+   * @param messageId The identifier of the message to be analyzed.
+   */
   async deliverability(messageId: string): Promise<DeliverabilityReport> {
     const url = `api/analysis/deliverability/${messageId}`;
 

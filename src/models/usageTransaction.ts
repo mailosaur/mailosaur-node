@@ -1,6 +1,18 @@
+/**
+ * Usage transaction.
+ */
 class UsageTransaction {
+  /**
+   * The date/time of the transaction.
+   */
   timestamp?: Date;
+  /**
+   * The number of emails.
+   */
   email?: number;
+  /**
+   * The number of SMS messages.
+   */
   sms?: number;
 
   constructor(data: Record<string, any> = {}) {

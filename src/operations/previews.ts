@@ -8,6 +8,9 @@ class Previews {
     this.client = client;
   }
 
+  /**
+   * List all email clients that can be used to generate email previews.
+   */
   async listEmailClients(): Promise<EmailClientListResult> {
     const url = `api/screenshots/clients`;
 

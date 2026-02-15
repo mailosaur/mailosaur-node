@@ -1,3 +1,11 @@
+/**
+ * @class
+ * Initializes a new instance of the MailosaurError class.
+ * @constructor
+ * @member {string} [errorType]
+ * @member {number} [httpStatusCode]
+ * @member {string} [httpResponseBody]
+ */
 class MailosaurError extends Error {
   errorType?: string;
   httpStatusCode?: number | null;

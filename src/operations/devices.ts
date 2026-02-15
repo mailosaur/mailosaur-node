@@ -11,6 +11,9 @@ class Devices {
     this.client = client;
   }
 
+  /**
+   * Returns a list of your virtual security devices.
+   */
   async list(): Promise<DeviceListResult> {
     const url = `api/devices`;
 
@@ -28,6 +31,10 @@ class Devices {
     });
   }
 
+  /**
+   * Creates a new virtual security device.
+   * @param options Options used to create a new Mailosaur virtual security device.
+   */
   async create(options: DeviceCreateOptions): Promise<Device> {
     const url = `api/devices`;
 
@@ -45,6 +52,10 @@ class Devices {
     });
   }
 
+  /**
+   * Retrieves the current one-time password for a saved device, or given base32-encoded shared secret.
+   * @param query Either the unique identifier of the device, or a base32-encoded shared secret.
+   */
   async otp(query: string): Promise<OtpResult> {
     if (!query || query.indexOf('-') > -1) {
       const url = `api/devices/${query}/otp`;
@@ -78,6 +89,10 @@ class Devices {
     });
   }
 
+  /**
+   * Permanently delete a virtual security device. This operation cannot be undone.
+   * @param deviceId The unique identifier of the device.
+   */
   async del(deviceId: string): Promise<void> {
     const url = `api/devices/${deviceId}`;
 

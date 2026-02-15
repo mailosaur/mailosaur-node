@@ -4,6 +4,9 @@ import MailosaurError from '../models/mailosaurError';
 // Forward declaration to avoid circular dependency issues
 type MailosaurClient = any;
 
+/**
+ * File operations.
+ */
 class Files {
   client: MailosaurClient;
 
@@ -11,6 +14,10 @@ class Files {
     this.client = client;
   }
 
+  /**
+   * Downloads a single attachment.
+   * @param attachmentId The identifier for the required attachment.
+   */
   async getAttachment(attachmentId: string): Promise<Readable> {
     const url = `api/files/attachments/${attachmentId}`;
 
@@ -24,6 +31,10 @@ class Files {
     });
   }
 
+  /**
+   * Downloads an EML file representing the specified email.
+   * @param messageId The identifier for the required message.
+   */
   async getEmail(messageId: string): Promise<Readable> {
     const url = `api/files/email/${messageId}`;
 
@@ -37,6 +48,11 @@ class Files {
     });
   }
 
+  /**
+   * Downloads a screenshot of your email rendered in a real email client. Simply supply
+   * the unique identifier for the required preview.
+   * @param previewId The identifier of the email preview to be downloaded.
+   */
   async getPreview(previewId: string): Promise<Readable> {
     const timeout = 120000;
     let pollCount = 0;

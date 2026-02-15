@@ -1,9 +1,24 @@
 import UsageAccountLimit from './usageAccountLimit';
 
+/**
+ * The current limits and usage for your account.
+ */
 class UsageAccountLimits {
+  /**
+   * Server limits.
+   */
   servers?: UsageAccountLimit;
+  /**
+   * User limits.
+   */
   users?: UsageAccountLimit;
+  /**
+   * Emails per day limits.
+   */
   email?: UsageAccountLimit;
+  /**
+   * SMS message per month limits.
+   */
   sms?: UsageAccountLimit;
 
   constructor(data: Record<string, any> = {}) {

@@ -11,15 +11,41 @@ import MailosaurError from './models/mailosaurError';
 
 class MailosaurClient {
   request: Request;
+  /**
+   * Message analysis operations
+   */
   analysis: Analysis;
+  /**
+   * File operations
+   */
   files: Files;
+  /**
+   * Message operations
+   */
   messages: Messages;
+  /**
+   * Server management operations
+   */
   servers: Servers;
+  /**
+   * Account usage operations
+   */
   usage: Usage;
+  /**
+   * Device management operations
+   */
   devices: Devices;
+  /**
+   * Email Previews operations
+   */
   previews: Previews;
   models: typeof models;
 
+  /**
+   * Returns an instance of the Mailosaur client.
+   * @param apiKey Your Mailosaur API key.
+   * @param baseUrl Optionally overrides the base URL of the Mailosaur service.
+   */
   constructor(apiKey: string, baseUrl?: string) {
     if (!apiKey) {
       throw new Error("'apiKey' must be set.");

@@ -3,19 +3,61 @@ import MessageContent from './messageContent';
 import Attachment from './attachment';
 import Metadata from './metadata';
 
+/**
+ * The email or SMS message processed by Mailosaur.
+ */
 class Message {
+  /**
+   * Unique identifier for the message.
+   */
   id?: string;
+  /**
+   * The type of message.
+   */
   type: 'Email' | 'SMS';
+  /**
+   * The sender of the message.
+   */
   from?: MessageAddress[];
+  /**
+   * The recipients of the message.
+   */
   to?: MessageAddress[];
+  /**
+   * Carbon-copied recipients for email messages.
+   */
   cc?: MessageAddress[];
+  /**
+   * Blind carbon-copied recipients for email messages.
+   */
   bcc?: MessageAddress[];
+  /**
+   * The date/time that this message was received by Mailosaur.
+   */
   received?: Date;
+  /**
+   * The subject of the message.
+   */
   subject?: string;
+  /**
+   * Message content that was sent in HTML format.
+   */
   html?: MessageContent;
+  /**
+   * Message content that was sent in plain text format.
+   */
   text?: MessageContent;
+  /**
+   * An array of attachment metadata for any attached files.
+   */
   attachments?: Attachment[];
+  /**
+   * Further metadata related to the message, including email headers.
+   */
   metadata?: Metadata;
+  /**
+   * Identifier for the server in which the message is located.
+   */
   server?: string;
 
   constructor(data: Record<string, any> = {}) {

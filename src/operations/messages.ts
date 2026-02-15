@@ -18,6 +18,13 @@ class Messages {
     this.client = client;
   }
 
+  /**
+   * Waits for a message to be found. Returns as soon as a message matching the specified search criteria is found.
+   * **Recommended:** This is the most efficient method of looking up a message, therefore we recommend using it wherever possible.
+   * @param serverId The unique identifier of the containing server.
+   * @param criteria The criteria with which to find messages during a search.
+   * @param options Search options
+   */
   async get(
     serverId: string,
     criteria: SearchCriteria,
@@ -57,6 +64,11 @@ class Messages {
     }
   }
 
+  /**
+   * Retrieves the detail for a single message. Must be used in conjunction with either list or
+   * search in order to get the unique identifier for the required message.
+   * @param messageId The unique identifier of the message to be retrieved.
+   */
   async getById(messageId: string): Promise<Message> {
     const url = `api/messages/${messageId}`;
 
@@ -74,6 +86,10 @@ class Messages {
     });
   }
 
+  /**
+   * Permanently deletes a message. Also deletes any attachments related to the message. This operation cannot be undone.
+   * @param messageId The identifier for the message.
+   */
   async del(messageId: string): Promise<void> {
     const url = `api/messages/${messageId}`;
 
@@ -87,6 +103,11 @@ class Messages {
     });
   }
 
+  /**
+   * Returns a list of your messages in summary form. The summaries are returned sorted by received date, with the most recently-received messages appearing first.
+   * @param serverId The unique identifier of the required server.
+   * @param options Message listing options
+   */
   async list(
     serverId: string,
     options: MessageListOptions = {}
@@ -115,6 +136,10 @@ class Messages {
     });
   }
 
+  /**
+   * Permenantly delete all messages within a server.
+   * @param serverId The unique identifier of the server.
+   */
   async deleteAll(serverId: string): Promise<void> {
     const url = `api/messages`;
 
@@ -136,6 +161,13 @@ class Messages {
     });
   }
 
+  /**
+   * Returns a list of messages matching the specified search criteria, in summary form.
+   * The messages are returned sorted by received date, with the most recently-received messages appearing first.
+   * @param serverId The unique identifier of the server to search.
+   * @param criteria The criteria with which to find messages during a search.
+   * @param options Search options
+   */
   async search(
     serverId: string,
     criteria: SearchCriteria,
@@ -214,6 +246,12 @@ class Messages {
     });
   }
 
+  /**
+   * Creates a new message that can be sent to a verified email address. This is useful
+   * in scenarios where you want an email to trigger a workflow in your product.
+   * @param serverId The unique identifier of the required server.
+   * @param options Options to use when creating a new message.
+   */
   async create(
     serverId: string,
     options: MessageCreateOptions
@@ -238,6 +276,10 @@ class Messages {
     });
   }
 
+  /**
+   * @param messageId The unique identifier of the message to be forwarded.
+   * @param options Options to use when forwarding a message.
+   */
   async forward(
     messageId: string,
     options: MessageForwardOptions
@@ -258,6 +300,11 @@ class Messages {
     });
   }
 
+  /**
+   * Sends a reply to the specified message. This is useful for when simulating a user replying to one of your email or SMS messages.
+   * @param messageId The unique identifier of the message to be forwarded.
+   * @param options Options to use when replying to a message.
+   */
   async reply(
     messageId: string,
     options: MessageReplyOptions
@@ -278,6 +325,11 @@ class Messages {
     });
   }
 
+  /**
+   * Generates screenshots of an email rendered in the specified email clients.
+   * @param messageId The identifier of the email to preview.
+   * @param options The options with which to generate previews.
+   */
   async generatePreviews(
     messageId: string,
     options: PreviewRequestOptions
