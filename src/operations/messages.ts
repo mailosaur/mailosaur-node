@@ -9,6 +9,7 @@ import type MessageCreateOptions from '../models/messageCreateOptions';
 import type MessageForwardOptions from '../models/messageForwardOptions';
 import type MessageReplyOptions from '../models/messageReplyOptions';
 import type PreviewRequestOptions from '../models/previewRequestOptions';
+import type { HttpResponse } from '../request';
 import type MailosaurClient from '../mailosaur';
 
 class Messages {
@@ -76,11 +77,18 @@ class Messages {
       this.client.request.get(
         url,
         {},
-        (err: Error | null, response?: any, body?: any) => {
-          if (err || response?.statusCode !== 200) {
-            return reject(err || this.client.httpError(response as any));
+        (err: Error | null, response?: HttpResponse, body?: unknown) => {
+          if (err) {
+            return reject(err);
           }
-          resolve(new Message(body));
+          if (!response || response.statusCode !== 200) {
+            return reject(
+              response
+                ? this.client.httpError(response)
+                : new Error('No response received')
+            );
+          }
+          resolve(new Message(body as Record<string, unknown>));
         }
       );
     });
@@ -94,12 +102,23 @@ class Messages {
     const url = `api/messages/${messageId}`;
 
     return new Promise<void>((resolve, reject) => {
-      this.client.request.del(url, {}, (err: Error | null, response?: any) => {
-        if (err || response?.statusCode !== 204) {
-          return reject(err || this.client.httpError(response as any));
+      this.client.request.del(
+        url,
+        {},
+        (err: Error | null, response?: HttpResponse) => {
+          if (err) {
+            return reject(err);
+          }
+          if (!response || response.statusCode !== 204) {
+            return reject(
+              response
+                ? this.client.httpError(response)
+                : new Error('No response received')
+            );
+          }
+          resolve();
         }
-        resolve();
-      });
+      );
     });
   }
 
@@ -126,11 +145,18 @@ class Messages {
       this.client.request.get(
         url,
         { qs },
-        (err: Error | null, response?: any, body?: any) => {
-          if (err || response?.statusCode !== 200) {
-            return reject(err || this.client.httpError(response as any));
+        (err: Error | null, response?: HttpResponse, body?: unknown) => {
+          if (err) {
+            return reject(err);
           }
-          resolve(new MessageListResult(body));
+          if (!response || response.statusCode !== 200) {
+            return reject(
+              response
+                ? this.client.httpError(response)
+                : new Error('No response received')
+            );
+          }
+          resolve(new MessageListResult(body as Record<string, unknown>));
         }
       );
     });
@@ -151,9 +177,16 @@ class Messages {
       this.client.request.del(
         url,
         { qs },
-        (err: Error | null, response?: any) => {
-          if (err || response?.statusCode !== 204) {
-            return reject(err || this.client.httpError(response as any));
+        (err: Error | null, response?: HttpResponse) => {
+          if (err) {
+            return reject(err);
+          }
+          if (!response || response.statusCode !== 204) {
+            return reject(
+              response
+                ? this.client.httpError(response)
+                : new Error('No response received')
+            );
           }
           resolve();
         }
@@ -196,18 +229,28 @@ class Messages {
     const fn =
       (
         resolve: (value: MessageListResult) => void,
-        reject: (reason?: any) => void
+        reject: (reason?: unknown) => void
       ) =>
       (): void => {
         this.client.request.post(
           url,
           { qs, body: criteria },
-          (err: Error | null, response?: any, body?: any) => {
-            if (err || response?.statusCode !== 200) {
-              return reject(err || this.client.httpError(response as any));
+          (err: Error | null, response?: HttpResponse, body?: unknown) => {
+            if (err) {
+              return reject(err);
+            }
+            if (!response || response.statusCode !== 200) {
+              return reject(
+                response
+                  ? this.client.httpError(response)
+                  : new Error('No response received')
+              );
             }
 
-            if (options.timeout && !body.items.length) {
+            if (
+              options.timeout &&
+              !(body as Record<string, unknown[]>).items.length
+            ) {
               const delayPattern = (
                 (response?.headers?.['x-ms-delay'] as string) || '1000'
               )
@@ -224,7 +267,9 @@ class Messages {
               // Stop if timeout will be exceeded
               if (Date.now() - startTime + delay > options.timeout) {
                 return options.errorOnTimeout === false
-                  ? resolve(body)
+                  ? resolve(
+                      new MessageListResult(body as Record<string, unknown>)
+                    )
                   : reject(
                       new MailosaurError(
                         `No matching messages found in time. By default, only messages received in the last hour are checked (use receivedAfter to override this). The search criteria used for this query was [${JSON.stringify(criteria)}] which timed out after ${options.timeout}ms`,
@@ -236,7 +281,7 @@ class Messages {
               return setTimeout(fn(resolve, reject), delay);
             }
 
-            resolve(new MessageListResult(body));
+            resolve(new MessageListResult(body as Record<string, unknown>));
           }
         );
       };
@@ -266,11 +311,18 @@ class Messages {
       this.client.request.post(
         url,
         { qs, body: options },
-        (err: Error | null, response?: any, body?: any) => {
-          if (err || response?.statusCode !== 200) {
-            return reject(err || this.client.httpError(response as any));
+        (err: Error | null, response?: HttpResponse, body?: unknown) => {
+          if (err) {
+            return reject(err);
           }
-          resolve(new Message(body));
+          if (!response || response.statusCode !== 200) {
+            return reject(
+              response
+                ? this.client.httpError(response)
+                : new Error('No response received')
+            );
+          }
+          resolve(new Message(body as Record<string, unknown>));
         }
       );
     });
@@ -290,11 +342,18 @@ class Messages {
       this.client.request.post(
         url,
         { body: options },
-        (err: Error | null, response?: any, body?: any) => {
-          if (err || response?.statusCode !== 200) {
-            return reject(err || this.client.httpError(response as any));
+        (err: Error | null, response?: HttpResponse, body?: unknown) => {
+          if (err) {
+            return reject(err);
           }
-          resolve(new Message(body));
+          if (!response || response.statusCode !== 200) {
+            return reject(
+              response
+                ? this.client.httpError(response)
+                : new Error('No response received')
+            );
+          }
+          resolve(new Message(body as Record<string, unknown>));
         }
       );
     });
@@ -315,11 +374,18 @@ class Messages {
       this.client.request.post(
         url,
         { body: options },
-        (err: Error | null, response?: any, body?: any) => {
-          if (err || response?.statusCode !== 200) {
-            return reject(err || this.client.httpError(response as any));
+        (err: Error | null, response?: HttpResponse, body?: unknown) => {
+          if (err) {
+            return reject(err);
           }
-          resolve(new Message(body));
+          if (!response || response.statusCode !== 200) {
+            return reject(
+              response
+                ? this.client.httpError(response)
+                : new Error('No response received')
+            );
+          }
+          resolve(new Message(body as Record<string, unknown>));
         }
       );
     });
@@ -340,11 +406,18 @@ class Messages {
       this.client.request.post(
         url,
         { body: options },
-        (err: Error | null, response?: any, body?: any) => {
-          if (err || response?.statusCode !== 200) {
-            return reject(err || this.client.httpError(response as any));
+        (err: Error | null, response?: HttpResponse, body?: unknown) => {
+          if (err) {
+            return reject(err);
           }
-          resolve(new PreviewListResult(body));
+          if (!response || response.statusCode !== 200) {
+            return reject(
+              response
+                ? this.client.httpError(response)
+                : new Error('No response received')
+            );
+          }
+          resolve(new PreviewListResult(body as Record<string, unknown>));
         }
       );
     });

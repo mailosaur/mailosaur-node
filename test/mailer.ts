@@ -1,6 +1,7 @@
 import nodemailer from 'nodemailer';
 import fs from 'fs';
 import path from 'path';
+import type MailosaurClient from '../src/mailosaur';
 
 const verifiedDomain = process.env.MAILOSAUR_VERIFIED_DOMAIN || 'mailosaur.net';
 
@@ -35,32 +36,30 @@ const getRandomString = (length: number): string => {
 
 const mailer = {
   sendEmails: (
-    mailerModule: any,
-    client: any,
+    mailerModule: typeof mailer,
+    client: MailosaurClient,
     server: string,
     quantity: number
-  ): Promise<any> => {
-    const promises: Promise<any>[] = [];
+  ): Promise<void> => {
+    const promises: Promise<void>[] = [];
 
-    return new Promise((resolve, reject) => {
-      let i = 0;
-      for (i = 0; i < quantity; i += 1) {
-        promises.push(mailerModule.sendEmail(client, server));
-      }
+    let i = 0;
+    for (i = 0; i < quantity; i += 1) {
+      promises.push(mailerModule.sendEmail(client, server));
+    }
 
-      Promise.all(promises).then(resolve).catch(reject);
-    });
+    return Promise.all(promises).then(() => {});
   },
 
   sendEmail: (
-    client: any,
+    client: MailosaurClient,
     server: string,
     sendToAddress?: string
-  ): Promise<any> => {
+  ): Promise<void> => {
     const randomString = getRandomString(7);
     const randomFromAddress = `${randomString}@${verifiedDomain}`;
     const randomToAddress =
-      sendToAddress || client.servers.generateEmailAddress(server);
+      sendToAddress || client.servers.generateEmailAddress(server!);
 
     return smtpTransport.sendMail({
       subject: `${randomString} subject`,

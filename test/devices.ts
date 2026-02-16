@@ -1,5 +1,6 @@
 import { assert } from 'chai';
 import MailosaurClient from '../src/mailosaur';
+import type Device from '../src/models/device';
 
 describe('devices', () => {
   let client: MailosaurClient;
@@ -19,7 +20,7 @@ describe('devices', () => {
   describe('CRUD', () => {
     const deviceName = 'My test';
     const sharedSecret = 'ONSWG4TFOQYTEMY=';
-    let createdDevice: any;
+    let createdDevice: Device;
 
     it('should create a new device', async () => {
       createdDevice = await client.devices.create({
@@ -32,22 +33,22 @@ describe('devices', () => {
     });
 
     it('retrieve an otp via device ID', async () => {
-      const otpResult = await client.devices.otp(createdDevice.id);
+      const otpResult = await client.devices.otp(createdDevice.id!);
 
       assert.isString(otpResult.code);
-      assert.equal(otpResult.code.length, 6);
+      assert.equal(otpResult.code!.length, 6);
     });
 
     it('should delete an existing device', async () => {
       const resultBefore = await client.devices.list();
       assert.isTrue(
-        resultBefore.items.some((x: any) => x.id === createdDevice.id)
+        resultBefore.items!.some((x: Device) => x.id === createdDevice.id)
       );
 
-      await client.devices.del(createdDevice.id);
+      await client.devices.del(createdDevice.id!);
       const resultAfter = await client.devices.list();
       assert.isFalse(
-        resultAfter.items.some((x: any) => x.id === createdDevice.id)
+        resultAfter.items!.some((x: Device) => x.id === createdDevice.id)
       );
     });
 
@@ -55,7 +56,7 @@ describe('devices', () => {
       const otpResult = await client.devices.otp(sharedSecret);
 
       assert.isString(otpResult.code);
-      assert.equal(otpResult.code.length, 6);
+      assert.equal(otpResult.code!.length, 6);
     });
   });
 });

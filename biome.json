@@ -123,11 +123,20 @@
   },
   "overrides": [
     {
-      "includes": ["*.test.ts", "*.test.tsx", "*.spec.ts", "*.spec.tsx"],
+      "includes": [
+        "*.test.ts",
+        "*.test.tsx",
+        "*.spec.ts",
+        "*.spec.tsx",
+        "test/**/*.ts"
+      ],
       "linter": {
         "rules": {
           "suspicious": {
             "noConsole": "off"
+          },
+          "style": {
+            "noNonNullAssertion": "off"
           }
         }
       }

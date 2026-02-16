@@ -24,20 +24,20 @@ describe('usage', () => {
       assert.isNotNull(result.email);
       assert.isNotNull(result.sms);
 
-      assert.isAtLeast(result.servers.limit, 1);
-      assert.isAtLeast(result.users.limit, 1);
-      assert.isAtLeast(result.email.limit, 1);
-      assert.isAtLeast(result.sms.limit, 1);
+      assert.isAtLeast(result.servers!.limit!, 1);
+      assert.isAtLeast(result.users!.limit!, 1);
+      assert.isAtLeast(result.email!.limit!, 1);
+      assert.isAtLeast(result.sms!.limit!, 1);
     });
   });
 
   describe('transactions', () => {
     it('should return usage transactions', async () => {
       const result = await client.usage.transactions();
-      assert.isAtLeast(result.items.length, 2);
-      assert.isNotNull(result.items[0].timestamp);
-      assert.isNotNull(result.items[0].email);
-      assert.isNotNull(result.items[0].sms);
+      assert.isAtLeast(result.items!.length, 2);
+      assert.isNotNull(result.items![0].timestamp);
+      assert.isNotNull(result.items![0].email);
+      assert.isNotNull(result.items![0].sms);
     });
   });
 });

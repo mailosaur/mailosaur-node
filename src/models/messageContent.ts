@@ -24,11 +24,17 @@ class MessageContent {
   body?: string;
 
   constructor(data: Record<string, any> = {}) {
-    this.links = (data.links || []).map((i: any) => new Link(i));
-    this.codes = (data.codes || []).map((i: any) => new Code(i));
+    this.links = (data.links || []).map(
+      (i: Record<string, unknown>) => new Link(i)
+    );
+    this.codes = (data.codes || []).map(
+      (i: Record<string, unknown>) => new Code(i)
+    );
 
     if (data.images) {
-      this.images = (data.images || []).map((i: any) => new Image(i));
+      this.images = (data.images || []).map(
+        (i: Record<string, unknown>) => new Image(i)
+      );
     }
 
     this.body = data.body;

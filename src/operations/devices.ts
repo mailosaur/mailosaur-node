@@ -2,6 +2,7 @@ import DeviceListResult from '../models/deviceListResult';
 import Device from '../models/device';
 import OtpResult from '../models/otpResult';
 import type DeviceCreateOptions from '../models/deviceCreateOptions';
+import type { HttpResponse } from '../request';
 import type MailosaurClient from '../mailosaur';
 
 class Devices {
@@ -21,11 +22,18 @@ class Devices {
       this.client.request.get(
         url,
         {},
-        (err: Error | null, response?: any, body?: any) => {
-          if (err || response?.statusCode !== 200) {
-            return reject(err || this.client.httpError(response as any));
+        (err: Error | null, response?: HttpResponse, body?: unknown) => {
+          if (err) {
+            return reject(err);
           }
-          resolve(new DeviceListResult(body));
+          if (!response || response.statusCode !== 200) {
+            return reject(
+              response
+                ? this.client.httpError(response)
+                : new Error('No response received')
+            );
+          }
+          resolve(new DeviceListResult(body as Record<string, unknown>));
         }
       );
     });
@@ -42,11 +50,18 @@ class Devices {
       this.client.request.post(
         url,
         { body: options },
-        (err: Error | null, response?: any, body?: any) => {
-          if (err || response?.statusCode !== 200) {
-            return reject(err || this.client.httpError(response as any));
+        (err: Error | null, response?: HttpResponse, body?: unknown) => {
+          if (err) {
+            return reject(err);
           }
-          resolve(new Device(body));
+          if (!response || response.statusCode !== 200) {
+            return reject(
+              response
+                ? this.client.httpError(response)
+                : new Error('No response received')
+            );
+          }
+          resolve(new Device(body as Record<string, unknown>));
         }
       );
     });
@@ -64,11 +79,18 @@ class Devices {
         this.client.request.get(
           url,
           {},
-          (err: Error | null, response?: any, body?: any) => {
-            if (err || response?.statusCode !== 200) {
-              return reject(err || this.client.httpError(response as any));
+          (err: Error | null, response?: HttpResponse, body?: unknown) => {
+            if (err) {
+              return reject(err);
             }
-            resolve(new OtpResult(body));
+            if (!response || response.statusCode !== 200) {
+              return reject(
+                response
+                  ? this.client.httpError(response)
+                  : new Error('No response received')
+              );
+            }
+            resolve(new OtpResult(body as Record<string, unknown>));
           }
         );
       });
@@ -79,11 +101,18 @@ class Devices {
       this.client.request.post(
         url,
         { body: { sharedSecret: query } },
-        (err: Error | null, response?: any, body?: any) => {
-          if (err || response?.statusCode !== 200) {
-            return reject(err || this.client.httpError(response as any));
+        (err: Error | null, response?: HttpResponse, body?: unknown) => {
+          if (err) {
+            return reject(err);
           }
-          resolve(new OtpResult(body));
+          if (!response || response.statusCode !== 200) {
+            return reject(
+              response
+                ? this.client.httpError(response)
+                : new Error('No response received')
+            );
+          }
+          resolve(new OtpResult(body as Record<string, unknown>));
         }
       );
     });
@@ -97,12 +126,23 @@ class Devices {
     const url = `api/devices/${deviceId}`;
 
     return new Promise<void>((resolve, reject) => {
-      this.client.request.del(url, {}, (err: Error | null, response?: any) => {
-        if (err || response?.statusCode !== 204) {
-          return reject(err || this.client.httpError(response as any));
+      this.client.request.del(
+        url,
+        {},
+        (err: Error | null, response?: HttpResponse) => {
+          if (err) {
+            return reject(err);
+          }
+          if (!response || response.statusCode !== 204) {
+            return reject(
+              response
+                ? this.client.httpError(response)
+                : new Error('No response received')
+            );
+          }
+          resolve();
         }
-        resolve();
-      });
+      );
     });
   }
 }

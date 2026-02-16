@@ -1,6 +1,7 @@
 import ServerListResult from '../models/serverListResult';
 import Server from '../models/server';
 import type ServerCreateOptions from '../models/serverCreateOptions';
+import type { HttpResponse } from '../request';
 import type MailosaurClient from '../mailosaur';
 
 class Servers {
@@ -20,11 +21,18 @@ class Servers {
       this.client.request.get(
         url,
         {},
-        (err: Error | null, response?: any, body?: any) => {
-          if (err || response?.statusCode !== 200) {
-            return reject(err || this.client.httpError(response as any));
+        (err: Error | null, response?: HttpResponse, body?: unknown) => {
+          if (err) {
+            return reject(err);
           }
-          resolve(new ServerListResult(body));
+          if (!response || response.statusCode !== 200) {
+            return reject(
+              response
+                ? this.client.httpError(response)
+                : new Error('No response received')
+            );
+          }
+          resolve(new ServerListResult(body as Record<string, unknown>));
         }
       );
     });
@@ -41,11 +49,18 @@ class Servers {
       this.client.request.post(
         url,
         { body: options },
-        (err: Error | null, response?: any, body?: any) => {
-          if (err || response?.statusCode !== 200) {
-            return reject(err || this.client.httpError(response as any));
+        (err: Error | null, response?: HttpResponse, body?: unknown) => {
+          if (err) {
+            return reject(err);
           }
-          resolve(new Server(body));
+          if (!response || response.statusCode !== 200) {
+            return reject(
+              response
+                ? this.client.httpError(response)
+                : new Error('No response received')
+            );
+          }
+          resolve(new Server(body as Record<string, unknown>));
         }
       );
     });
@@ -62,11 +77,18 @@ class Servers {
       this.client.request.get(
         url,
         {},
-        (err: Error | null, response?: any, body?: any) => {
-          if (err || response?.statusCode !== 200) {
-            return reject(err || this.client.httpError(response as any));
+        (err: Error | null, response?: HttpResponse, body?: unknown) => {
+          if (err) {
+            return reject(err);
           }
-          resolve(new Server(body));
+          if (!response || response.statusCode !== 200) {
+            return reject(
+              response
+                ? this.client.httpError(response)
+                : new Error('No response received')
+            );
+          }
+          resolve(new Server(body as Record<string, unknown>));
         }
       );
     });
@@ -83,11 +105,18 @@ class Servers {
       this.client.request.get(
         url,
         {},
-        (err: Error | null, response?: any, body?: any) => {
-          if (err || response?.statusCode !== 200) {
-            return reject(err || this.client.httpError(response as any));
+        (err: Error | null, response?: HttpResponse, body?: unknown) => {
+          if (err) {
+            return reject(err);
           }
-          resolve(body.value);
+          if (!response || response.statusCode !== 200) {
+            return reject(
+              response
+                ? this.client.httpError(response)
+                : new Error('No response received')
+            );
+          }
+          resolve((body as Record<string, string>).value);
         }
       );
     });
@@ -105,11 +134,18 @@ class Servers {
       this.client.request.put(
         url,
         { body: server },
-        (err: Error | null, response?: any, body?: any) => {
-          if (err || response?.statusCode !== 200) {
-            return reject(err || this.client.httpError(response as any));
+        (err: Error | null, response?: HttpResponse, body?: unknown) => {
+          if (err) {
+            return reject(err);
           }
-          resolve(new Server(body));
+          if (!response || response.statusCode !== 200) {
+            return reject(
+              response
+                ? this.client.httpError(response)
+                : new Error('No response received')
+            );
+          }
+          resolve(new Server(body as Record<string, unknown>));
         }
       );
     });
@@ -123,12 +159,23 @@ class Servers {
     const url = `api/servers/${serverId}`;
 
     return new Promise<void>((resolve, reject) => {
-      this.client.request.del(url, {}, (err: Error | null, response?: any) => {
-        if (err || response?.statusCode !== 204) {
-          return reject(err || this.client.httpError(response as any));
+      this.client.request.del(
+        url,
+        {},
+        (err: Error | null, response?: HttpResponse) => {
+          if (err) {
+            return reject(err);
+          }
+          if (!response || response.statusCode !== 204) {
+            return reject(
+              response
+                ? this.client.httpError(response)
+                : new Error('No response received')
+            );
+          }
+          resolve();
         }
-        resolve();
-      });
+      );
     });
   }
 

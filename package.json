@@ -64,8 +64,8 @@
     "prepack": "npm run build",
     "test": "npm run lint && TS_NODE_PROJECT=tsconfig.test.json mocha -t 60000",
     "lint": "if [ -n \"$CI\" ]; then (npm run lint:strict) else (npm run lint:default) fi",
-    "lint:default": "npx biome check . --diagnostic-level=warn",
-    "lint:strict": "npx biome check . --error-on-warnings",
+    "lint:default": "npx biome check . --diagnostic-level=warn && npx tsc -p tsconfig.test.json",
+    "lint:strict": "npx biome check . --error-on-warnings && npx tsc -p tsconfig.test.json",
     "lint:fix": "npx biome check --write .",
     "format": "npx biome format --write ."
   },

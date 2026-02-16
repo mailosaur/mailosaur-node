@@ -1,16 +1,20 @@
-import type { Readable } from 'stream';
+import type Request from '../request';
+import type { HttpResponse } from '../request';
 import MailosaurError from '../models/mailosaurError';
 
-// Forward declaration to avoid circular dependency issues
-type MailosaurClient = any;
+// Interface to avoid circular dependency issues
+interface IMailosaurClient {
+  request: Request;
+  httpError(response: HttpResponse): MailosaurError;
+}
 
 /**
  * File operations.
  */
 class Files {
-  client: MailosaurClient;
+  client: IMailosaurClient;
 
-  constructor(client: MailosaurClient) {
+  constructor(client: IMailosaurClient) {
     this.client = client;
   }
 
@@ -18,15 +22,15 @@ class Files {
    * Downloads a single attachment.
    * @param attachmentId The identifier for the required attachment.
    */
-  async getAttachment(attachmentId: string): Promise<Readable> {
+  async getAttachment(attachmentId: string): Promise<Buffer> {
     const url = `api/files/attachments/${attachmentId}`;
 
-    return new Promise<Readable>((resolve, reject) => {
+    return new Promise<Buffer>((resolve, reject) => {
       this.client.request.get(
         url,
         { buffer: true },
-        (err: Error | null, _response?: any, body?: any) =>
-          err ? reject(err) : resolve(body)
+        (err: Error | null, _response?: HttpResponse, body?: unknown) =>
+          err ? reject(err) : resolve(body as Buffer)
       );
     });
   }
@@ -35,15 +39,15 @@ class Files {
    * Downloads an EML file representing the specified email.
    * @param messageId The identifier for the required message.
    */
-  async getEmail(messageId: string): Promise<Readable> {
+  async getEmail(messageId: string): Promise<Buffer> {
     const url = `api/files/email/${messageId}`;
 
-    return new Promise<Readable>((resolve, reject) => {
+    return new Promise<Buffer>((resolve, reject) => {
       this.client.request.get(
         url,
         { buffer: true },
-        (err: Error | null, _response?: any, body?: any) =>
-          err ? reject(err) : resolve(body)
+        (err: Error | null, _response?: HttpResponse, body?: unknown) =>
+          err ? reject(err) : resolve(body as Buffer)
       );
     });
   }
@@ -53,20 +57,20 @@ class Files {
    * the unique identifier for the required preview.
    * @param previewId The identifier of the email preview to be downloaded.
    */
-  async getPreview(previewId: string): Promise<Readable> {
+  async getPreview(previewId: string): Promise<Buffer> {
     const timeout = 120000;
     let pollCount = 0;
     const startTime = Date.now();
 
     const fn =
-      (resolve: (value: Readable) => void, reject: (reason?: any) => void) =>
+      (resolve: (value: Buffer) => void, reject: (reason?: unknown) => void) =>
       (): void => {
         const url = `api/files/screenshots/${previewId}`;
 
         this.client.request.get(
           url,
           { buffer: true },
-          (err: Error | null, response?: any, body?: any) => {
+          (err: Error | null, response?: HttpResponse, body?: unknown) => {
             if (err) {
               return reject(err);
             }
@@ -74,11 +78,15 @@ class Files {
             const statusCode = response?.statusCode;
 
             if (statusCode === 200) {
-              return resolve(body);
+              return resolve(body as Buffer);
             }
 
             if (statusCode !== 202) {
-              return reject(this.client.httpError(response as any));
+              return reject(
+                response
+                  ? this.client.httpError(response)
+                  : new Error('No response received')
+              );
             }
 
             const delayPattern = (
@@ -109,7 +117,7 @@ class Files {
         );
       };
 
-    return new Promise<Readable>((resolve, reject) => {
+    return new Promise<Buffer>((resolve, reject) => {
       fn(resolve, reject)();
     });
   }

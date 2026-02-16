@@ -23,9 +23,10 @@ interface InvokeOptions {
   buffer?: boolean;
 }
 
-interface HttpResponse {
+export interface HttpResponse {
   statusCode: number;
   body?: unknown;
+  headers?: Record<string, string | string[] | undefined>;
 }
 
 class Request {
@@ -95,7 +96,7 @@ class Request {
       const data = JSON.stringify(options.body);
       result.data = Buffer.from(data);
       result.headers['Content-Type'] = 'application/json';
-      result.headers['Content-Length'] = Buffer.byteLength(result.data) as any;
+      result.headers['Content-Length'] = String(Buffer.byteLength(result.data));
     }
 
     if (this.proxyAgent) {
@@ -123,8 +124,8 @@ class Request {
 
     const spread: https.RequestOptions = {
       ...options,
-      protocol: urlResult.protocol as any,
-      hostname: urlResult.hostname as any,
+      protocol: urlResult.protocol || undefined,
+      hostname: urlResult.hostname || undefined,
       path: (urlResult.pathname || '') + (urlResult.search || ''),
     };
 

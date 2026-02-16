@@ -33,7 +33,7 @@ describe('previews', () => {
     it('should return a list of email clients', async () => {
       const result = await client.previews.listEmailClients();
       assert.isOk(result);
-      assert.isTrue(result.items.length > 1);
+      assert.isTrue(result.items!.length > 1);
     });
   });
 
@@ -43,22 +43,22 @@ describe('previews', () => {
       const host = process.env.MAILOSAUR_SMTP_HOST || 'mailosaur.net';
       const testEmailAddress = `${randomString}@${server}.${host}`;
 
-      await mailer.sendEmail(client, server, testEmailAddress);
+      await mailer.sendEmail(client, server!, testEmailAddress);
 
-      const email = await client.messages.get(server, {
+      const email = await client.messages.get(server!, {
         sentTo: testEmailAddress,
       });
 
       const options = new PreviewRequestOptions([
         'iphone-16plus-applemail-lightmode-portrait',
       ]);
-      const result = await client.messages.generatePreviews(email.id, options);
+      const result = await client.messages.generatePreviews(email.id!, options);
 
       assert.isOk(result);
-      assert.isTrue(result.items.length > 0);
+      assert.isTrue(result.items!.length > 0);
 
       // Ensure we can download one of the generated preview
-      const file: any = await client.files.getPreview(result.items[0].id);
+      const file = await client.files.getPreview(result.items![0].id!);
       fs.writeFileSync('test-result.png', file);
       assert.isOk(file);
     });

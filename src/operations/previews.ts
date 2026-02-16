@@ -1,4 +1,5 @@
 import EmailClientListResult from '../models/emailClientListResult';
+import type { HttpResponse } from '../request';
 import type MailosaurClient from '../mailosaur';
 
 class Previews {
@@ -18,11 +19,18 @@ class Previews {
       this.client.request.get(
         url,
         {},
-        (err: Error | null, response?: any, body?: any) => {
-          if (err || response?.statusCode !== 200) {
-            return reject(err || this.client.httpError(response as any));
+        (err: Error | null, response?: HttpResponse, body?: unknown) => {
+          if (err) {
+            return reject(err);
           }
-          resolve(new EmailClientListResult(body));
+          if (!response || response.statusCode !== 200) {
+            return reject(
+              response
+                ? this.client.httpError(response)
+                : new Error('No response received')
+            );
+          }
+          resolve(new EmailClientListResult(body as Record<string, unknown>));
         }
       );
     });

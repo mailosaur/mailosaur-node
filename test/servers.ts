@@ -1,6 +1,7 @@
 import { assert } from 'chai';
 import MailosaurClient from '../src/mailosaur';
 import MailosaurError from '../src/models/mailosaurError';
+import type Server from '../src/models/server';
 
 describe('servers', () => {
   let client: MailosaurClient;
@@ -20,7 +21,7 @@ describe('servers', () => {
   describe('list', () => {
     it('should return a list of servers', async () => {
       const result = await client.servers.list();
-      assert.isAtLeast(result.items.length, 2);
+      assert.isAtLeast(result.items!.length, 2);
     });
   });
 
@@ -36,8 +37,8 @@ describe('servers', () => {
 
   describe('CRUD', () => {
     const serverName = 'My test';
-    let createdServer: any;
-    let retrievedServer: any;
+    let createdServer: Server;
+    let retrievedServer: Server;
 
     it('should create a new server', async () => {
       createdServer = await client.servers.create({
@@ -50,7 +51,7 @@ describe('servers', () => {
     });
 
     it('should retrieve an existing server', async () => {
-      retrievedServer = await client.servers.get(createdServer.id);
+      retrievedServer = await client.servers.get(createdServer.id!);
       assert.equal(retrievedServer.id, createdServer.id);
       assert.equal(retrievedServer.name, createdServer.name);
       assert.isArray(retrievedServer.users);
@@ -58,14 +59,14 @@ describe('servers', () => {
     });
 
     it('should retrieve password of an existing server', async () => {
-      const password = await client.servers.getPassword(createdServer.id);
+      const password = await client.servers.getPassword(createdServer.id!);
       assert.isTrue(password.length >= 8);
     });
 
     it('should update an existing server', async () => {
       retrievedServer.name += ' updated with ellipsis … and emoji 👨🏿‍🚒';
       const server = await client.servers.update(
-        retrievedServer.id,
+        retrievedServer.id!,
         retrievedServer
       );
       assert.equal(server.id, retrievedServer.id);
@@ -75,12 +76,12 @@ describe('servers', () => {
     });
 
     it('should delete an existing server', async () => {
-      await client.servers.del(retrievedServer.id);
+      await client.servers.del(retrievedServer.id!);
     });
 
     it('should fail to delete an already deleted server', async () => {
       try {
-        await client.servers.del(retrievedServer.id);
+        await client.servers.del(retrievedServer.id!);
       } catch (err) {
         assert.instanceOf(err, MailosaurError);
       }
@@ -89,12 +90,17 @@ describe('servers', () => {
     it('should fail to create a server with no name', async () => {
       try {
         await client.servers.create({});
-      } catch (err: any) {
+      } catch (err: unknown) {
         assert.instanceOf(err, MailosaurError);
-        assert.equal(err.message, '(name) Servers need a name\r\n');
-        assert.equal(err.errorType, 'invalid_request');
-        assert.equal(err.httpStatusCode, 400);
-        assert.isTrue(err.httpResponseBody.indexOf('{"type":') !== -1);
+        assert.equal(
+          (err as MailosaurError).message,
+          '(name) Servers need a name\r\n'
+        );
+        assert.equal((err as MailosaurError).errorType, 'invalid_request');
+        assert.equal((err as MailosaurError).httpStatusCode, 400);
+        assert.isTrue(
+          (err as MailosaurError).httpResponseBody!.indexOf('{"type":') !== -1
+        );
       }
     });
   });

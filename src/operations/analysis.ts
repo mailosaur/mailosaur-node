@@ -1,5 +1,6 @@
 import SpamAnalysisResult from '../models/spamAnalysisResult';
 import DeliverabilityReport from '../models/deliverabilityReport';
+import type { HttpResponse } from '../request';
 import type MailosaurClient from '../mailosaur';
 
 /**
@@ -23,11 +24,18 @@ class Analysis {
       this.client.request.get(
         url,
         {},
-        (err: Error | null, response?: any, body?: any) => {
-          if (err || response?.statusCode !== 200) {
-            return reject(err || this.client.httpError(response as any));
+        (err: Error | null, response?: HttpResponse, body?: unknown) => {
+          if (err) {
+            return reject(err);
           }
-          resolve(new SpamAnalysisResult(body));
+          if (!response || response.statusCode !== 200) {
+            return reject(
+              response
+                ? this.client.httpError(response)
+                : new Error('No response received')
+            );
+          }
+          resolve(new SpamAnalysisResult(body as Record<string, unknown>));
         }
       );
     });
@@ -44,11 +52,18 @@ class Analysis {
       this.client.request.get(
         url,
         {},
-        (err: Error | null, response?: any, body?: any) => {
-          if (err || response?.statusCode !== 200) {
-            return reject(err || this.client.httpError(response as any));
+        (err: Error | null, response?: HttpResponse, body?: unknown) => {
+          if (err) {
+            return reject(err);
           }
-          resolve(new DeliverabilityReport(body));
+          if (!response || response.statusCode !== 200) {
+            return reject(
+              response
+                ? this.client.httpError(response)
+                : new Error('No response received')
+            );
+          }
+          resolve(new DeliverabilityReport(body as Record<string, unknown>));
         }
       );
     });

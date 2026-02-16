@@ -10,7 +10,9 @@ class UsageTransactionListResult {
   items?: UsageTransaction[];
 
   constructor(data: Record<string, any> = {}) {
-    this.items = (data.items || []).map((i: any) => new UsageTransaction(i));
+    this.items = (data.items || []).map(
+      (i: Record<string, unknown>) => new UsageTransaction(i)
+    );
   }
 }
 

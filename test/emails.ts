@@ -3,130 +3,139 @@ import path from 'path';
 import { assert } from 'chai';
 import MailosaurClient from '../src/mailosaur';
 import MailosaurError from '../src/models/mailosaurError';
+import type Attachment from '../src/models/attachment';
+import type Message from '../src/models/message';
+import type MessageSummary from '../src/models/messageSummary';
+import type MessageHeader from '../src/models/messageHeader';
+import type SpamAssassinRule from '../src/models/spamAssassinRule';
+import type EmailAuthenticationResult from '../src/models/emailAuthenticationResult';
+import type BlockListResult from '../src/models/blockListResult';
 import mailer from './mailer';
 
 const isoDateString = new Date().toISOString().slice(0, 10);
 
-const validateHtml = (email: any) => {
+const validateHtml = (email: Message) => {
   // Body
-  assert.match(email.html.body, /^<div dir="ltr">/, 'HTML body should match');
+  assert.match(email.html!.body!, /^<div dir="ltr">/, 'HTML body should match');
 
   // Links
-  assert.equal(email.html.links.length, 3, 'Should have HTML links');
+  assert.equal(email.html!.links!.length, 3, 'Should have HTML links');
   assert.equal(
-    email.html.links[0].href,
+    email.html!.links![0].href,
     'https://mailosaur.com/',
     'First link should have href'
   );
   assert.equal(
-    email.html.links[0].text,
+    email.html!.links![0].text,
     'mailosaur',
     'First link should have text'
   );
   assert.equal(
-    email.html.links[1].href,
+    email.html!.links![1].href,
     'https://mailosaur.com/',
     'Second link should have href'
   );
-  assert.isNull(email.html.links[1].text, 'Second link should have no text');
+  assert.isNull(email.html!.links![1].text, 'Second link should have no text');
   assert.equal(
-    email.html.links[2].href,
+    email.html!.links![2].href,
     'http://invalid/',
     'Third link should have href'
   );
   assert.equal(
-    email.html.links[2].text,
+    email.html!.links![2].text,
     'invalid',
     'Third link should have text'
   );
 
   // Codes
-  assert.equal(email.html.codes.length, 2, 'Should have verification codes');
-  assert.equal(email.html.codes[0].value, '123456');
-  assert.equal(email.html.codes[1].value, 'G3H1Y2');
+  assert.equal(email.html!.codes!.length, 2, 'Should have verification codes');
+  assert.equal(email.html!.codes![0].value, '123456');
+  assert.equal(email.html!.codes![1].value, 'G3H1Y2');
 
   // Images
-  assert.match(email.html.images[1].src, /cid:/);
+  assert.match(email.html!.images![1].src!, /cid:/);
   assert.equal(
-    email.html.images[1].alt,
+    email.html!.images![1].alt,
     'Inline image 1',
     'Second image should have alt text'
   );
 };
 
-const validateText = (email: any) => {
+const validateText = (email: Message) => {
   // Body
-  assert.match(email.text.body, /^this is a test/);
+  assert.match(email.text!.body!, /^this is a test/);
 
   // Links
-  assert.equal(email.text.links.length, 2, 'Should have Text links');
+  assert.equal(email.text!.links!.length, 2, 'Should have Text links');
   assert.equal(
-    email.text.links[0].href,
+    email.text!.links![0].href,
     'https://mailosaur.com/',
     'First link should have href'
   );
   assert.equal(
-    email.text.links[0].text,
-    email.text.links[0].href,
+    email.text!.links![0].text,
+    email.text!.links![0].href,
     'First text link href & text should match'
   );
   assert.equal(
-    email.text.links[1].href,
+    email.text!.links![1].href,
     'https://mailosaur.com/',
     'Second link should have href'
   );
   assert.equal(
-    email.text.links[1].text,
-    email.text.links[1].href,
+    email.text!.links![1].text,
+    email.text!.links![1].href,
     'Second text link href & text should match'
   );
 
   // Codes
-  assert.equal(email.text.codes.length, 2, 'Should have verification codes');
-  assert.equal(email.text.codes[0].value, '654321');
-  assert.equal(email.text.codes[1].value, '5H0Y2');
+  assert.equal(email.text!.codes!.length, 2, 'Should have verification codes');
+  assert.equal(email.text!.codes![0].value, '654321');
+  assert.equal(email.text!.codes![1].value, '5H0Y2');
 };
 
-const validateHeaders = (email: any) => {
-  const expectedFromHeader = `${email.from[0].name} <${email.from[0].email}>`;
-  const expectedToHeader = `${email.to[0].name} <${email.to[0].email}>`;
-  const { headers } = email.metadata;
+const validateHeaders = (email: Message) => {
+  const expectedFromHeader = `${email.from![0].name} <${email.from![0].email}>`;
+  const expectedToHeader = `${email.to![0].name} <${email.to![0].email}>`;
+  const { headers } = email.metadata!;
 
   assert.equal(
-    headers.find((h: any) => h.field.toLowerCase() === 'from').value,
+    headers!.find((h: MessageHeader) => h.field!.toLowerCase() === 'from')!
+      .value,
     expectedFromHeader,
     'From header should be accurate'
   );
   assert.equal(
-    headers.find((h: any) => h.field.toLowerCase() === 'to').value,
+    headers!.find((h: MessageHeader) => h.field!.toLowerCase() === 'to')!.value,
     expectedToHeader,
     'To header should be accurate'
   );
   assert.equal(
-    headers.find((h: any) => h.field.toLowerCase() === 'subject').value,
+    headers!.find((h: MessageHeader) => h.field!.toLowerCase() === 'subject')
+      ?.value,
     email.subject,
     'Subject header should be accurate'
   );
 };
 
-const validateMetadata = (email: any) => {
+const validateMetadata = (email: Message | MessageSummary) => {
   assert.equal(email.type, 'Email');
-  assert.equal(email.from.length, 1);
-  assert.equal(email.to.length, 1);
-  assert.isNotEmpty(email.from[0].email);
-  assert.isNotEmpty(email.from[0].name);
-  assert.isNotEmpty(email.to[0].email);
-  assert.isNotEmpty(email.to[0].name);
+  assert.equal(email.from!.length, 1);
+  assert.equal(email.to!.length, 1);
+  assert.isNotEmpty(email.from![0].email);
+  assert.isNotEmpty(email.from![0].name);
+  assert.isNotEmpty(email.to![0].email);
+  assert.isNotEmpty(email.to![0].name);
   assert.isNotEmpty(email.subject);
   assert.isNotEmpty(email.server);
 
-  assert.equal(email.received.toISOString().slice(0, 10), isoDateString);
+  assert.equal(email.received!.toISOString().slice(0, 10), isoDateString);
 };
 
-const validateAttachments = (email: any) => {
-  assert.equal(email.attachments.length, 2, 'Should have attachments');
+const validateAttachments = (email: Message) => {
+  assert.equal(email.attachments!.length, 2, 'Should have attachments');
 
-  const file1 = email.attachments[0];
+  const file1 = email.attachments![0];
   assert.isOk(file1.id, 'First attachment should have file id');
   assert.isOk(file1.url);
   assert.equal(file1.length, 82138, 'First attachment should be correct size');
@@ -141,7 +150,7 @@ const validateAttachments = (email: any) => {
     'First attachment should have correct MIME type'
   );
 
-  const file2 = email.attachments[1];
+  const file2 = email.attachments![1];
   assert.isOk(file2.id, 'Second attachment should have file id');
   assert.isOk(file2.url);
   assert.equal(
@@ -161,17 +170,17 @@ const validateAttachments = (email: any) => {
   );
 };
 
-const validateEmail = (email: any) => {
+const validateEmail = (email: Message) => {
   validateMetadata(email);
   validateAttachments(email);
   validateHtml(email);
   validateText(email);
-  assert.isOk(email.metadata.ehlo, 'ehlo is empty');
-  assert.isOk(email.metadata.mailFrom, 'mailFrom is empty');
-  assert.equal(email.metadata.rcptTo.length, 1);
+  assert.isOk(email.metadata!.ehlo, 'ehlo is empty');
+  assert.isOk(email.metadata!.mailFrom, 'mailFrom is empty');
+  assert.equal(email.metadata!.rcptTo!.length, 1);
 };
 
-const validateEmailSummary = (email: any) => {
+const validateEmailSummary = (email: MessageSummary) => {
   validateMetadata(email);
   assert.isNotEmpty(email.summary);
   assert.equal(email.attachments, 2);
@@ -183,7 +192,7 @@ describe('emails', () => {
   const baseUrl = process.env.MAILOSAUR_BASE_URL || 'https://mailosaur.com/';
   const verifiedDomain = process.env.MAILOSAUR_VERIFIED_DOMAIN;
   let client: MailosaurClient;
-  let emails: any[];
+  let emails: MessageSummary[];
 
   before(async () => {
     if (!apiKey || !server) {
@@ -194,10 +203,10 @@ describe('emails', () => {
 
     client = new MailosaurClient(apiKey, baseUrl);
 
-    await client.messages.deleteAll(server);
-    await mailer.sendEmails(mailer, client, server, 5);
-    const result = await client.messages.list(server);
-    emails = result.items;
+    await client.messages.deleteAll(server!);
+    await mailer.sendEmails(mailer, client, server!, 5);
+    const result = await client.messages.list(server!);
+    emails = result.items!;
     emails.forEach(validateEmailSummary);
   });
 
@@ -205,17 +214,17 @@ describe('emails', () => {
     it('should filter on older received after date', async () => {
       const pastDate = new Date();
       pastDate.setMinutes(pastDate.getMinutes() - 10);
-      const result = await client.messages.list(server, {
+      const result = await client.messages.list(server!, {
         receivedAfter: pastDate,
       });
-      assert.isTrue(result.items.length > 0);
+      assert.isTrue(result.items!.length > 0);
     });
 
     it('should filter on received after date', async () => {
       const d = new Date();
       d.setSeconds(d.getSeconds() + 60);
-      const result = await client.messages.list(server, { receivedAfter: d });
-      assert.equal(result.items.length, 0);
+      const result = await client.messages.list(server!, { receivedAfter: d });
+      assert.equal(result.items!.length, 0);
     });
   });
 
@@ -223,8 +232,8 @@ describe('emails', () => {
     it('should return a match once found', async () => {
       const host = process.env.MAILOSAUR_SMTP_HOST || 'mailosaur.net';
       const testEmailAddress = `wait_for_test@${server}.${host}`;
-      await mailer.sendEmail(client, server, testEmailAddress);
-      const email = await client.messages.get(server, {
+      await mailer.sendEmail(client, server!, testEmailAddress);
+      const email = await client.messages.get(server!, {
         sentTo: testEmailAddress,
       });
       validateEmail(email);
@@ -250,7 +259,7 @@ describe('emails', () => {
   describe('search', () => {
     it('should throw an error if no criteria', async () => {
       try {
-        await client.messages.search(server, {});
+        await client.messages.search(server!, {});
       } catch (err) {
         assert.instanceOf(err, MailosaurError);
       }
@@ -261,7 +270,7 @@ describe('emails', () => {
 
       try {
         await client.messages.search(
-          server,
+          server!,
           {
             sentFrom: testFromEmail,
           },
@@ -269,7 +278,7 @@ describe('emails', () => {
             timeout: 1,
           }
         );
-      } catch (err: any) {
+      } catch (err: unknown) {
         assert.instanceOf(err, MailosaurError);
         assert.equal(
           err.message,
@@ -280,7 +289,7 @@ describe('emails', () => {
 
     it('should return empty array if errors suppressed', async () => {
       const result = await client.messages.search(
-        server,
+        server!,
         {
           sentTo: 'neverfound@example.com',
         },
@@ -290,103 +299,106 @@ describe('emails', () => {
         }
       );
 
-      assert.equal(result.items.length, 0);
+      assert.equal(result.items!.length, 0);
     });
 
     describe('by sentFrom', () => {
       it('should return matching results', async () => {
         const targetEmail = emails[1];
-        const result = await client.messages.search(server, {
-          sentFrom: targetEmail.from[0].email,
+        const result = await client.messages.search(server!, {
+          sentFrom: targetEmail.from![0].email,
         });
-        assert.equal(result.items.length, 1);
-        assert.equal(result.items[0].from[0].email, targetEmail.from[0].email);
-        assert.equal(result.items[0].subject, targetEmail.subject);
+        assert.equal(result.items!.length, 1);
+        assert.equal(
+          result.items![0].from![0].email,
+          targetEmail.from![0].email
+        );
+        assert.equal(result.items![0].subject, targetEmail.subject);
       });
     });
 
     describe('by sentTo', () => {
       it('should return matching results', async () => {
         const targetEmail = emails[1];
-        const result = await client.messages.search(server, {
-          sentTo: targetEmail.to[0].email,
+        const result = await client.messages.search(server!, {
+          sentTo: targetEmail.to![0].email,
         });
-        assert.equal(result.items.length, 1);
-        assert.equal(result.items[0].to[0].email, targetEmail.to[0].email);
-        assert.equal(result.items[0].subject, targetEmail.subject);
+        assert.equal(result.items!.length, 1);
+        assert.equal(result.items![0].to![0].email, targetEmail.to![0].email);
+        assert.equal(result.items![0].subject, targetEmail.subject);
       });
     });
 
     describe('by body', () => {
       it('should return matching results', async () => {
         const targetEmail = emails[1];
-        const uniqueString = targetEmail.subject.substr(
+        const uniqueString = targetEmail.subject!.substr(
           0,
-          targetEmail.subject.indexOf(' subject')
+          targetEmail.subject!.indexOf(' subject')
         );
-        const result = await client.messages.search(server, {
+        const result = await client.messages.search(server!, {
           body: `${uniqueString} html`,
         });
-        assert.equal(result.items.length, 1);
-        assert.equal(result.items[0].to[0].email, targetEmail.to[0].email);
-        assert.equal(result.items[0].subject, targetEmail.subject);
+        assert.equal(result.items!.length, 1);
+        assert.equal(result.items![0].to![0].email, targetEmail.to![0].email);
+        assert.equal(result.items![0].subject, targetEmail.subject);
       });
     });
 
     describe('by subject', () => {
       it('should return matching results', async () => {
         const targetEmail = emails[1];
-        const uniqueString = targetEmail.subject.substr(
+        const uniqueString = targetEmail.subject!.substr(
           0,
-          targetEmail.subject.indexOf(' subject')
+          targetEmail.subject!.indexOf(' subject')
         );
-        const result = await client.messages.search(server, {
+        const result = await client.messages.search(server!, {
           subject: uniqueString,
         });
-        assert.equal(result.items.length, 1);
-        assert.equal(result.items[0].to[0].email, targetEmail.to[0].email);
-        assert.equal(result.items[0].subject, targetEmail.subject);
+        assert.equal(result.items!.length, 1);
+        assert.equal(result.items![0].to![0].email, targetEmail.to![0].email);
+        assert.equal(result.items![0].subject, targetEmail.subject);
       });
     });
 
     describe('with match all', () => {
       it('should return matching results', async () => {
         const targetEmail = emails[1];
-        const uniqueString = targetEmail.subject.substr(
+        const uniqueString = targetEmail.subject!.substr(
           0,
-          targetEmail.subject.indexOf(' subject')
+          targetEmail.subject!.indexOf(' subject')
         );
-        const result = await client.messages.search(server, {
+        const result = await client.messages.search(server!, {
           subject: uniqueString,
           body: 'this is a link',
           match: 'ALL',
         });
-        assert.equal(result.items.length, 1);
+        assert.equal(result.items!.length, 1);
       });
     });
 
     describe('with match any', () => {
       it('should return matching results', async () => {
         const targetEmail = emails[1];
-        const uniqueString = targetEmail.subject.substr(
+        const uniqueString = targetEmail.subject!.substr(
           0,
-          targetEmail.subject.indexOf(' subject')
+          targetEmail.subject!.indexOf(' subject')
         );
-        const result = await client.messages.search(server, {
+        const result = await client.messages.search(server!, {
           subject: uniqueString,
           body: 'this is a link',
           match: 'ANY',
         });
-        assert.equal(result.items.length, 6);
+        assert.equal(result.items!.length, 6);
       });
     });
 
     describe('with special characters', () => {
       it('should support special characters', async () => {
-        const result = await client.messages.search(server, {
+        const result = await client.messages.search(server!, {
           subject: 'Search with ellipsis … and emoji 👨🏿‍🚒',
         });
-        assert.equal(result.items.length, 0);
+        assert.equal(result.items!.length, 0);
       });
     });
   });
@@ -395,11 +407,13 @@ describe('emails', () => {
     it('should perform a spam analysis on an email', async () => {
       const targetId = emails[0].id;
       const result = await client.analysis.spam(targetId);
-      result.spamFilterResults.spamAssassin.forEach((rule: any) => {
-        assert.isNumber(rule.score);
-        assert.isOk(rule.rule);
-        assert.isOk(rule.description);
-      });
+      result.spamFilterResults!.spamAssassin!.forEach(
+        (rule: SpamAssassinRule) => {
+          assert.isNumber(rule.score);
+          assert.isOk(rule.rule);
+          assert.isOk(rule.description);
+        }
+      );
     });
   });
 
@@ -411,14 +425,14 @@ describe('emails', () => {
       assert.isOk(result.spf);
 
       assert.isOk(result.dkim);
-      result.dkim.forEach((dkim: any) => {
+      result.dkim.forEach((dkim: EmailAuthenticationResult) => {
         assert.isOk(dkim);
       });
 
       assert.isOk(result.dmarc);
 
       assert.isOk(result.blockLists);
-      result.blockLists.forEach((blockList: any) => {
+      result.blockLists.forEach((blockList: BlockListResult) => {
         assert.isOk(blockList);
         assert.isOk(blockList.id);
         assert.isOk(blockList.name);
@@ -432,7 +446,7 @@ describe('emails', () => {
       assert.isOk(result.dnsRecords.ptr);
 
       assert.isOk(result.spamAssassin);
-      result.spamAssassin.rules.forEach((rule: any) => {
+      result.spamAssassin!.rules!.forEach((rule: SpamAssassinRule) => {
         assert.isNumber(rule.score);
         assert.isOk(rule.rule);
         assert.isOk(rule.description);
@@ -460,7 +474,7 @@ describe('emails', () => {
   (verifiedDomain ? describe : describe.skip)('create and send', () => {
     it('send with text content', async () => {
       const subject = 'New message';
-      const message = await client.messages.create(server, {
+      const message = await client.messages.create(server!, {
         to: `anything@${verifiedDomain}`,
         send: true,
         subject,
@@ -472,7 +486,7 @@ describe('emails', () => {
 
     it('send with HTML content', async () => {
       const subject = 'New HTML message';
-      const message = await client.messages.create(server, {
+      const message = await client.messages.create(server!, {
         to: `anything@${verifiedDomain}`,
         send: true,
         subject,
@@ -485,7 +499,7 @@ describe('emails', () => {
     it('send with HTML content to CC recipient', async () => {
       const subject = 'CC Message';
       const ccRecipient = `someoneelse@${verifiedDomain}`;
-      const message = await client.messages.create(server, {
+      const message = await client.messages.create(server!, {
         to: `anything@${verifiedDomain}`,
         send: true,
         subject,
@@ -494,8 +508,8 @@ describe('emails', () => {
       });
       assert.isNotEmpty(message.id);
       assert.equal(message.subject, subject);
-      assert.equal(message.cc.length, 1);
-      assert.equal(message.cc[0].email, ccRecipient);
+      assert.equal(message.cc!.length, 1);
+      assert.equal(message.cc![0].email, ccRecipient);
     });
 
     it('send with attachment', async () => {
@@ -510,15 +524,15 @@ describe('emails', () => {
         contentType: 'image/png',
       };
 
-      const message = await client.messages.create(server, {
+      const message = await client.messages.create(server!, {
         to: `anything@${verifiedDomain}`,
         send: true,
         subject,
         html: '<p>This is a new email.</p>',
-        attachments: [attachment],
+        attachments: [attachment as Attachment],
       });
-      assert.equal(message.attachments.length, 1, 'Should have attachment');
-      const file1 = message.attachments[0];
+      assert.equal(message.attachments!.length, 1, 'Should have attachment');
+      const file1 = message.attachments![0];
       assert.isOk(file1.id, 'First attachment should have file id');
       assert.isOk(file1.url);
       assert.equal(
@@ -549,7 +563,7 @@ describe('emails', () => {
         text: body,
       });
       assert.isNotEmpty(message.id);
-      assert.isTrue(message.text.body.indexOf(body) >= 0);
+      assert.isTrue(message.text!.body!.indexOf(body) >= 0);
     });
 
     it('forward with HTML content', async () => {
@@ -561,7 +575,7 @@ describe('emails', () => {
         html: body,
       });
       assert.isNotEmpty(message.id);
-      assert.isTrue(message.html.body.indexOf(body) >= 0);
+      assert.isTrue(message.html!.body!.indexOf(body) >= 0);
     });
 
     it('forward with HTML content to CC recipient', async () => {
@@ -575,9 +589,9 @@ describe('emails', () => {
         cc: ccRecipient,
       });
       assert.isNotEmpty(message.id);
-      assert.isTrue(message.html.body.indexOf(body) >= 0);
-      assert.equal(message.cc.length, 1);
-      assert.equal(message.cc[0].email, ccRecipient);
+      assert.isTrue(message.html!.body!.indexOf(body) >= 0);
+      assert.equal(message.cc!.length, 1);
+      assert.equal(message.cc![0].email, ccRecipient);
     });
   });
 
@@ -590,7 +604,7 @@ describe('emails', () => {
         text: body,
       });
       assert.isNotEmpty(message.id);
-      assert.isTrue(message.text.body.indexOf(body) >= 0);
+      assert.isTrue(message.text!.body!.indexOf(body) >= 0);
     });
 
     it('reply with HTML content', async () => {
@@ -601,7 +615,7 @@ describe('emails', () => {
         html: body,
       });
       assert.isNotEmpty(message.id);
-      assert.isTrue(message.html.body.indexOf(body) >= 0);
+      assert.isTrue(message.html!.body!.indexOf(body) >= 0);
     });
 
     it('reply with HTML content to CC recipient', async () => {
@@ -614,9 +628,9 @@ describe('emails', () => {
         cc: ccRecipient,
       });
       assert.isNotEmpty(message.id);
-      assert.isTrue(message.html.body.indexOf(body) >= 0);
-      assert.equal(message.cc.length, 1);
-      assert.equal(message.cc[0].email, ccRecipient);
+      assert.isTrue(message.html!.body!.indexOf(body) >= 0);
+      assert.equal(message.cc!.length, 1);
+      assert.equal(message.cc![0].email, ccRecipient);
     });
 
     it('reply with attachment', async () => {
@@ -633,10 +647,10 @@ describe('emails', () => {
 
       const message = await client.messages.reply(targetEmailId, {
         html: '<p>This is a reply with attachment.</p>',
-        attachments: [attachment],
+        attachments: [attachment as Attachment],
       });
-      assert.equal(message.attachments.length, 1, 'Should have attachment');
-      const file1 = message.attachments[0];
+      assert.equal(message.attachments!.length, 1, 'Should have attachment');
+      const file1 = message.attachments![0];
       assert.isOk(file1.id, 'First attachment should have file id');
       assert.isOk(file1.url);
       assert.equal(

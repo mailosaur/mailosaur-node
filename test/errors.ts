@@ -7,9 +7,9 @@ describe('error handling', () => {
 
   it('Unauthorized', done => {
     const client = new MailosaurClient('invalid_key', baseUrl);
-    client.servers.list().catch((err: any) => {
+    client.servers.list().catch((err: unknown) => {
       assert.equal(
-        err.toString(),
+        (err as Error).toString(),
         'Error: Authentication failed, check your API key.'
       );
       done();
@@ -18,16 +18,22 @@ describe('error handling', () => {
 
   it('Not Found', done => {
     const client = new MailosaurClient(apiKey as string, baseUrl);
-    client.servers.get('not_found').catch((err: any) => {
-      assert.equal(err.toString(), 'Error: Not found, check input parameters.');
+    client.servers.get('not_found').catch((err: unknown) => {
+      assert.equal(
+        (err as Error).toString(),
+        'Error: Not found, check input parameters.'
+      );
       done();
     });
   });
 
   it('Bad Request', done => {
     const client = new MailosaurClient(apiKey as string, baseUrl);
-    client.servers.create({}).catch((err: any) => {
-      assert.equal(err.toString(), 'Error: (name) Servers need a name\r\n');
+    client.servers.create({}).catch((err: unknown) => {
+      assert.equal(
+        (err as Error).toString(),
+        'Error: (name) Servers need a name\r\n'
+      );
       done();
     });
   });

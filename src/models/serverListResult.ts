@@ -12,7 +12,9 @@ class ServerListResult {
   items?: Server[];
 
   constructor(data: Record<string, any> = {}) {
-    this.items = (data.items || []).map((i: any) => new Server(i));
+    this.items = (data.items || []).map(
+      (i: Record<string, unknown>) => new Server(i)
+    );
   }
 }
 

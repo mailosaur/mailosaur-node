@@ -1,5 +1,6 @@
 import { assert } from 'chai';
 import MailosaurClient from '../src/mailosaur';
+import type Message from '../src/models/message';
 import mailer from './mailer';
 
 describe('files', () => {
@@ -7,7 +8,7 @@ describe('files', () => {
   const server = process.env.MAILOSAUR_SERVER;
   const baseUrl = process.env.MAILOSAUR_BASE_URL || 'https://mailosaur.com/';
   let client: MailosaurClient;
-  let email: any;
+  let email: Message;
 
   before(async () => {
     if (!apiKey || !server) {
@@ -18,29 +19,29 @@ describe('files', () => {
 
     client = new MailosaurClient(apiKey, baseUrl);
 
-    await client.messages.deleteAll(server);
+    await client.messages.deleteAll(server!);
     const host = process.env.MAILOSAUR_SMTP_HOST || 'mailosaur.net';
     const testEmailAddress = `files_test@${server}.${host}`;
-    await mailer.sendEmail(client, server, testEmailAddress);
-    email = await client.messages.get(server, {
+    await mailer.sendEmail(client, server!, testEmailAddress);
+    email = await client.messages.get(server!, {
       sentTo: testEmailAddress,
     });
   });
 
   describe('getEmail', () => {
     it('should return a file', async () => {
-      const result: any = await client.files.getEmail(email.id);
+      const result = await client.files.getEmail(email.id!);
       assert.isOk(result);
       assert.isTrue(result.length > 1);
-      assert.isTrue(result.indexOf(email.subject) !== -1);
+      assert.isTrue(result.indexOf(email.subject!) !== -1);
     });
   });
 
   describe('getAttachment', () => {
     it('should return a file', async () => {
-      const attachment = email.attachments[0];
+      const attachment = email.attachments![0];
 
-      const result: any = await client.files.getAttachment(attachment.id);
+      const result = await client.files.getAttachment(attachment.id!);
       assert.isOk(result);
       assert.equal(result.length, attachment.length);
     });

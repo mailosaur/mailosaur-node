@@ -7,6 +7,7 @@ import Previews from './operations/previews';
 import Servers from './operations/servers';
 import Usage from './operations/usage';
 import Request from './request';
+import type { HttpResponse } from './request';
 import MailosaurError from './models/mailosaurError';
 
 class MailosaurClient {
@@ -66,7 +67,7 @@ class MailosaurClient {
     this.models = models;
   }
 
-  httpError(response: { statusCode: number; body?: any }): MailosaurError {
+  httpError(response: HttpResponse): MailosaurError {
     const httpStatusCode = response.statusCode;
     const httpResponseBody = response.body
       ? JSON.stringify(response.body)
@@ -79,8 +80,13 @@ class MailosaurClient {
           if (!httpResponseBody) {
             throw new Error('Empty response body');
           }
-          const json = JSON.parse(httpResponseBody);
-          json.errors.forEach((err: any) => {
+          const json = JSON.parse(httpResponseBody) as {
+            errors: Array<{
+              field: string;
+              detail: Array<{ description: string }>;
+            }>;
+          };
+          json.errors.forEach(err => {
             message += `(${err.field}) ${err.detail[0].description}\r\n`;
           });
         } catch (_e) {
