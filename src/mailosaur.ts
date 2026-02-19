@@ -138,6 +138,7 @@ class MailosaurClient {
 }
 
 export default MailosaurClient;
+export * from './models';
 
 // CommonJS compatibility - allows `const MailosaurClient = require('mailosaur')`
 if (typeof module !== 'undefined' && module.exports) {

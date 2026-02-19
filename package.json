@@ -29,6 +29,11 @@
       "types": "./cjs/mailosaur.d.ts",
       "import": "./esm/mailosaur.js",
       "require": "./cjs/mailosaur.js"
+    },
+    "./models": {
+      "types": "./cjs/models/index.d.ts",
+      "import": "./esm/models/index.js",
+      "require": "./cjs/models/index.js"
     }
   },
   "files": [
