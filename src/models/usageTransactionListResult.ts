@@ -1,4 +1,4 @@
-import UsageTransaction from './usageTransaction';
+import UsageTransaction from './usageTransaction.js';
 
 /**
  * Usage transactions from your account.

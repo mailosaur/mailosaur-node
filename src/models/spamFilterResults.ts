@@ -1,4 +1,4 @@
-import SpamAssassinRule from './spamAssassinRule';
+import SpamAssassinRule from './spamAssassinRule.js';
 
 /**
  * Results for this email against various spam filters.

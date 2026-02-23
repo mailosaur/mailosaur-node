@@ -1,6 +1,6 @@
-import Link from './link';
-import Code from './code';
-import Image from './image';
+import Link from './link.js';
+import Code from './code.js';
+import Image from './image.js';
 
 /**
  * The content of the message.

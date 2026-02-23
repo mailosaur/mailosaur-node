@@ -1,4 +1,4 @@
-import MessageSummary from './messageSummary';
+import MessageSummary from './messageSummary.js';
 
 /**
  * The result of a message listing request.

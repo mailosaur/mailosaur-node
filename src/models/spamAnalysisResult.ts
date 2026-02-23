@@ -1,4 +1,4 @@
-import SpamFilterResults from './spamFilterResults';
+import SpamFilterResults from './spamFilterResults.js';
 
 /**
  * The results of spam analysis performed by Mailosaur.

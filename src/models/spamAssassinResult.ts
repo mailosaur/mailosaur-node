@@ -1,4 +1,4 @@
-import SpamAssassinRule from './spamAssassinRule';
+import SpamAssassinRule from './spamAssassinRule.js';
 
 /**
  * The results of spam assassin check performed by Mailosaur.

@@ -1,8 +1,8 @@
-import ServerListResult from '../models/serverListResult';
-import Server from '../models/server';
-import type ServerCreateOptions from '../models/serverCreateOptions';
-import type { HttpResponse } from '../request';
-import type MailosaurClient from '../mailosaur';
+import ServerListResult from '../models/serverListResult.js';
+import Server from '../models/server.js';
+import type ServerCreateOptions from '../models/serverCreateOptions.js';
+import type { HttpResponse } from '../request.js';
+import type MailosaurClient from '../mailosaur.js';
 
 class Servers {
   client: MailosaurClient;

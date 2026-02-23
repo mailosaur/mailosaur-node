@@ -26,14 +26,24 @@
   "types": "cjs/mailosaur.d.ts",
   "exports": {
     ".": {
-      "types": "./cjs/mailosaur.d.ts",
-      "import": "./esm/mailosaur.js",
-      "require": "./cjs/mailosaur.js"
+      "import": {
+        "types": "./esm/mailosaur.d.ts",
+        "default": "./esm/mailosaur.js"
+      },
+      "require": {
+        "types": "./cjs/mailosaur.d.ts",
+        "default": "./cjs/mailosaur.js"
+      }
     },
     "./models": {
-      "types": "./cjs/models/index.d.ts",
-      "import": "./esm/models/index.js",
-      "require": "./cjs/models/index.js"
+      "import": {
+        "types": "./esm/models/index.d.ts",
+        "default": "./esm/models/index.js"
+      },
+      "require": {
+        "types": "./cjs/models/index.d.ts",
+        "default": "./cjs/models/index.js"
+      }
     }
   },
   "files": [

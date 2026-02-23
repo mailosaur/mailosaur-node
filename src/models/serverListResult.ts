@@ -1,4 +1,4 @@
-import Server from './server';
+import Server from './server.js';
 
 /**
  * The result of the server listing operation.

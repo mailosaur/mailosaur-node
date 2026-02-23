@@ -1,7 +1,7 @@
-import MessageAddress from './messageAddress';
-import MessageContent from './messageContent';
-import Attachment from './attachment';
-import Metadata from './metadata';
+import MessageAddress from './messageAddress.js';
+import MessageContent from './messageContent.js';
+import Attachment from './attachment.js';
+import Metadata from './metadata.js';
 
 /**
  * The email or SMS message processed by Mailosaur.

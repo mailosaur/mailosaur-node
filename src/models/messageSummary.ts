@@ -1,4 +1,4 @@
-import MessageAddress from './messageAddress';
+import MessageAddress from './messageAddress.js';
 
 /**
  * A summary of the message processed by Mailosaur. This summary does not include

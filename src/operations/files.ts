@@ -1,6 +1,6 @@
-import type Request from '../request';
-import type { HttpResponse } from '../request';
-import MailosaurError from '../models/mailosaurError';
+import type Request from '../request.js';
+import type { HttpResponse } from '../request.js';
+import MailosaurError from '../models/mailosaurError.js';
 
 // Interface to avoid circular dependency issues
 interface IMailosaurClient {

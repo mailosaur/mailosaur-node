@@ -8,5 +8,8 @@
     "strict": false,
     "noImplicitAny": false
   },
+  "ts-node": {
+    "experimentalResolver": true
+  },
   "include": ["test/**/*.ts"]
 }

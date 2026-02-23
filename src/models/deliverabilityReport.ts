@@ -1,8 +1,8 @@
-import EmailAuthenticationResult from './emailAuthenticationResult';
-import BlockListResult from './blockListResult';
-import Content from './content';
-import DnsRecords from './dnsRecords';
-import SpamAssassinResult from './spamAssassinResult';
+import EmailAuthenticationResult from './emailAuthenticationResult.js';
+import BlockListResult from './blockListResult.js';
+import Content from './content.js';
+import DnsRecords from './dnsRecords.js';
+import SpamAssassinResult from './spamAssassinResult.js';
 
 /**
  * The results of deliverability report performed by Mailosaur.

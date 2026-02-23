@@ -1,4 +1,4 @@
-import Preview from './preview';
+import Preview from './preview.js';
 
 /**
  * A list of requested email previews.
