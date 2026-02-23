@@ -1,4 +1,4 @@
-import EmailClient from './emailClient';
+import EmailClient from './emailClient.js';
 
 /**
  * A list of available email clients with which to generate email previews.

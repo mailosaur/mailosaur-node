@@ -1,7 +1,7 @@
-import SpamAnalysisResult from '../models/spamAnalysisResult';
-import DeliverabilityReport from '../models/deliverabilityReport';
-import type { HttpResponse } from '../request';
-import type MailosaurClient from '../mailosaur';
+import SpamAnalysisResult from '../models/spamAnalysisResult.js';
+import DeliverabilityReport from '../models/deliverabilityReport.js';
+import type { HttpResponse } from '../request.js';
+import type MailosaurClient from '../mailosaur.js';
 
 /**
  * Message analysis operations.

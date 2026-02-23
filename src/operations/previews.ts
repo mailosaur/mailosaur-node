@@ -1,6 +1,6 @@
-import EmailClientListResult from '../models/emailClientListResult';
-import type { HttpResponse } from '../request';
-import type MailosaurClient from '../mailosaur';
+import EmailClientListResult from '../models/emailClientListResult.js';
+import type { HttpResponse } from '../request.js';
+import type MailosaurClient from '../mailosaur.js';
 
 class Previews {
   client: MailosaurClient;

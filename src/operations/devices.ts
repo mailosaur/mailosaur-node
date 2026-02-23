@@ -1,9 +1,9 @@
-import DeviceListResult from '../models/deviceListResult';
-import Device from '../models/device';
-import OtpResult from '../models/otpResult';
-import type DeviceCreateOptions from '../models/deviceCreateOptions';
-import type { HttpResponse } from '../request';
-import type MailosaurClient from '../mailosaur';
+import DeviceListResult from '../models/deviceListResult.js';
+import Device from '../models/device.js';
+import OtpResult from '../models/otpResult.js';
+import type DeviceCreateOptions from '../models/deviceCreateOptions.js';
+import type { HttpResponse } from '../request.js';
+import type MailosaurClient from '../mailosaur.js';
 
 class Devices {
   client: MailosaurClient;

@@ -1,5 +1,5 @@
-import MessageAddress from './messageAddress';
-import MessageHeader from './messageHeader';
+import MessageAddress from './messageAddress.js';
+import MessageHeader from './messageHeader.js';
 
 /**
  * Further metadata related to the message, including email headers.

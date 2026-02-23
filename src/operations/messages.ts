@@ -1,16 +1,16 @@
-import MailosaurError from '../models/mailosaurError';
-import Message from '../models/message';
-import MessageListResult from '../models/messageListResult';
-import PreviewListResult from '../models/previewListResult';
-import type SearchCriteria from '../models/searchCriteria';
-import type SearchOptions from '../models/searchOptions';
-import type MessageListOptions from '../models/messageListOptions';
-import type MessageCreateOptions from '../models/messageCreateOptions';
-import type MessageForwardOptions from '../models/messageForwardOptions';
-import type MessageReplyOptions from '../models/messageReplyOptions';
-import type PreviewRequestOptions from '../models/previewRequestOptions';
-import type { HttpResponse } from '../request';
-import type MailosaurClient from '../mailosaur';
+import MailosaurError from '../models/mailosaurError.js';
+import Message from '../models/message.js';
+import MessageListResult from '../models/messageListResult.js';
+import PreviewListResult from '../models/previewListResult.js';
+import type SearchCriteria from '../models/searchCriteria.js';
+import type SearchOptions from '../models/searchOptions.js';
+import type MessageListOptions from '../models/messageListOptions.js';
+import type MessageCreateOptions from '../models/messageCreateOptions.js';
+import type MessageForwardOptions from '../models/messageForwardOptions.js';
+import type MessageReplyOptions from '../models/messageReplyOptions.js';
+import type PreviewRequestOptions from '../models/previewRequestOptions.js';
+import type { HttpResponse } from '../request.js';
+import type MailosaurClient from '../mailosaur.js';
 
 class Messages {
   client: MailosaurClient;

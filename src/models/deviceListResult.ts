@@ -1,4 +1,4 @@
-import Device from './device';
+import Device from './device.js';
 
 /**
  * The result of the device listing operation.

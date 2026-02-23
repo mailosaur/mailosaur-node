@@ -1,14 +1,14 @@
-import * as models from './models';
-import Analysis from './operations/analysis';
-import Devices from './operations/devices';
-import Files from './operations/files';
-import Messages from './operations/messages';
-import Previews from './operations/previews';
-import Servers from './operations/servers';
-import Usage from './operations/usage';
-import Request from './request';
-import type { HttpResponse } from './request';
-import MailosaurError from './models/mailosaurError';
+import * as models from './models/index.js';
+import Analysis from './operations/analysis.js';
+import Devices from './operations/devices.js';
+import Files from './operations/files.js';
+import Messages from './operations/messages.js';
+import Previews from './operations/previews.js';
+import Servers from './operations/servers.js';
+import Usage from './operations/usage.js';
+import Request from './request.js';
+import type { HttpResponse } from './request.js';
+import MailosaurError from './models/mailosaurError.js';
 
 class MailosaurClient {
   request: Request;
@@ -138,7 +138,7 @@ class MailosaurClient {
 }
 
 export default MailosaurClient;
-export * from './models';
+export * from './models/index.js';
 
 // CommonJS compatibility - allows `const MailosaurClient = require('mailosaur')`
 if (typeof module !== 'undefined' && module.exports) {

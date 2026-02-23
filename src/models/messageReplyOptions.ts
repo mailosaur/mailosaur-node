@@ -1,4 +1,4 @@
-import type Attachment from './attachment';
+import type Attachment from './attachment.js';
 
 /**
  * Options to use when replying to a message.

@@ -1,4 +1,4 @@
-import UsageAccountLimit from './usageAccountLimit';
+import UsageAccountLimit from './usageAccountLimit.js';
 
 /**
  * The current limits and usage for your account.

@@ -1,7 +1,7 @@
-import UsageAccountLimits from '../models/usageAccountLimits';
-import UsageTransactionListResult from '../models/usageTransactionListResult';
-import type { HttpResponse } from '../request';
-import type MailosaurClient from '../mailosaur';
+import UsageAccountLimits from '../models/usageAccountLimits.js';
+import UsageTransactionListResult from '../models/usageTransactionListResult.js';
+import type { HttpResponse } from '../request.js';
+import type MailosaurClient from '../mailosaur.js';
 
 class Usage {
   client: MailosaurClient;
