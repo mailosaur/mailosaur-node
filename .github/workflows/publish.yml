@@ -26,7 +26,9 @@ jobs:
           registry-url: https://registry.npmjs.org/
       - name: Version
         run: |
-          npm --no-git-tag-version --allow-same-version version `git describe --abbrev=0 --tags`
+          version=`git describe --abbrev=0 --tags`
+          npm --no-git-tag-version --allow-same-version version $version
+          sed -i "s/const VERSION = '.*'/const VERSION = '$version'/" src/request.ts
       - name: Install dependencies
         run: npm ci
       - name: Publish
