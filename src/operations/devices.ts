@@ -148,4 +148,3 @@ class Devices {
 }
 
 export default Devices;
-module.exports = Devices;

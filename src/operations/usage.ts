@@ -70,4 +70,3 @@ class Usage {
 }
 
 export default Usage;
-module.exports = Usage;

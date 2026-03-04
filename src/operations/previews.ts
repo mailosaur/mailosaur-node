@@ -38,4 +38,3 @@ class Previews {
 }
 
 export default Previews;
-module.exports = Previews;

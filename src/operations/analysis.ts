@@ -71,4 +71,3 @@ class Analysis {
 }
 
 export default Analysis;
-module.exports = Analysis;

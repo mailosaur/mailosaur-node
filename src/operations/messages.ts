@@ -425,4 +425,3 @@ class Messages {
 }
 
 export default Messages;
-module.exports = Messages;

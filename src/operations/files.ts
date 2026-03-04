@@ -124,4 +124,3 @@ class Files {
 }
 
 export default Files;
-module.exports = Files;

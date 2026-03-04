@@ -192,4 +192,3 @@ class Servers {
 }
 
 export default Servers;
-module.exports = Servers;

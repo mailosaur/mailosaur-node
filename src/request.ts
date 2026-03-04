@@ -2,6 +2,8 @@ import * as https from 'https';
 import { HttpsProxyAgent } from 'https-proxy-agent';
 import * as url from 'url';
 
+const VERSION = '11.0.0';
+
 interface RequestOptions {
   baseUrl?: string;
   apiKey: string;
@@ -38,14 +40,10 @@ class Request {
     this.baseUrl = options.baseUrl || 'https://mailosaur.com/';
     const encodedKey = Buffer.from(`${options.apiKey}:`).toString('base64');
 
-    // Read package.json version for User-Agent
-    // eslint-disable-next-line global-require
-    const pkg = require('../package.json');
-
     this.headers = {
       Accept: 'application/json',
       Authorization: `Basic ${encodedKey}`,
-      'User-Agent': options.agent || `mailosaur-node/${pkg.version}`,
+      'User-Agent': options.agent || `mailosaur-node/${VERSION}`,
     };
 
     const httpProxy =
