@@ -44,17 +44,21 @@ class MailosaurClient {
 
   /**
    * Returns an instance of the Mailosaur client.
-   * @param apiKey Your Mailosaur API key.
+   * @param apiKey Optional API key. Overrides the MAILOSAUR_API_KEY environment variable if set.
    * @param baseUrl Optionally overrides the base URL of the Mailosaur service.
    */
-  constructor(apiKey: string, baseUrl?: string) {
-    if (!apiKey) {
-      throw new Error("'apiKey' must be set.");
+  constructor(apiKey?: string, baseUrl?: string) {
+    const resolvedApiKey = apiKey || process.env.MAILOSAUR_API_KEY;
+
+    if (!resolvedApiKey) {
+      throw new Error(
+        "'apiKey' must be set via the MAILOSAUR_API_KEY environment variable, or passed to the MailosaurClient constructor."
+      );
     }
 
     this.request = new Request({
       baseUrl: baseUrl || 'https://mailosaur.com/',
-      apiKey,
+      apiKey: resolvedApiKey,
     });
 
     this.analysis = new Analysis(this);
