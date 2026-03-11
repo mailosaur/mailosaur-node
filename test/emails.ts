@@ -1,6 +1,6 @@
+import { assert, beforeAll, describe, it } from 'vitest';
 import fs from 'fs';
 import path from 'path';
-import { assert } from 'chai';
 import MailosaurClient from '../src/mailosaur';
 import MailosaurError from '../src/models/mailosaurError';
 import type Attachment from '../src/models/attachment';
@@ -16,7 +16,7 @@ const isoDateString = new Date().toISOString().slice(0, 10);
 
 const validateHtml = (email: Message) => {
   // Body
-  assert.match(email.html!.body!, /^<div dir="ltr">/, 'HTML body should match');
+  assert.match(email.html!.body!, /^<div dir="ltr">/);
 
   // Links
   assert.equal(email.html!.links!.length, 3, 'Should have HTML links');
@@ -194,7 +194,7 @@ describe('emails', () => {
   let client: MailosaurClient;
   let emails: MessageSummary[];
 
-  before(async () => {
+  beforeAll(async () => {
     if (!apiKey || !server) {
       throw new Error(
         'Missing necessary environment variables - refer to README.md'
@@ -471,7 +471,7 @@ describe('emails', () => {
     });
   });
 
-  (verifiedDomain ? describe : describe.skip)('create and send', () => {
+  describe.skipIf(!verifiedDomain)('create and send', () => {
     it('send with text content', async () => {
       const subject = 'New message';
       const message = await client.messages.create(server!, {
@@ -553,7 +553,7 @@ describe('emails', () => {
     });
   });
 
-  (verifiedDomain ? describe : describe.skip)('forward', () => {
+  describe.skipIf(!verifiedDomain)('forward', () => {
     it('forward with text content', async () => {
       const targetEmailId = emails[0].id;
       const body = 'Forwarded message';
@@ -595,7 +595,7 @@ describe('emails', () => {
     });
   });
 
-  (verifiedDomain ? describe : describe.skip)('reply', () => {
+  describe.skipIf(!verifiedDomain)('reply', () => {
     it('reply with text content', async () => {
       const targetEmailId = emails[0].id;
       const body = 'Reply message';

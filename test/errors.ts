@@ -1,40 +1,46 @@
-import { assert } from 'chai';
+import { assert, describe, it } from 'vitest';
 import MailosaurClient from '../src/mailosaur';
 
 describe('error handling', () => {
   const apiKey = process.env.MAILOSAUR_API_KEY;
   const baseUrl = process.env.MAILOSAUR_BASE_URL || 'https://mailosaur.com/';
 
-  it('Unauthorized', done => {
+  it('Unauthorized', async () => {
     const client = new MailosaurClient('invalid_key', baseUrl);
-    client.servers.list().catch((err: unknown) => {
+    try {
+      await client.servers.list();
+      assert.fail('Should have thrown');
+    } catch (err: unknown) {
       assert.equal(
         (err as Error).toString(),
         'Error: Authentication failed, check your API key.'
       );
-      done();
-    });
+    }
   });
 
-  it('Not Found', done => {
+  it('Not Found', async () => {
     const client = new MailosaurClient(apiKey as string, baseUrl);
-    client.servers.get('not_found').catch((err: unknown) => {
+    try {
+      await client.servers.get('not_found');
+      assert.fail('Should have thrown');
+    } catch (err: unknown) {
       assert.equal(
         (err as Error).toString(),
         'Error: Not found, check input parameters.'
       );
-      done();
-    });
+    }
   });
 
-  it('Bad Request', done => {
+  it('Bad Request', async () => {
     const client = new MailosaurClient(apiKey as string, baseUrl);
-    client.servers.create({}).catch((err: unknown) => {
+    try {
+      await client.servers.create({});
+      assert.fail('Should have thrown');
+    } catch (err: unknown) {
       assert.equal(
         (err as Error).toString(),
         'Error: (name) Servers need a name\r\n'
       );
-      done();
-    });
+    }
   });
 });

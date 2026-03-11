@@ -1,4 +1,4 @@
-import { assert } from 'chai';
+import { assert, beforeAll, describe, it } from 'vitest';
 import MailosaurClient from '../src/mailosaur';
 import type Device from '../src/models/device';
 
@@ -7,7 +7,7 @@ describe('devices', () => {
   const apiKey = process.env.MAILOSAUR_API_KEY;
   const baseUrl = process.env.MAILOSAUR_BASE_URL || 'https://mailosaur.com/';
 
-  before(() => {
+  beforeAll(() => {
     if (!apiKey) {
       throw new Error(
         'Missing necessary environment variables - refer to README.md'

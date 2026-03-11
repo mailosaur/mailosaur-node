@@ -55,13 +55,10 @@
   "devDependencies": {
     "@biomejs/biome": "2.3.13",
     "@types/node": "^22.0.0",
-    "@types/chai": "^5.0.0",
-    "@types/mocha": "^10.0.0",
-    "chai": "~6.2.0",
-    "mocha": "^11.7.4",
+
     "nodemailer": "~7.0.6",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vitest": "^3.1.1"
   },
   "peerDependencies": {
     "@types/node": ">=16"
@@ -77,57 +74,12 @@
     "build": "npm run build:cjs && npm run build:esm",
     "clean": "rm -rf cjs esm",
     "prepack": "npm run build",
-    "test": "npm run lint && TS_NODE_PROJECT=tsconfig.test.json mocha -t 60000",
+    "test": "npm run lint && vitest run",
     "lint": "if [ -n \"$CI\" ]; then (npm run lint:strict) else (npm run lint:default) fi",
     "lint:default": "npx biome check . --diagnostic-level=warn && npx tsc -p tsconfig.test.json",
     "lint:strict": "npx biome check . --diagnostic-level=warn --error-on-warnings && npx tsc -p tsconfig.test.json",
     "lint:fix": "npx biome check --write .",
     "format": "npx biome format --write ."
-  },
-  "eslintConfig": {
-    "extends": [
-      "airbnb-base"
-    ],
-    "parser": "@typescript-eslint/parser",
-    "plugins": [
-      "@typescript-eslint"
-    ],
-    "env": {
-      "node": true,
-      "mocha": true
-    },
-    "rules": {
-      "quotes": [
-        2,
-        "single",
-        {
-          "allowTemplateLiterals": true
-        }
-      ],
-      "consistent-return": 0,
-      "comma-dangle": 0,
-      "max-len": 0,
-      "no-shadow": 0,
-      "class-methods-use-this": 0,
-      "linebreak-style": 0,
-      "arrow-parens": 0,
-      "operator-linebreak": 0,
-      "object-curly-newline": 0,
-      "implicit-arrow-linebreak": 0,
-      "no-else-return": 0,
-      "indent": 0,
-      "lines-between-class-members": 0,
-      "import/extensions": 0,
-      "import/no-unresolved": 0,
-      "import/no-import-module-exports": 0,
-      "no-useless-catch": 0,
-      "global-require": 0,
-      "no-trailing-spaces": 0,
-      "no-unused-vars": 0,
-      "@typescript-eslint/no-unused-vars": [
-        "error"
-      ]
-    }
   },
   "dependencies": {
     "https-proxy-agent": "^7.0.6"
