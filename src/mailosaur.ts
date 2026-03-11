@@ -145,7 +145,11 @@ export default MailosaurClient;
 export * from './models/index.js';
 
 // CommonJS compatibility - allows `const MailosaurClient = require('mailosaur')`
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = MailosaurClient;
-  module.exports.default = MailosaurClient;
+try {
+  if (typeof module !== 'undefined' && module.exports) {
+    module.exports = MailosaurClient;
+    module.exports.default = MailosaurClient;
+  }
+} catch {
+  // Running in a true ESM context (e.g. vitest) where module.exports is read-only
 }

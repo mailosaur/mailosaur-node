@@ -1,4 +1,4 @@
-import { assert } from 'chai';
+import { assert, beforeAll, describe, it } from 'vitest';
 import MailosaurClient from '../src/mailosaur';
 import type Message from '../src/models/message';
 import mailer from './mailer';
@@ -10,7 +10,7 @@ describe('files', () => {
   let client: MailosaurClient;
   let email: Message;
 
-  before(async () => {
+  beforeAll(async () => {
     if (!apiKey || !server) {
       throw new Error(
         'Missing necessary environment variables - refer to README.md'

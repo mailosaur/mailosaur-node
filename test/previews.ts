@@ -1,4 +1,4 @@
-import { assert } from 'chai';
+import { assert, beforeAll, describe, it } from 'vitest';
 import fs from 'fs';
 import MailosaurClient from '../src/mailosaur';
 import PreviewRequestOptions from '../src/models/previewRequestOptions';
@@ -19,7 +19,7 @@ describe('previews', () => {
   const server = process.env.MAILOSAUR_SERVER;
   let client: MailosaurClient;
 
-  before(async () => {
+  beforeAll(async () => {
     if (!apiKey || !server) {
       throw new Error(
         'Missing necessary environment variables - refer to README.md'
