@@ -73,7 +73,7 @@ const mailosaur = new MailosaurClient()
 This library is powered by the Mailosaur [email & SMS testing API](https://mailosaur.com/docs/api/). You can easily check out the API itself by looking at our [API reference documentation](https://mailosaur.com/docs/api/) or via our Postman or Insomnia collections:
 
 [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/6961255-6cc72dff-f576-451a-9023-b82dec84f95d?action=collection%2Ffork&collection-url=entityId%3D6961255-6cc72dff-f576-451a-9023-b82dec84f95d%26entityType%3Dcollection%26workspaceId%3D386a4af1-4293-4197-8f40-0eb49f831325)
- [![Run in Insomnia}](https://insomnia.rest/images/run.svg)](https://insomnia.rest/run/?label=Mailosaur&uri=https%3A%2F%2Fmailosaur.com%2Finsomnia.json)
+ [![Run in Insomnia](https://insomnia.rest/images/run.svg)](https://insomnia.rest/run/?label=Mailosaur&uri=https%3A%2F%2Fmailosaur.com%2Finsomnia.json)
 
 ## Creating an account
 
@@ -108,7 +108,7 @@ In automated tests you will want to wait for a new email to arrive. This library
 ```js
 (async () => {
   const MailosaurClient = require('mailosaur')
-  const mailosaur = new MailosaurClient('API_KEY')
+  const mailosaur = new MailosaurClient()
 
   // See https://mailosaur.com/app/project/api
   const serverId = 'abc123'
@@ -126,13 +126,13 @@ In automated tests you will want to wait for a new email to arrive. This library
 
 ### What is this code doing?
 
-1. Sets up an instance of `MailosaurClient` with your API key.
+1. Sets up an instance of `MailosaurClient`, reading the API key from the `MAILOSAUR_API_KEY` environment variable.
 2. Waits for an email to arrive at the server with ID `abc123`.
 3. Outputs the subject line of the email.
 
 ### My email wasn't found
 
-First, check that the email you sent is visible in the [Mailosaur Dashboard](https://mailosaur.com/api/project/messages). 
+First, check that the email you sent is visible in the [Mailosaur Dashboard](https://mailosaur.com/app/project/messages).
 
 If it is, the likely reason is that by default, `messages.get` only searches emails received by Mailosaur in the last 1 hour. You can override this behavior (see the `receivedAfter` option below), however we only recommend doing this during setup, as your tests will generally run faster with the default settings:
 
@@ -141,7 +141,7 @@ const email = await mailosaur.messages.get(
   serverId,
   searchCriteria,
   // Override receivedAfter to search all messages since Jan 1st
-  { receivedAfter: new Date(2021, 01, 01) }
+  { receivedAfter: new Date(2021, 0, 1) }
 )
 ```
 
@@ -154,7 +154,7 @@ If your account has [SMS testing](https://mailosaur.com/sms-testing/) enabled, y
 ```js
 (async () => {
   const MailosaurClient = require('mailosaur')
-  const mailosaur = new MailosaurClient('API_KEY')
+  const mailosaur = new MailosaurClient()
 
   const serverId = 'abc123'
 
@@ -207,7 +207,7 @@ console.log(message.html.body) // "<html><head ..."
 
 ### Working with HTML using JSDOM
 
-If you need to traverse the HTML content of an email. For example, finding an element via a CSS selector, you can use the [JSDOM](https://github.com/jsdom/jsdom) library.
+If you need to traverse the HTML content of an email — for example, finding an element via a CSS selector — you can use the [JSDOM](https://github.com/jsdom/jsdom) library.
 
 ```sh
 npm i -D jsdom
@@ -243,7 +243,7 @@ console.log(firstLink.text) // "Google Search"
 console.log(firstLink.href) // "https://www.google.com/"
 ```
 
-**Important:** To ensure you always have valid emails. Mailosaur only extracts links that have been correctly marked up with `<a>` or `<area>` tags.
+**Important:** To ensure you always have valid emails, Mailosaur only extracts links that have been correctly marked up with `<a>` or `<area>` tags.
 
 ### Links in plain text (including SMS messages)
 
