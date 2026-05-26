@@ -4,6 +4,11 @@ import type ServerCreateOptions from '../models/serverCreateOptions.js';
 import type { HttpResponse } from '../request.js';
 import type MailosaurClient from '../mailosaur.js';
 
+/**
+ * Operations for creating and managing your Mailosaur servers — the virtual inboxes that
+ * group your tests together, each with its own domain and SMTP/POP3/IMAP credentials.
+ * Accessed via `client.servers`.
+ */
 class Servers {
   client: MailosaurClient;
 
@@ -13,6 +18,7 @@ class Servers {
 
   /**
    * Returns a list of your virtual servers. Servers are returned sorted in alphabetical order.
+   * @returns A promise resolving to a {@link ServerListResult} containing your servers.
    */
   async list(): Promise<ServerListResult> {
     const url = `api/servers`;
@@ -41,6 +47,7 @@ class Servers {
   /**
    * Creates a new virtual server.
    * @param options Options used to create a new Mailosaur server.
+   * @returns A promise resolving to the newly-created {@link Server}.
    */
   async create(options: ServerCreateOptions): Promise<Server> {
     const url = `api/servers`;
@@ -69,6 +76,7 @@ class Servers {
   /**
    * Retrieves the detail for a single server.
    * @param serverId The unique identifier of the server.
+   * @returns A promise resolving to the {@link Server}.
    */
   async get(serverId: string): Promise<Server> {
     const url = `api/servers/${serverId}`;
@@ -97,6 +105,7 @@ class Servers {
   /**
    * Retrieves the password for a server. This password can be used for SMTP, POP3, and IMAP connectivity.
    * @param serverId The unique identifier of the server.
+   * @returns A promise resolving to the server's password.
    */
   async getPassword(serverId: string): Promise<string> {
     const url = `api/servers/${serverId}/password`;
@@ -126,6 +135,7 @@ class Servers {
    * Updates the attributes of a server.
    * @param serverId The unique identifier of the server.
    * @param server The updated server.
+   * @returns A promise resolving to the updated {@link Server}.
    */
   async update(serverId: string, server: Server): Promise<Server> {
     const url = `api/servers/${serverId}`;
@@ -154,6 +164,7 @@ class Servers {
   /**
    * Permanently delete a server. This will also delete all messages, associated attachments, etc. within the server. This operation cannot be undone.
    * @param serverId The unique identifier of the server.
+   * @returns A promise resolving once the server has been deleted.
    */
   async del(serverId: string): Promise<void> {
     const url = `api/servers/${serverId}`;
@@ -183,6 +194,7 @@ class Servers {
    * Generates a random email address by appending a random string in front of the server's
    * domain name.
    * @param serverId The identifier of the server.
+   * @returns A random email address ending in the server's domain.
    */
   generateEmailAddress(serverId: string): string {
     const host = process.env.MAILOSAUR_SMTP_HOST || 'mailosaur.net';

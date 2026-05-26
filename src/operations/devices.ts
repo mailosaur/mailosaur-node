@@ -5,6 +5,11 @@ import type DeviceCreateOptions from '../models/deviceCreateOptions.js';
 import type { HttpResponse } from '../request.js';
 import type MailosaurClient from '../mailosaur.js';
 
+/**
+ * Operations for managing virtual security devices and retrieving their current one-time
+ * passwords (OTPs), used to automate testing of app-based multi-factor authentication.
+ * Accessed via `client.devices`.
+ */
 class Devices {
   client: MailosaurClient;
 
@@ -14,6 +19,7 @@ class Devices {
 
   /**
    * Returns a list of your virtual security devices.
+   * @returns A promise resolving to a {@link DeviceListResult} containing your devices.
    */
   async list(): Promise<DeviceListResult> {
     const url = `api/devices`;
@@ -42,6 +48,7 @@ class Devices {
   /**
    * Creates a new virtual security device.
    * @param options Options used to create a new Mailosaur virtual security device.
+   * @returns A promise resolving to the newly-created {@link Device}.
    */
   async create(options: DeviceCreateOptions): Promise<Device> {
     const url = `api/devices`;
@@ -70,6 +77,7 @@ class Devices {
   /**
    * Retrieves the current one-time password for a saved device, or given base32-encoded shared secret.
    * @param query Either the unique identifier of the device, or a base32-encoded shared secret.
+   * @returns A promise resolving to an {@link OtpResult} containing the current one-time password.
    */
   async otp(query: string): Promise<OtpResult> {
     if (!query || query.indexOf('-') > -1) {
@@ -121,6 +129,7 @@ class Devices {
   /**
    * Permanently delete a virtual security device. This operation cannot be undone.
    * @param deviceId The unique identifier of the device.
+   * @returns A promise resolving once the device has been deleted.
    */
   async del(deviceId: string): Promise<void> {
     const url = `api/devices/${deviceId}`;
