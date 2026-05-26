@@ -10,34 +10,40 @@ import Request from './request.js';
 import type { HttpResponse } from './request.js';
 import MailosaurError from './models/mailosaurError.js';
 
+/**
+ * The Mailosaur client — the main entry point to the Mailosaur API. Construct an instance with
+ * your API key (or set the `MAILOSAUR_API_KEY` environment variable), then use the operations
+ * namespaces (`messages`, `servers`, `files`, `devices`, `analysis`, `previews`, `usage`) to
+ * automate email and SMS testing.
+ */
 class MailosaurClient {
   request: Request;
   /**
-   * Message analysis operations
+   * Operations for analyzing email content and deliverability, including spam scoring.
    */
   analysis: Analysis;
   /**
-   * File operations
+   * Operations for downloading attachments, EML source, and email preview screenshots.
    */
   files: Files;
   /**
-   * Message operations
+   * Operations for finding, retrieving, creating, and managing email and SMS messages.
    */
   messages: Messages;
   /**
-   * Server management operations
+   * Operations for creating and managing your Mailosaur servers (virtual inboxes).
    */
   servers: Servers;
   /**
-   * Account usage operations
+   * Operations for inspecting account usage limits and recent transactional usage.
    */
   usage: Usage;
   /**
-   * Device management operations
+   * Operations for managing virtual security devices and retrieving their one-time passwords.
    */
   devices: Devices;
   /**
-   * Email Previews operations
+   * Operations for discovering the email clients available for generating email previews.
    */
   previews: Previews;
   models: typeof models;

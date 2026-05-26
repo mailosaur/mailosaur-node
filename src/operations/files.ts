@@ -9,7 +9,8 @@ interface IMailosaurClient {
 }
 
 /**
- * File operations.
+ * Operations for downloading the raw content associated with a message — file attachments,
+ * the full EML source of an email, and rendered email previews. Accessed via `client.files`.
  */
 class Files {
   client: IMailosaurClient;
@@ -21,6 +22,7 @@ class Files {
   /**
    * Downloads a single attachment.
    * @param attachmentId The identifier for the required attachment.
+   * @returns A promise resolving to a Buffer containing the attachment's binary content.
    */
   async getAttachment(attachmentId: string): Promise<Buffer> {
     const url = `api/files/attachments/${attachmentId}`;
@@ -38,6 +40,7 @@ class Files {
   /**
    * Downloads an EML file representing the specified email.
    * @param messageId The identifier for the required message.
+   * @returns A promise resolving to a Buffer containing the raw EML content of the email.
    */
   async getEmail(messageId: string): Promise<Buffer> {
     const url = `api/files/email/${messageId}`;
@@ -56,6 +59,8 @@ class Files {
    * Downloads a screenshot of your email rendered in a real email client. Simply supply
    * the unique identifier for the required preview.
    * @param previewId The identifier of the email preview to be downloaded.
+   * @returns A promise resolving to a Buffer containing the preview screenshot image.
+   * @throws {MailosaurError} With error type `preview_timeout` if the preview is not generated within the time limit.
    */
   async getPreview(previewId: string): Promise<Buffer> {
     const timeout = 120000;

@@ -2,6 +2,10 @@ import EmailClientListResult from '../models/emailClientListResult.js';
 import type { HttpResponse } from '../request.js';
 import type MailosaurClient from '../mailosaur.js';
 
+/**
+ * Operations for discovering the email clients available for generating email previews
+ * (screenshots of an email rendered in real clients). Accessed via `client.previews`.
+ */
 class Previews {
   client: MailosaurClient;
 
@@ -11,6 +15,7 @@ class Previews {
 
   /**
    * List all email clients that can be used to generate email previews.
+   * @returns A promise resolving to an {@link EmailClientListResult} of available email clients.
    */
   async listEmailClients(): Promise<EmailClientListResult> {
     const url = `api/screenshots/clients`;

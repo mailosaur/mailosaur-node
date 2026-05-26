@@ -12,6 +12,10 @@ import type PreviewRequestOptions from '../models/previewRequestOptions.js';
 import type { HttpResponse } from '../request.js';
 import type MailosaurClient from '../mailosaur.js';
 
+/**
+ * Operations for finding, retrieving, creating, forwarding, replying to, and deleting the
+ * email and SMS messages received by your Mailosaur servers. Accessed via `client.messages`.
+ */
 class Messages {
   client: MailosaurClient;
 
@@ -25,6 +29,8 @@ class Messages {
    * @param serverId The unique identifier of the containing server.
    * @param criteria The criteria with which to find messages during a search.
    * @param options Search options
+   * @returns A promise resolving to the first {@link Message} matching the criteria.
+   * @throws {MailosaurError} With error type `no_messages_found` if no matching message exists, or `search_timeout` if no matching message arrives before the timeout elapses.
    */
   async get(
     serverId: string,
@@ -69,6 +75,7 @@ class Messages {
    * Retrieves the detail for a single message. Must be used in conjunction with either list or
    * search in order to get the unique identifier for the required message.
    * @param messageId The unique identifier of the message to be retrieved.
+   * @returns A promise resolving to the full {@link Message}.
    */
   async getById(messageId: string): Promise<Message> {
     const url = `api/messages/${messageId}`;
@@ -97,6 +104,7 @@ class Messages {
   /**
    * Permanently deletes a message. Also deletes any attachments related to the message. This operation cannot be undone.
    * @param messageId The identifier for the message.
+   * @returns A promise resolving once the message has been deleted.
    */
   async del(messageId: string): Promise<void> {
     const url = `api/messages/${messageId}`;
@@ -126,6 +134,7 @@ class Messages {
    * Returns a list of your messages in summary form. The summaries are returned sorted by received date, with the most recently-received messages appearing first.
    * @param serverId The unique identifier of the required server.
    * @param options Message listing options
+   * @returns A promise resolving to a {@link MessageListResult} containing the message summaries.
    */
   async list(
     serverId: string,
@@ -163,8 +172,9 @@ class Messages {
   }
 
   /**
-   * Permenantly delete all messages within a server.
+   * Permanently delete all messages within a server. This operation cannot be undone.
    * @param serverId The unique identifier of the server.
+   * @returns A promise resolving once all messages within the server have been deleted.
    */
   async deleteAll(serverId: string): Promise<void> {
     const url = `api/messages`;
@@ -200,6 +210,8 @@ class Messages {
    * @param serverId The unique identifier of the server to search.
    * @param criteria The criteria with which to find messages during a search.
    * @param options Search options
+   * @returns A promise resolving to a {@link MessageListResult} containing the matching message summaries.
+   * @throws {MailosaurError} With error type `search_timeout` if no matching message is found before the timeout elapses, unless `options.errorOnTimeout` is set to false.
    */
   async search(
     serverId: string,
@@ -296,6 +308,7 @@ class Messages {
    * in scenarios where you want an email to trigger a workflow in your product.
    * @param serverId The unique identifier of the required server.
    * @param options Options to use when creating a new message.
+   * @returns A promise resolving to the newly-created {@link Message}.
    */
   async create(
     serverId: string,
@@ -329,8 +342,10 @@ class Messages {
   }
 
   /**
+   * Forwards the specified message to a verified email address. This is useful for simulating a user forwarding one of your email messages.
    * @param messageId The unique identifier of the message to be forwarded.
    * @param options Options to use when forwarding a message.
+   * @returns A promise resolving to the forwarded {@link Message}.
    */
   async forward(
     messageId: string,
@@ -361,8 +376,9 @@ class Messages {
 
   /**
    * Sends a reply to the specified message. This is useful for when simulating a user replying to one of your email or SMS messages.
-   * @param messageId The unique identifier of the message to be forwarded.
+   * @param messageId The unique identifier of the message to be replied to.
    * @param options Options to use when replying to a message.
+   * @returns A promise resolving to the reply {@link Message}.
    */
   async reply(
     messageId: string,
@@ -395,6 +411,7 @@ class Messages {
    * Generates screenshots of an email rendered in the specified email clients.
    * @param messageId The identifier of the email to preview.
    * @param options The options with which to generate previews.
+   * @returns A promise resolving to a {@link PreviewListResult} containing the generated previews.
    */
   async generatePreviews(
     messageId: string,

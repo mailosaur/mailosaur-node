@@ -4,7 +4,8 @@ import type { HttpResponse } from '../request.js';
 import type MailosaurClient from '../mailosaur.js';
 
 /**
- * Message analysis operations.
+ * Operations for analyzing the content and deliverability of an email, including SpamAssassin
+ * scoring and per-provider deliverability reports. Accessed via `client.analysis`.
  */
 class Analysis {
   client: MailosaurClient;
@@ -16,6 +17,7 @@ class Analysis {
   /**
    * Perform a spam analysis of an email.
    * @param messageId The identifier of the message to be analyzed.
+   * @returns A promise resolving to a {@link SpamAnalysisResult} containing the spam score and filter results.
    */
   async spam(messageId: string): Promise<SpamAnalysisResult> {
     const url = `api/analysis/spam/${messageId}`;
@@ -44,6 +46,7 @@ class Analysis {
   /**
    * Perform a deliverability report of an email.
    * @param messageId The identifier of the message to be analyzed.
+   * @returns A promise resolving to a {@link DeliverabilityReport} for the email.
    */
   async deliverability(messageId: string): Promise<DeliverabilityReport> {
     const url = `api/analysis/deliverability/${messageId}`;
