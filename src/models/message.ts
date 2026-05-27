@@ -56,7 +56,7 @@ class Message {
    */
   metadata?: Metadata;
   /**
-   * Identifier for the server in which the message is located.
+   * Identifier for the inbox (server) in which the message is located.
    */
   server?: string;
 

@@ -1,12 +1,12 @@
 import Server from './server.js';
 
 /**
- * The result of the server listing operation.
+ * The result of the inbox (server) listing operation.
  */
 class ServerListResult {
   /**
-   * The individual servers forming the result. Servers
-   * are returned sorted by creation date, with the most recently-created server
+   * The individual inboxes (servers) forming the result. Inboxes (servers)
+   * are returned sorted by creation date, with the most recently-created inbox (server)
    * appearing first.
    */
   items?: Server[];

@@ -5,7 +5,7 @@ import UsageAccountLimit from './usageAccountLimit.js';
  */
 class UsageAccountLimits {
   /**
-   * Server limits.
+   * Inbox (server) limits.
    */
   servers?: UsageAccountLimit;
   /**
