@@ -14,7 +14,7 @@ import type MailosaurClient from '../mailosaur.js';
 
 /**
  * Operations for finding, retrieving, creating, forwarding, replying to, and deleting the
- * email and SMS messages received by your Mailosaur servers. Accessed via `client.messages`.
+ * email and SMS messages received by your Mailosaur inboxes (servers). Accessed via `client.messages`.
  */
 class Messages {
   client: MailosaurClient;
@@ -26,7 +26,7 @@ class Messages {
   /**
    * Waits for a message to be found. Returns as soon as a message matching the specified search criteria is found.
    * **Recommended:** This is the most efficient method of looking up a message, therefore we recommend using it wherever possible.
-   * @param serverId The unique identifier of the containing server.
+   * @param serverId The unique identifier of the containing inbox (server).
    * @param criteria The criteria with which to find messages during a search.
    * @param options Search options
    * @returns A promise resolving to the first {@link Message} matching the criteria.
@@ -132,7 +132,7 @@ class Messages {
 
   /**
    * Returns a list of your messages in summary form. The summaries are returned sorted by received date, with the most recently-received messages appearing first.
-   * @param serverId The unique identifier of the required server.
+   * @param serverId The unique identifier of the required inbox (server).
    * @param options Message listing options
    * @returns A promise resolving to a {@link MessageListResult} containing the message summaries.
    */
@@ -172,9 +172,9 @@ class Messages {
   }
 
   /**
-   * Permanently delete all messages within a server. This operation cannot be undone.
-   * @param serverId The unique identifier of the server.
-   * @returns A promise resolving once all messages within the server have been deleted.
+   * Permanently delete all messages within an inbox (server). This operation cannot be undone.
+   * @param serverId The unique identifier of the inbox (server).
+   * @returns A promise resolving once all messages within the inbox (server) have been deleted.
    */
   async deleteAll(serverId: string): Promise<void> {
     const url = `api/messages`;
@@ -207,7 +207,7 @@ class Messages {
   /**
    * Returns a list of messages matching the specified search criteria, in summary form.
    * The messages are returned sorted by received date, with the most recently-received messages appearing first.
-   * @param serverId The unique identifier of the server to search.
+   * @param serverId The unique identifier of the inbox (server) to search.
    * @param criteria The criteria with which to find messages during a search.
    * @param options Search options
    * @returns A promise resolving to a {@link MessageListResult} containing the matching message summaries.
@@ -306,7 +306,7 @@ class Messages {
   /**
    * Creates a new message that can be sent to a verified email address. This is useful
    * in scenarios where you want an email to trigger a workflow in your product.
-   * @param serverId The unique identifier of the required server.
+   * @param serverId The unique identifier of the required inbox (server).
    * @param options Options to use when creating a new message.
    * @returns A promise resolving to the newly-created {@link Message}.
    */

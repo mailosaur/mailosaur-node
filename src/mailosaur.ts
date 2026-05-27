@@ -31,7 +31,7 @@ class MailosaurClient {
    */
   messages: Messages;
   /**
-   * Operations for creating and managing your Mailosaur servers (virtual inboxes).
+   * Operations for creating and managing your Mailosaur inboxes (servers).
    */
   servers: Servers;
   /**
