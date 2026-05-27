@@ -81,9 +81,9 @@ Create a [free trial account](https://mailosaur.com/app/signup) for Mailosaur vi
 
 Once you have this, navigate to the [API tab](https://mailosaur.com/app/project/api) to find the following values:
 
-- **Server ID** - Servers act like projects, which group your tests together. You need this ID whenever you interact with a server via the API.
-- **Server Domain** - Every server has its own domain name. You'll need this to send email to your server.
-- **API Key** - You can create an API key per server (recommended), or an account-level API key to use across your whole account. [Learn more about API keys](https://mailosaur.com/docs/managing-your-account/api-keys/).
+- **Server ID** - Inboxes (servers) act like projects, which group your tests together. You need this ID whenever you interact with an inbox (server) via the API.
+- **Server Domain** - Every inbox (server) has its own domain name. You'll need this to send email to your inbox (server).
+- **API Key** - You can create an API key per inbox (server) — recommended — or an account-level API key to use across your whole account. [Learn more about API keys](https://mailosaur.com/docs/managing-your-account/api-keys/).
 
 ## Test email addresses with Mailosaur
 
@@ -91,13 +91,13 @@ Mailosaur gives you an **unlimited number of test email addresses** - with no se
 
 Here's how it works:
 
-* When you create an account, you are given a server.
-* Every server has its own **Server Domain** name (e.g. `abc123.mailosaur.net`)
+* When you create an account, you are given an inbox (server).
+* Every inbox (server) has its own **Server Domain** name (e.g. `abc123.mailosaur.net`)
 * Any email address that ends with `@{YOUR_SERVER_DOMAIN}` will work with Mailosaur without any special setup. For example:
   * `build-423@abc123.mailosaur.net`
   * `john.smith@abc123.mailosaur.net`
   * `rAnDoM63423@abc123.mailosaur.net`
-* You can create more servers when you need them. Each one will have its own domain name.
+* You can create more inboxes (servers) when you need them. Each one will have its own domain name.
 
 ***Can't use test email addresses?** You can also [use SMTP to test email](https://mailosaur.com/docs/email-testing/sending-to-mailosaur/#sending-via-smtp). By connecting your product or website to Mailosaur via SMTP, Mailosaur will catch all email your application sends, regardless of the email address.*
 
@@ -127,7 +127,7 @@ In automated tests you will want to wait for a new email to arrive. This library
 ### What is this code doing?
 
 1. Sets up an instance of `MailosaurClient`, reading the API key from the `MAILOSAUR_API_KEY` environment variable.
-2. Waits for an email to arrive at the server with ID `abc123`.
+2. Waits for an email to arrive at the inbox (server) with ID `abc123`.
 3. Outputs the subject line of the email.
 
 ### My email wasn't found
