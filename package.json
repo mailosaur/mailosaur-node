@@ -55,7 +55,7 @@
   "devDependencies": {
     "@biomejs/biome": "2.3.13",
     "@types/node": "^22.0.0",
-    "nodemailer": "^8.0.5",
+    "nodemailer": "^9.0.1",
     "typescript": "^5.9.3",
     "vitest": "^4.1.8"
   },
