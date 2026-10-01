@@ -1,4 +1,4 @@
-import nodemailer from 'nodemailer';
+import nodemailer, { type SMTPSentMessageInfo } from 'nodemailer';
 import fs from 'fs';
 import path from 'path';
 import type MailosaurClient from '../src/mailosaur';
@@ -17,7 +17,7 @@ const text = fs.readFileSync(
 const smtpTransport = nodemailer.createTransport({
   host: process.env.MAILOSAUR_SMTP_HOST || 'mailosaur.net',
   port: process.env.MAILOSAUR_SMTP_PORT || '25',
-  secureConnection: false,
+  secure: false,
   ignoreTLS: false,
   tls: {
     // Do not fail on certificate mismatch
@@ -55,7 +55,7 @@ const mailer = {
     client: MailosaurClient,
     server: string,
     sendToAddress?: string
-  ): Promise<void> => {
+  ): Promise<SMTPSentMessageInfo> => {
     const randomString = getRandomString(7);
     const randomFromAddress = `${randomString}@${verifiedDomain}`;
     const randomToAddress =
@@ -76,7 +76,7 @@ const mailer = {
           cid: 'ii_1435fadb31d523f6',
         },
         {
-          fileName: 'dog.png',
+          filename: 'dog.png',
           path: path.join(__dirname, '/resources/dog.png'),
         },
       ],
